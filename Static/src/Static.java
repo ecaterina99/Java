@@ -2,7 +2,6 @@ public class Static {
     public static void main(String[] args) {
         Human h1 = new Human("Bob", 30);
         Human h2 = new Human("Garry", 50);
-        ;
         Human h3 = new Human("Daniel", 19);
         h1.getInfo();
         h2.getInfo();

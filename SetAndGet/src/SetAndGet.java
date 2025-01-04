@@ -15,12 +15,12 @@ class Person {
     String name;
     int age;
 
-    void setNameAndAge(String username, int userage) {
-        if (username.isEmpty() || userage < 0) {
+    void setNameAndAge(String userName, int userAge) {
+        if (userName.isEmpty() || userAge < 0) {
             System.out.println("Invalid username or age");
         } else {
-            name = username;
-            age = userage;
+            name = userName;
+            age = userAge;
             System.out.println("Hello, my name is " + name + "! " + "I'm " + age + " years old.");
         }
     }

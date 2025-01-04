@@ -30,8 +30,8 @@ public class Link {
     }
 
     public static boolean girl(String namePerson) {
-        int lengthNume = namePerson.length();
-        char lastCharacter = namePerson.charAt(lengthNume - 1);
+        int lengthName = namePerson.length();
+        char lastCharacter = namePerson.charAt(lengthName - 1);
         if (lastCharacter == 'a') {
             return true;
         } else {

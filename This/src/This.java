@@ -32,7 +32,7 @@ class Human {
 
     public void setAge(int age) {
         if (age < 0 || age > 100) {
-            System.out.println("Invalid Age");
+             ("Invalid Age");
         } else {
             this.age = age;
         }

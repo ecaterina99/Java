@@ -14,6 +14,9 @@ public class Week {
 
 
             default -> System.out.println("unknown day");
+
         }
+
     }
 }
+

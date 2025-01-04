@@ -26,3 +26,4 @@ public class CurrencyConverterSwitch
         System.out.printf("The converted price is: %.2f%n", convertedPrice);
     }
 }
+s
