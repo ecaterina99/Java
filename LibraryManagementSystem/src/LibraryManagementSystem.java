@@ -4,7 +4,6 @@ import java.util.List;
 public class LibraryManagementSystem {
 
     public static void main(String[] args) {
-        int booksCounter = 0;
 
         Book HarryPotter = new Book("Harry Potter", "Joanne Rowling");
         Book HarryPotter2 = new Book("Harry Potter2", "Joanne Rowling");
@@ -15,16 +14,26 @@ public class LibraryManagementSystem {
         Book TheLordOfTheRings3 = new Book("The Lord Of the Rings3", "J. R. R. Tolkien");
         Book TheLordOfTheRings4 = new Book("The Lord Of the Rings4", "J. R. R. Tolkien");
 
-        Book ChristmasStory = new Book("Christmas Story", "John Smith" ,false);
+        Book ChristmasStory = new Book("Christmas Story", "John Smith", false);
 
         Library myLibrary = new Library();
 
         myLibrary.addBook(HarryPotter);
         myLibrary.addBook(HarryPotter2);
         myLibrary.addBook(HarryPotter3);
+        myLibrary.addBook(HarryPotter4);
+        myLibrary.addBook(TheLordOfTheRings);
+        myLibrary.addBook(TheLordOfTheRings2);
+        myLibrary.addBook(TheLordOfTheRings3);
+        System.out.println("Total books = " + Library.getTotalBooks());
+        myLibrary.addBook(TheLordOfTheRings4);
+
+        System.out.println("info = " + myLibrary.getInfo());
+
 
         List<Book> books = new ArrayList<Book>();
         books.add(TheLordOfTheRings);
+
 
         Magazine BAZAAR = new Magazine();
 
@@ -44,8 +53,6 @@ public class LibraryManagementSystem {
         librarian1.borrowBook(TheLordOfTheRings4);
         librarian1.borrowBook(ChristmasStory);
 
-        System.out.println(booksCounter);
-        }
-
     }
+}
 

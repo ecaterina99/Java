@@ -30,7 +30,4 @@ public class Book implements Borrowable {
         isAvailable = true;
     }
 
-
-
-
 }
