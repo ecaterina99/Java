@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Member extends User {
@@ -7,7 +8,6 @@ public class Member extends User {
     public Member(String name, int Id, List<Book> borrowedBooks) {
         super(name, Id, borrowedBooks);
     }
-
 
     @Override
     public boolean borrowBook(Book book) {
@@ -21,15 +21,17 @@ public class Member extends User {
 
             System.out.println("This book is already borrowed");
         }
-
         else {
             System.out.println("You are not allowed to borrow more books");
         }
-
         return false;
     }
 
+    @Override
+    public String getInfo() {
+        return  "The list of member's borrowed books is: " + super.getInfo();
 
+    }
 }
 
 

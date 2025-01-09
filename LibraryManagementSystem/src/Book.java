@@ -30,4 +30,13 @@ public class Book implements Borrowable {
         isAvailable = true;
     }
 
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        output.append("Book title: ").append(this.title);
+        output.append("\nBook author: ").append(this.author);
+        output.append("\nAvailability: ").append(this.isAvailable);
+        return output.toString();
+    }
 }

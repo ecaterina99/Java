@@ -13,4 +13,10 @@ public class Librarian extends User {
         System.out.println("This book is already borrowed");
     return false;
     }
+
+    @Override
+    public String getInfo() {
+        return "The list of librarian's borrowed books is: " + super.getInfo();
+
+    }
 }

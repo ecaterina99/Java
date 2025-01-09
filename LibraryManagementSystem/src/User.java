@@ -20,6 +20,15 @@ public abstract class User {
         this.borrowedBooks.addAll(borrowedBooks);
     }
 
+    public String getInfo() {
+        StringBuilder output = new StringBuilder();
+        for (Book book : this.borrowedBooks) {
+            output.append(book.title);
+            output.append(", ");
+        }
+        return output.toString();
+    }
+
     public String getName() {
         return name;
     }

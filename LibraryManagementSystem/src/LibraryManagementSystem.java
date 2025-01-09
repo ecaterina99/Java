@@ -50,8 +50,14 @@ public class LibraryManagementSystem {
         librarian1.borrowBook(HarryPotter);
         librarian1.borrowBook(TheLordOfTheRings2);
         librarian1.borrowBook(TheLordOfTheRings3);
-        librarian1.borrowBook(TheLordOfTheRings4);
         librarian1.borrowBook(ChristmasStory);
+
+
+        System.out.println(member1.getInfo());
+        System.out.println(librarian1.getInfo());
+        System.out.println(HarryPotter.toString());
+        System.out.println(TheLordOfTheRings.toString());
+
 
     }
 }
