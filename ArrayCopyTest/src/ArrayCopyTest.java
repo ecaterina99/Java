@@ -23,6 +23,8 @@ public class ArrayCopyTest {
         System.out.println(Arrays.binarySearch(destArray, 2));
         System.out.println(Arrays.binarySearch(destArray, 18));
 
+        
+
     }
 
 }
