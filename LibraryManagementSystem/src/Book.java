@@ -11,7 +11,8 @@ public class Book implements Borrowable {
     }
 
     public Book(String title, String author, boolean isAvailable) {
-        this.title = title;;
+        this.title = title;
+        ;
         this.author = author;
         this.isAvailable = isAvailable;
     }
@@ -21,15 +22,19 @@ public class Book implements Borrowable {
         if (this.isAvailable) {
             isAvailable = false;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-    public void returnBook() {
-        isAvailable = true;
-    }
 
+    public boolean returnBorrowed() {
+        if (!this.isAvailable) {
+            isAvailable = true;
+            return true;
+        } else {
+            return true;
+        }
+    }
 
     @Override
     public String toString() {

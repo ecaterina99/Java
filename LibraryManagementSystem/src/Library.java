@@ -16,9 +16,8 @@ public class Library {
     }
 
     public Boolean getInfoBooks(Book book) {
-
-    return true;
-}
+        return true;
+    }
 
     public String getInfo() {
         StringBuilder output = new StringBuilder();
@@ -28,8 +27,6 @@ public class Library {
             output.append(book.title);
             output.append(", ");
         }
-
-
         return output.toString();
     }
 

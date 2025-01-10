@@ -30,33 +30,35 @@ public class LibraryManagementSystem {
 
         System.out.println("info = " + myLibrary.getInfo());
 
-
         List<Book> books = new ArrayList<Book>();
         books.add(TheLordOfTheRings);
 
+        Magazine BAZAAR = new Magazine("BAZAAR");
 
-        Magazine BAZAAR = new Magazine();
-
-        Member member1 = new Member("John G", 1845);
-        Librarian librarian1 = new Librarian("Anna D", 5212);
+        Member member1 = new Member("John Bing", 1845);
+        Librarian librarian1 = new Librarian("Anna Dark", 5212);
         Member member2 = new Member("Victor Green", 5541, books);
+        Librarian librarian2 = new Librarian("Helena Ross", 2247);
 
 
         member1.borrowBook(HarryPotter);
         member1.borrowBook(HarryPotter2);
         member1.borrowBook(HarryPotter3);
         member1.borrowBook(HarryPotter4);
+        member1.returnBook(HarryPotter);
 
-        librarian1.borrowBook(HarryPotter);
         librarian1.borrowBook(TheLordOfTheRings2);
         librarian1.borrowBook(TheLordOfTheRings3);
         librarian1.borrowBook(ChristmasStory);
 
 
         System.out.println(member1.getInfo());
+        System.out.println(member2.getInfo());
         System.out.println(librarian1.getInfo());
-        System.out.println(HarryPotter.toString());
-        System.out.println(TheLordOfTheRings.toString());
+        System.out.println(librarian2.getInfo());
+
+        System.out.println(HarryPotter);
+        System.out.println(TheLordOfTheRings);
 
 
     }

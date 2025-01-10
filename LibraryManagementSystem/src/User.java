@@ -8,7 +8,6 @@ public abstract class User {
 
     public abstract boolean borrowBook(Book book);
 
-
     public User(String name, int Id) {
         this.name = name;
         this.Id = Id;
@@ -23,11 +22,18 @@ public abstract class User {
     public String getInfo() {
         StringBuilder output = new StringBuilder();
         for (Book book : this.borrowedBooks) {
-            output.append(book.title);
-            output.append(", ");
+            if (book != null) {
+                output.append(book.title).append(", ");
+            }
+        }
+        if (!output.toString().isEmpty()) {
+            output.replace(output.length() - 2, output.length(), ".");
+        } else {
+            output.append("No books borrowed.");
         }
         return output.toString();
     }
+
 
     public String getName() {
         return name;
