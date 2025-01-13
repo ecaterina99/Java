@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 /*
 În aplicaţie intră o secvenţă de stringuri. Dimensiunea permisă a acestor stringuri la ieşire
@@ -34,11 +35,9 @@ public class StringsTest {
         for (int i = 0; i < files.length; i++) {
             if (files[i].endsWith("jpg")) {
                 System.out.println("File: " + files[i] + " of type jpg");
-            }
-            else if (files[i].endsWith("txt")) {
+            } else if (files[i].endsWith("txt")) {
                 System.out.println("File: " + files[i] + " of type txt");
-            }
-            else if (files[i].endsWith("gif")) {
+            } else if (files[i].endsWith("gif")) {
                 System.out.println("File: " + files[i] + " of type gif");
             }
         }
@@ -56,8 +55,29 @@ public class StringsTest {
         for (int i = 0; i < wordArray1.length; i += 2) {
             String firstName = wordArray1[i].split(" ")[1];
             String lastName = wordArray1[i + 1].split(" ")[1];
-            System.out.println("First name is: " + firstName + ", last name is: " + lastName);
+            System.out.println("First name is:" + firstName + ", last name is:" + lastName);
         }
+
+
+        //Ex4
+        /*
+        În aplicaţie intră datele prin următoarele două Stringuri:
+        String[] forbidenChars = { "<",">","'" };
+        String input = "<div>my 'div' tag</div>";
+
+         Trebuie curăţat stringul astfel încât la ieşire să nu fie caractere specificate
+         în lista de caractere care nu sunt permise.
+         divmy div tag/div
+         */
+
+
+        String[] forbidenChars = {"<", ">", "'"};
+        String input = "<div>my 'div' tag</div>";
+
+        for (int i = 0; i < forbidenChars.length; i++) {
+            input = input.replace(forbidenChars[i], "");
+        }
+        System.out.println(input);
 
     }
 }
