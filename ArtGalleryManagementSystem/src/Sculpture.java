@@ -1,35 +1,19 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class Painting extends ArtPiece implements Critiqueable {
-
-    private String medium;
-    List<String> Critiques = new ArrayList<>();
-
-    public void setMedium(String medium) {
-        this.medium = medium;
-    }
-    public String getMedium() {
-        return medium;
-    }
+public class Sculpture extends ArtPiece implements Critiqueable {
+    private String materials;
 
     @Override
-    public void getCritiqueSummary() {
-        for (String Critique : Critiques) {
-            System.out.println(Critique);
-        }
-    }
-
     public void displayDetails() {
-
         String formattedDescription = formatDescription(this.getDescription());
         StringBuilder output = new StringBuilder();
         output.append(this.getTitle()).append("\n");
         output.append(this.getArtistName()).append("\n");
         output.append(formattedDescription).append("\n");
-        System.out.println(output + this.getMedium());
+        System.out.println(output + this.getMaterials());
     }
 
+    @Override
     public void addCritique(String critique) {
         if (critique.isEmpty() || critique.equals(" ")) {
             try {
@@ -38,11 +22,23 @@ public class Painting extends ArtPiece implements Critiqueable {
                 System.out.println(e.getMessage());
             }
         } else if (critique.length() > 200) {
-            System.err.println("Critique truncated to 200 characters.");
-            critique = critique.substring(0, 200);
+
+            critique = "Critique truncated to 200 characters.\n" +
+                    critique.substring(0, 200);
+            System.out.println(critique);
         }
-        Critiques.add(critique);
+
+    }
+
+    public void getCritiqueSummary() {
+        return;
+    }
+
+    public void setMaterials(String materials) {
+        this.materials = materials;
+    }
+
+    public String getMaterials() {
+        return materials;
     }
 }
-
-

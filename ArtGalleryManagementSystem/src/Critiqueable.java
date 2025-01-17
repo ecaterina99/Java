@@ -1,7 +1,9 @@
+import java.util.List;
+
 public interface Critiqueable {
 
 
-    String addCritique(String critique);
+    public void addCritique(String critique);
 
-    public String getCritiqueSummary();
+    public void getCritiqueSummary();
 }

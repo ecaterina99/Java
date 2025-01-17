@@ -1,9 +1,22 @@
 public class ArtGalleryManagementSystem {
     public static void main(String[] args) {
         Painting theKiss = new Painting();
-        theKiss.displayDetails("The kiss", "Gustav Klimt", "  gustav Klimt's  painting     'The Kiss' portrays a couple's intimate embrace, wrapped in golden patterns and symbolic motifs, embodying love and passion. dimensions: 1,8 m x 1,8 m.  ");
-        theKiss.addCritique("Gustav Klimt depicts the couple locked in an intimate embrace against a gold, flat background. The two figures are situated at the edge of a patch of flowery meadow that ends under the woman's exposed feet. The man wears a robe printed with geometric patterns and subtle swirls. He wears a crown of vines while the woman wears a crown of flowers. She is shown in a flowing dress with floral patterns. The man's face is not shown to the audience and instead, his face is bent downward to press a kiss to the woman's cheek, and his hands are cradling the woman's face. Her eyes are closed, with one arm wrapped around the man's neck, the other resting gently on his hand, and her face is upturned to receive the man's kiss.\n" +
-                "\n" +
-                "The patterns in the painting suggests the style of Art Nouveau and the organic forms of the Arts and Crafts movement. At the same time, the background evokes the conflict between two- and three-dimensionality intrinsic to the work of Degas and other modernists. Paintings such as The Kiss are visual manifestations of fin-de-siecle spirit because they capture a decadence conveyed by opulent and sensuous images. The use of gold leaf recalls medieval gold-ground paintings, illuminated manuscripts, earlier mosaics, and the spiral patterns in the clothes recall Bronze Age art and the decorative tendrils seen in Western art since before classical times. The man's head ends very close to the top of the canvas, a departure from traditional Western canons that reflects the influence of Japanese prints, as does the painting's simplified composition.");
+        theKiss.setTitle("The Kiss");
+        theKiss.setArtistName("Gustav Klimt");
+        theKiss.setDescription(" gustav Klimt's  painting     'The Kiss' portrays a couple's intimate embrace, wrapped in golden patterns and symbolic motifs, embodying love and passion. dimensions: 1,8 m x 1,8 m.  ");
+        theKiss.setMedium("Medium: oil & gold foil");
+        theKiss.displayDetails();
+        theKiss.addCritique("The golden style and subject matter, The Kiss is celebrated for other details distinctive to the artist!");
+        theKiss.addCritique("Observing The Kiss, we perceive the ancient echoes of a glorious past, the one of Byzantine mosaics with their golden backgrounds, which the artist had seen in Venice and Ravenna. But that is not all, this opulent appearance is declined by absorbing contemporary vibes, such as the decorative component typical of the Art Nouveau style and the exotic bi-dimensionality, typical of Japanese art and so appreciated by the Impressionists.");
+        theKiss.getCritiqueSummary();
+
+        Sculpture david = new Sculpture();
+        david.setTitle("David");
+        david.setArtistName("Michelangelo");
+        david.setMaterials("Material: Marble");
+        david.setDescription("david       is a masterpiece of Italian Renaissance sculpture in marble created from 1501 to 1504 by Michelangelo. With a height of 5.17 metres , the David was the first colossal marble statue made in the High Renaissance, and since classical antiquity, a precedent for the 16th century and beyond. ");
+        david.displayDetails();
+        david.addCritique(" ");
+
     }
 }
