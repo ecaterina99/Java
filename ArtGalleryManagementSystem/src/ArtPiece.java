@@ -1,11 +1,14 @@
-import javax.swing.plaf.synth.SynthDesktopIconUI;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ArtPiece {
     private String title;
     private String artistName;
     private String description;
-    public abstract void displayDetails();
+    List<String> Critiques = new ArrayList<>();
+
+    public ArtPiece() {
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -31,16 +34,20 @@ public abstract class ArtPiece {
         return description;
     }
 
-    public ArtPiece() {
+    public abstract void displayDetails();
+
+    public void getCritiqueSummary() {
+        for (String Critique : this.Critiques) {
+            System.out.println(Critique);
+        }
     }
 
     public String formatDescription(String description) {
-        String formattedDescription = description;
-        formattedDescription.replaceAll("\\s+", " ")
+        description = description.replaceAll("\\s+", " ")
                 .replaceAll("painting", "masterpiece")
                 .trim();
 
-        char[] charArray = formattedDescription.toCharArray();
+        char[] charArray = description.toCharArray();
         if (charArray.length > 0) {
             charArray[0] = Character.toUpperCase(charArray[0]);
         }
@@ -50,7 +57,7 @@ public abstract class ArtPiece {
                 charArray[i + 2] = Character.toUpperCase(charArray[i + 2]);
             }
         }
-        formattedDescription = new String(charArray);
-        return formattedDescription;
+        description = new String(charArray);
+        return description;
     }
 }

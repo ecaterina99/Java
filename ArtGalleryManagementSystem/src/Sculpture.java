@@ -1,9 +1,13 @@
-import java.util.List;
-
 public class Sculpture extends ArtPiece implements Critiqueable {
     private String materials;
 
-    @Override
+    public void setMaterials(String materials) {
+        this.materials = materials;
+    }
+    public String getMaterials() {
+        return materials;
+    }
+
     public void displayDetails() {
         String formattedDescription = formatDescription(this.getDescription());
         StringBuilder output = new StringBuilder();
@@ -13,7 +17,6 @@ public class Sculpture extends ArtPiece implements Critiqueable {
         System.out.println(output + this.getMaterials());
     }
 
-    @Override
     public void addCritique(String critique) {
         if (critique.isEmpty() || critique.equals(" ")) {
             try {
@@ -27,18 +30,5 @@ public class Sculpture extends ArtPiece implements Critiqueable {
                     critique.substring(0, 200);
             System.out.println(critique);
         }
-
-    }
-
-    public void getCritiqueSummary() {
-        return;
-    }
-
-    public void setMaterials(String materials) {
-        this.materials = materials;
-    }
-
-    public String getMaterials() {
-        return materials;
     }
 }
