@@ -1,6 +1,4 @@
-import java.util.List;
-
-public interface Critiqueable {
+public interface Criticable {
 
 
     public void addCritique(String critique);

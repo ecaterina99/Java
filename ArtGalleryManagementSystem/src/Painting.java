@@ -1,4 +1,4 @@
-public class Painting extends ArtPiece implements Critiqueable {
+public class Painting extends ArtPiece implements Criticable {
 
     private String medium;
 

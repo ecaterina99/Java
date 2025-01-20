@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public abstract class ArtPiece  implements Comparable<ArtPiece>{
+public abstract class ArtPiece implements Comparable<ArtPiece>, Criticable {
     private String title;
     private String artistName;
     private String description;
@@ -11,7 +12,15 @@ public abstract class ArtPiece  implements Comparable<ArtPiece>{
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if(Objects.equals(title, " ")) {
+            try {
+                throw new EmptyTitleException();
+            } catch (EmptyTitleException e) {
+                System.out.println(e.getMessage());
+                title = "No Title";
+            }
+        }
+       this.title= title;
     }
 
     public String getTitle() {
@@ -66,11 +75,4 @@ public abstract class ArtPiece  implements Comparable<ArtPiece>{
         return this.title.compareTo(other.title);
     }
 
-//    public int compareToIgnoreCase(String keyword) {
-//        return this.title.compareToIgnoreCase(keyword);
-//    }
-
-    public Object toLowerCase() {
-        return this.title.toLowerCase();
-    }
 }

@@ -13,7 +13,7 @@ public class ArtGalleryManagementSystem {
 
 
         Painting adele = new Painting();
-        adele.setTitle("Adele");
+        adele.setTitle("Adele@");
         adele.setArtistName("Gustav Klimt");
         adele.setMedium("Medium: oil & gold foil");
         adele.setDescription("Perhaps Klimt’s most famous work from this period, however, is the 1907 \"Portrait of Adele Bloch-Bauer I. ");
@@ -22,7 +22,7 @@ public class ArtGalleryManagementSystem {
 
 
         Painting starryNight = new Painting();
-        starryNight.setTitle("Starry Night");
+        starryNight.setTitle("Starry*Night");
         starryNight.setArtistName("Van Gogh");
         starryNight.setMedium("Medium: oil & gold foil");
         starryNight.setDescription("Starry Night Over the Rhône (1888) is the sister work of Starry Night (1889).");
@@ -44,7 +44,7 @@ public class ArtGalleryManagementSystem {
 
 
         Sculpture david = new Sculpture();
-        david.setTitle("David");
+        david.setTitle(" ");
         david.setArtistName("Michelangelo");
         david.setMaterials("Material: Marble");
         david.setDescription("david       is a masterpiece of Italian Renaissance sculpture in marble created from 1501 to 1504 by Michelangelo. With a height of 5.17 metres , the David was the first colossal marble statue made in the High Renaissance, and since classical antiquity, a precedent for the 16th century and beyond. ");
@@ -55,7 +55,7 @@ public class ArtGalleryManagementSystem {
 
 
         Sculpture pieta = new Sculpture();
-        pieta.setTitle("Pieta");
+        pieta.setTitle("PietA");
         pieta.setArtistName("Michelangelo");
         pieta.setMaterials("Material: Marble");
         pieta.setDescription("One of Michelangelo’s first major works was his Pieta, which he finished carving from a solid block of Carrara marble in 1500 when he was 23 years old.");
@@ -91,7 +91,6 @@ public class ArtGalleryManagementSystem {
         System.out.println(michelangelo.getPortfolio());
         System.out.println("\n");
 
-
         Exhibition exhibition = new Exhibition();
         exhibition.addToExhibition(theKiss);
         exhibition.addToExhibition(starryNight);
@@ -104,8 +103,10 @@ public class ArtGalleryManagementSystem {
         exhibition.sortArtPiecesByTitle();
         System.out.println("\n");
 
-exhibition.searchArtPiece("night");
+        exhibition.searchArtPiece("night");
+        System.out.println("\n");
 
+        exhibition.cleanTitles();
 
     }
 }

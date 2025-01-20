@@ -1,15 +1,19 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class Exhibition {
     public List<ArtPiece> ArtPieceCollection = new ArrayList<>();
 
     public void addToExhibition(ArtPiece artPiece) {
+        if (artPiece.getTitle().isEmpty() || artPiece.getTitle().equals(" ")) {
+            try {
+                throw new EmptyTitleException();
+            } catch (EmptyTitleException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         this.ArtPieceCollection.add(artPiece);
     }
 
@@ -53,12 +57,19 @@ public class Exhibition {
             for (ArtPiece artPiece : filteredArtPieces) {
                 System.out.println("Found: " + artPiece.getTitle());
             }
-        }
-        else {
+        } else {
             System.out.println("Not found");
         }
+    }
 
+    public void cleanTitles() {
+        System.out.println("Cleaned titles: ");
+        for (ArtPiece artPiece : this.ArtPieceCollection) {
+            String result = artPiece.getTitle().toLowerCase().replaceAll("[!$@#%&^*]", " ");
+            result = result.substring(0, 1).toUpperCase() + result.substring(1);
 
+            System.out.println(result);
+        }
     }
 
 }
