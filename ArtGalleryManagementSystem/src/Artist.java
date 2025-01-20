@@ -39,9 +39,7 @@ public class Artist {
         if (!output.toString().isEmpty()) {
             output.replace(output.length() - 2, output.length(), ".");
         }
-
         return output.toString();
     }
-
 
 }

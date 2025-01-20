@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ArtPiece {
+public abstract class ArtPiece  implements Comparable<ArtPiece>{
     private String title;
     private String artistName;
     private String description;
@@ -60,4 +60,10 @@ public abstract class ArtPiece {
         description = new String(charArray);
         return description;
     }
+
+    @Override
+    public int compareTo(ArtPiece other) {
+        return this.title.compareTo(other.title);
+    }
+
 }

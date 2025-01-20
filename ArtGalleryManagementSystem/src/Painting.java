@@ -5,7 +5,6 @@ public class Painting extends ArtPiece implements Critiqueable {
     public void setMedium(String medium) {
         this.medium = medium;
     }
-
     public String getMedium() {
         return medium;
     }
@@ -32,6 +31,7 @@ public class Painting extends ArtPiece implements Critiqueable {
         }
         Critiques.add(critique);
     }
+
 }
 
 

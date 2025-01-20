@@ -9,6 +9,7 @@ public class ArtGalleryManagementSystem {
         theKiss.addCritique("The golden style and subject matter, The Kiss is celebrated for other details distinctive to the artist!");
         theKiss.addCritique("Observing The Kiss, we perceive the ancient echoes of a glorious past, the one of Byzantine mosaics with their golden backgrounds, which the artist had seen in Venice and Ravenna. But that is not all, this opulent appearance is declined by absorbing contemporary vibes, such as the decorative component typical of the Art Nouveau style and the exotic bi-dimensionality, typical of Japanese art and so appreciated by the Impressionists.");
         theKiss.getCritiqueSummary();
+        System.out.println("\n");
 
         Painting adele = new Painting();
         adele.setTitle("Adele");
@@ -16,6 +17,8 @@ public class ArtGalleryManagementSystem {
         adele.setMedium("Medium: oil & gold foil");
         adele.setDescription("Perhaps Klimt’s most famous work from this period, however, is the 1907 \"Portrait of Adele Bloch-Bauer I. ");
         adele.displayDetails();
+        System.out.println("\n");
+
 
         Painting sunflowers = new Painting();
         sunflowers.setTitle("Sunflowers");
@@ -25,7 +28,7 @@ public class ArtGalleryManagementSystem {
         sunflowers.displayDetails();
         sunflowers.addCritique("Good Painting");
         sunflowers.getCritiqueSummary();
-
+        System.out.println("\n");
 
 
         Sculpture david = new Sculpture();
@@ -36,6 +39,16 @@ public class ArtGalleryManagementSystem {
         david.displayDetails();
         david.addCritique("The work was assigned to Michelangelo by the workers of the Florence cathedral on 16 August 1501, for a remuneration of 400 ducats.");
         david.getCritiqueSummary();
+        System.out.println("\n");
+
+        Sculpture pieta = new Sculpture();
+        pieta.setTitle("Pieta");
+        pieta.setArtistName("Michelangelo");
+        pieta.setMaterials("Material: Marble");
+        pieta.setDescription("One of Michelangelo’s first major works was his Pieta, which he finished carving from a solid block of Carrara marble in 1500 when he was 23 years old.");
+        pieta.displayDetails();
+        pieta.addCritique("A work of art is a little like a suitcase, stuffed with issues, ideas and fragments of personal and cultural history. Each viewer who is willing to take the time might unpack it in a different way. ");
+        pieta.getCritiqueSummary();
 
         Artist gustav = new Artist();
         gustav.setName("Gustav Klimt");
@@ -43,24 +56,35 @@ public class ArtGalleryManagementSystem {
         gustav.getArtPiece(theKiss);
         gustav.getArtPiece(adele);
         System.out.println(gustav.getPortfolio());
+        System.out.println("\n");
+
 
         Artist vanGogh = new Artist();
         vanGogh.setName("Van Gogh");
         vanGogh.setBio("Vincent Van Gogh was born on March 30, 1853, in Groot Zundert, North Brabant, Netherlands. ");
         vanGogh.getArtPiece(sunflowers);
         System.out.println(vanGogh.getPortfolio());
+        System.out.println("\n");
+
+
+        Artist michelangelo = new Artist();
+        michelangelo.setName("Michelangelo");
+        michelangelo.setBio("Michelangelo was an Italian sculptor, painter, architect, and poet of the High Renaissance.");
+        michelangelo.getArtPiece(david);
+        michelangelo.getArtPiece(pieta);
+        System.out.println(michelangelo.getPortfolio());
+        System.out.println("\n");
 
 
         Exhibition exhibition = new Exhibition();
         exhibition.addToExhibition(theKiss);
-        exhibition.addToExhibition(david);
-        exhibition.addToExhibition(adele);
         exhibition.addToExhibition(sunflowers);
-
+        exhibition.addToExhibition(adele);
+        exhibition.addToExhibition(david);
+        exhibition.addToExhibition(pieta);
         System.out.println(exhibition.displayExhibitionDetails());
-
-
-
+        exhibition.sortArtPiecesByTitle();
+        System.out.println("\n");
 
 
     }

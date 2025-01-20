@@ -1,4 +1,5 @@
 public class Sculpture extends ArtPiece implements Critiqueable {
+
     private String materials;
 
     public void setMaterials(String materials) {
@@ -25,10 +26,9 @@ public class Sculpture extends ArtPiece implements Critiqueable {
                 System.out.println(e.getMessage());
             }
         } else if (critique.length() > 200) {
-
-            critique = "Critique truncated to 200 characters.\n" +
-                    critique.substring(0, 200);
-            System.out.println(critique);
+            System.err.println("Sculpture's critique truncated to 200 characters.");
+            critique = critique.substring(0, 200);
         }
+        Critiques.add(critique);
     }
 }
