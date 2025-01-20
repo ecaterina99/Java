@@ -66,4 +66,11 @@ public abstract class ArtPiece  implements Comparable<ArtPiece>{
         return this.title.compareTo(other.title);
     }
 
+//    public int compareToIgnoreCase(String keyword) {
+//        return this.title.compareToIgnoreCase(keyword);
+//    }
+
+    public Object toLowerCase() {
+        return this.title.toLowerCase();
+    }
 }

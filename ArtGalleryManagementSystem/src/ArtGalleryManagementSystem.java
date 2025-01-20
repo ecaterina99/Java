@@ -11,6 +11,7 @@ public class ArtGalleryManagementSystem {
         theKiss.getCritiqueSummary();
         System.out.println("\n");
 
+
         Painting adele = new Painting();
         adele.setTitle("Adele");
         adele.setArtistName("Gustav Klimt");
@@ -20,14 +21,25 @@ public class ArtGalleryManagementSystem {
         System.out.println("\n");
 
 
-        Painting sunflowers = new Painting();
-        sunflowers.setTitle("Sunflowers");
-        sunflowers.setArtistName("Van Gogh");
-        sunflowers.setMedium("Medium: oil & gold foil");
-        sunflowers.setDescription("Vincent van Gogh painted this luminous image of sunflowers from memory, in the depths of winter in 1889.");
-        sunflowers.displayDetails();
-        sunflowers.addCritique("Good Painting");
-        sunflowers.getCritiqueSummary();
+        Painting starryNight = new Painting();
+        starryNight.setTitle("Starry Night");
+        starryNight.setArtistName("Van Gogh");
+        starryNight.setMedium("Medium: oil & gold foil");
+        starryNight.setDescription("Starry Night Over the Rhône (1888) is the sister work of Starry Night (1889).");
+        starryNight.displayDetails();
+        starryNight.addCritique("Good Painting");
+        starryNight.getCritiqueSummary();
+        System.out.println("\n");
+
+
+        Painting cafeTerraceAtNight = new Painting();
+        cafeTerraceAtNight.setTitle("Cafe Terrace At Night");
+        cafeTerraceAtNight.setArtistName("Van Gogh");
+        cafeTerraceAtNight.setMedium("Medium: oil & gold foil");
+        cafeTerraceAtNight.setDescription("Despite being painted more than 130 years ago, this café still exists in France and has since been renamed the Café Van Gogh. ");
+        cafeTerraceAtNight.displayDetails();
+        cafeTerraceAtNight.addCritique("This artwork marks the first time Van Gogh's famous post-impressionist star-filled sky is seen in one of his pieces, and it’s believed the work was painted on the ground, in person, rather than from memory. ");
+        cafeTerraceAtNight.getCritiqueSummary();
         System.out.println("\n");
 
 
@@ -41,6 +53,7 @@ public class ArtGalleryManagementSystem {
         david.getCritiqueSummary();
         System.out.println("\n");
 
+
         Sculpture pieta = new Sculpture();
         pieta.setTitle("Pieta");
         pieta.setArtistName("Michelangelo");
@@ -49,6 +62,8 @@ public class ArtGalleryManagementSystem {
         pieta.displayDetails();
         pieta.addCritique("A work of art is a little like a suitcase, stuffed with issues, ideas and fragments of personal and cultural history. Each viewer who is willing to take the time might unpack it in a different way. ");
         pieta.getCritiqueSummary();
+        System.out.println("\n");
+
 
         Artist gustav = new Artist();
         gustav.setName("Gustav Klimt");
@@ -62,7 +77,8 @@ public class ArtGalleryManagementSystem {
         Artist vanGogh = new Artist();
         vanGogh.setName("Van Gogh");
         vanGogh.setBio("Vincent Van Gogh was born on March 30, 1853, in Groot Zundert, North Brabant, Netherlands. ");
-        vanGogh.getArtPiece(sunflowers);
+        vanGogh.getArtPiece(cafeTerraceAtNight);
+        vanGogh.getArtPiece(starryNight);
         System.out.println(vanGogh.getPortfolio());
         System.out.println("\n");
 
@@ -78,13 +94,17 @@ public class ArtGalleryManagementSystem {
 
         Exhibition exhibition = new Exhibition();
         exhibition.addToExhibition(theKiss);
-        exhibition.addToExhibition(sunflowers);
+        exhibition.addToExhibition(starryNight);
+        exhibition.addToExhibition(cafeTerraceAtNight);
         exhibition.addToExhibition(adele);
         exhibition.addToExhibition(david);
         exhibition.addToExhibition(pieta);
         System.out.println(exhibition.displayExhibitionDetails());
+
         exhibition.sortArtPiecesByTitle();
         System.out.println("\n");
+
+exhibition.searchArtPiece("night");
 
 
     }

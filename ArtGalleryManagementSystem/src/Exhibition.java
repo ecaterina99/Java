@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class Exhibition {
     public List<ArtPiece> ArtPieceCollection = new ArrayList<>();
@@ -34,10 +37,31 @@ public class Exhibition {
         Collections.sort(ArtPieceCollection);
         System.out.println("Sorted ArtPiece Collection: ");
         for (ArtPiece artPiece : this.ArtPieceCollection) {
-                System.out.println(artPiece.getTitle());
+            System.out.println(artPiece.getTitle());
+        }
+
+    }
+
+    public void searchArtPiece(String keyword) {
+
+        List<ArtPiece> filteredArtPieces = ArtPieceCollection.stream()
+                .filter(artPiece -> artPiece.getTitle().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
+
+        if (!filteredArtPieces.isEmpty()) {
+            System.out.println("Keyword: " + keyword);
+            for (ArtPiece artPiece : filteredArtPieces) {
+                System.out.println("Found: " + artPiece.getTitle());
             }
+        }
+        else {
+            System.out.println("Not found");
+        }
+
 
     }
 
 }
+
+
 
