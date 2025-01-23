@@ -11,8 +11,8 @@ public class ReverseLetter {
     public static void main(String[] args) {
 
         String str = "qwe*2rty";
-        char [] arr=str.toCharArray();
-        char [] reverseArr=new char[arr.length];
+        char[] arr = str.toCharArray();
+        char[] reverseArr = new char[arr.length];
         for (int i = arr.length - 1; i >= 0; i--) {
             reverseArr[i] = arr[arr.length - i - 1];
         }
@@ -23,17 +23,25 @@ public class ReverseLetter {
         }
 
         for (int i = arr.length - 1; i >= 0; i--) {
-            if(!Character.isLetter(onlyChars.get(i))){
+            if (!Character.isLetter(onlyChars.get(i))) {
                 onlyChars.remove(i);
             }
         }
 
         StringBuilder sb = new StringBuilder();
-        for(Character c : onlyChars){
+        for (Character c : onlyChars) {
             sb.append(c);
         }
         String result = sb.toString();
         System.out.println(result);
-        }
+
+        // Second solution;
+
+        String str2 = "an5iret&acE";
+        StringBuilder output = new StringBuilder(str2.replaceAll("[^a-zA-Z]", "")).reverse();
+        System.out.println(output);
+
+
     }
+}
 
