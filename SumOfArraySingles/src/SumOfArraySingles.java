@@ -1,3 +1,10 @@
+/*
+In this Kata, you will be given an array of numbers in which two numbers occur once and the rest occur only twice. 
+Your task will be to return the sum of the numbers that occur only once.
+For example, repeats([4,5,7,5,4,8]) = 15 because only the numbers 7 and 8 occur once, and their sum is 15. 
+Every other number occurs twice.
+ */
+
 import java.util.*;
 
 public class SumOfArraySingles {
@@ -5,7 +12,7 @@ public class SumOfArraySingles {
 
         int[] arr = {9, 10, 19, 14, 13, 19, 13};
 
-
+        //First Solution
         List<Integer> withoutDuplicates = new ArrayList<Integer>();
         for (int n : arr) {
             withoutDuplicates.add(n);
@@ -43,20 +50,41 @@ public class SumOfArraySingles {
     }
 }
 
-/*
-        for (int i = 0; i < withoutDuplicates.size()-1; i++) {
-            for (int j = i+1; j < withoutDuplicates.size(); j++) {
-                if (Objects.equals(withoutDuplicates.get(i), withoutDuplicates.get(j))) {
-                    elementToRemove1 = withoutDuplicates.remove(i);
-                    tempElementToRemove2 = withoutDuplicates.remove(j);
-                    while (withoutDuplicates.contains(elementToRemove1)) {
-                        withoutDuplicates.remove(i);
-                    }
-                }
+        /*Second Solution
+        Arrays.sort(arr);
+        System.out.println(Arrays.toString(arr));
+        int sum = 0;
+        if (arr[0] != arr[1]) {
+            sum += arr[0];
+        }
+        for (int i = 1; i < arr.length - 1; i++) {
+            if (arr[i + 1] != arr[i] && arr[i - 1] != arr[i]) {
+                sum += arr[i];
             }
         }
-*/
-        /*
-        withoutDuplicates = new ArrayList<>(new HashSet<>(withoutDuplicates));
-        System.out.println(withoutDuplicates);
-*/
+
+        if (arr[arr.length - 1] != arr[arr.length - 2]) {
+            sum += arr[arr.length - 1];
+        }
+
+        System.out.println(sum);
+    }
+}
+
+Third solution
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int count = 0;
+            for (int j = 0; j < arr.length; j++) {
+                if (arr[i] == arr[j]) {
+                    count++;
+                }
+            }
+            if (count == 1) {
+                sum += arr[i];
+            }
+        }
+        System.out.println(sum);
+    }
+}
+ */
