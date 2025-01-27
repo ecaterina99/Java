@@ -19,4 +19,17 @@ public class SumOfArrayNumbers {
         }
         return sum;
     }
+
+    /*
+    Create a function that returns the sum of the two lowest positive numbers given an array of minimum
+    4 positive integers. No floats or non-positive integers will be passed.
+    For Java, those integers will come as double precision (long).
+     */
+
+    public static long sumTwoSmallestNumbers(long[] longNumbers) {
+        long sum2 = 0;
+        Arrays.sort(longNumbers);
+        sum2 = longNumbers[0] + longNumbers[1];
+        return sum2;
+    }
 }
