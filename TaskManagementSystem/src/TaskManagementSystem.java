@@ -12,20 +12,18 @@ public class TaskManagementSystem {
 
         options.forEach((key, value) -> System.out.println(value + ": " + key));
 
-        List<Task> tasks = new ArrayList<>();
-
-        Task newTask = new Task();
+        TaskManager manager = new TaskManager();
 
         System.out.println("Please, select the option");
         Scanner scanner = new Scanner(System.in);
         int userInput = scanner.nextInt();
 
-        selectOption(tasks, userInput, newTask);
+        selectOption(manager, userInput);
         while (userInput != 5) {
             System.out.println("Please, select the option between 1 and 5");
             try {
                 userInput = scanner.nextInt();
-                selectOption(tasks, userInput, newTask);
+                selectOption(manager, userInput);
             } catch (InputMismatchException e) {
                 System.err.println("Invalid input. Please enter a number.");
                 scanner.next();
@@ -33,16 +31,27 @@ public class TaskManagementSystem {
         }
     }
 
-    public static void selectOption(List<Task> tasks, int userInput, Task newTask) {
+    public static void selectOption(TaskManager manager, int userInput) {
         switch (userInput) {
 
-            case 1 -> newTask.addTask(tasks, newTask);
+            case 1 -> manager.addTask();
 
-            case 2 -> newTask.showAllTasks(tasks);
+            case 2 -> manager.showAllTasks();
 
-            case 3 -> newTask.completeTask(tasks);
+            case 3 -> {
+                System.out.println("Enter task ID to mark as completed:");
+                Scanner sc = new Scanner(System.in);
+                int taskId = sc.nextInt();
 
-            case 4 -> newTask.deleteTask(tasks);
+                manager.markTaskAsCompleted(taskId);
+            }
+
+            case 4 -> {
+                System.out.println("Enter task ID to delete:");
+                Scanner sc = new Scanner(System.in);
+                int taskId = sc.nextInt();
+                manager.deleteTask(taskId);
+            }
 
             case 5 -> System.out.println("Exiting the program. Goodbye!");
 
