@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="23" class="java.beans.XMLDecoder">
+ <object class="User">
+  <void property="email">
+   <string>mail@mail.ml</string>
+  </void>
+  <void property="id">
+   <int>5</int>
+  </void>
+  <void property="password">
+   <string>123</string>
+  </void>
+ </object>
+</java>
