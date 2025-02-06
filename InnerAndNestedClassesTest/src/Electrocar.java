@@ -1,7 +1,8 @@
 public class Electrocar {
     private int id;
+
     //Inner class (Clasa imbricata nestatica)
-    //clasa Electrocar consta din diferite clase nestatice (precum mașina consta din diferite elemente)
+    //Clasa Electrocar este compusă din elemente diferite, la fel cum o mașină este alcătuită din diverse componente.
     private class Motor {
         public void startMotor() {
             System.out.println("Motor " + id + " is starting");

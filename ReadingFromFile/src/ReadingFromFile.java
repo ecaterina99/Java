@@ -1,4 +1,3 @@
-import javax.xml.stream.FactoryConfigurationError;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
