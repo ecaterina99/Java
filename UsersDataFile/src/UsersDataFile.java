@@ -20,12 +20,17 @@ Last name: Smith
 Uid: 1234567890124
  */
 
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class UsersDataFile {
     public static void main(String[] args) {
+
+        /*
+        First solution
+        
         String userData = """
                 id:01|firstName:Tom|lastName:Williams|uid:1234567890123
                 id:02|firstName:Ben|lastName:Smith|uid:1234567890124
@@ -43,6 +48,26 @@ public class UsersDataFile {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }*/
+
+
+        //  Second solution
+
+        try (BufferedReader br = new BufferedReader(new FileReader("src/user_data"))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] user = line.split("\\|");
+                System.out.println("User Id: " + user[0].split("\\:")[1]);
+                System.out.println("First name: " + user[1].split("\\:")[1]);
+                System.out.println("Last name: " + user[2].split("\\:")[1]);
+                System.out.println("Uid: " + user[3].split("\\:")[1]);
+                System.out.println("------------------------------------");
+            }
+
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
         }
     }
 }
+
