@@ -1,12 +1,32 @@
+import java.util.Arrays;
+
 public class Fibonacci {
     public static void main(String[] args) {
-        System.out.println(fibonacciEffective(1));
-        System.out.println(fibonacciEffective(5));
-        System.out.println(fibonacciEffective(10));
-        System.out.println(fibonacciEffective(50));
+
+        int n = 100;
+        long[] mem = new long[n + 1];
+        Arrays.fill(mem, -1);
+        System.out.println(fibonacciMemoization(n, mem));
     }
 
-    //Simple, not effective method
+    //Memoization effective method
+
+    private static long fibonacciMemoization(int n, long[] mem) {
+        if (mem[n] != -1) {
+            return mem[n];
+        }
+        if (n <= 1) {
+            return n;
+        }
+        long result = fibonacciMemoization(n - 1, mem) + fibonacciMemoization(n - 2, mem);
+        mem[n] = result;
+        return result;
+    }
+}
+
+
+//Simple, not effective method
+    /*
     static public int fibonacciNaive(int n) {
         if (n <= 1) {
             return n;
@@ -23,5 +43,4 @@ public class Fibonacci {
             arr[i] = arr[i - 1] + arr[i - 2];
         }
         return arr[n];
-    }
-}
+        */
