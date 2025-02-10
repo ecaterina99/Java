@@ -3,7 +3,7 @@ import java.io.Serializable;
 public class Person implements Serializable {
     private String name;
     private transient int id; // transient - ignore this field
-    
+
 
     public Person(String name, int id) {
         this.name = name;
