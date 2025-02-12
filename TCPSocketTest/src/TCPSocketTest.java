@@ -1,8 +1,5 @@
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -11,7 +8,7 @@ public class TCPSocketTest {
     public static void main(String[] args) throws IOException {
 
         //Crearea unui server TCP
-        System.out.println("listening...");
+       System.out.println("listening...");
         try (ServerSocket serverSocket = new ServerSocket(1080);
              Socket cn = serverSocket.accept();
              BufferedReader bis = new BufferedReader(new InputStreamReader(cn.getInputStream()));
@@ -26,7 +23,13 @@ public class TCPSocketTest {
                 line = bis.readLine();
             }
 
-            bos.write("Hello from java tcp server".getBytes());
+            //regulile protocolului HTTP
+            byte[] message = "Hello from java TCP Server!".getBytes();
+            bos.write("HTTP/1.1 200 OK\r\n".getBytes());
+            bos.write("Content-Type: text/plain\r\n".getBytes());
+            bos.write(("Content-Length: " + message.length + "\r\n").getBytes());
+            bos.write("\r\n".getBytes()); // empty line between HTTP header and HTTP content
+            bos.write(message);
 
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
