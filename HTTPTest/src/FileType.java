@@ -1,0 +1,3 @@
+public enum FileType {
+HTML,TXT,PDF,JPG,JPEG,PNG,GIF,ZIP,UNKNOWN;
+}
