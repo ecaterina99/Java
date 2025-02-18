@@ -11,28 +11,10 @@ class LinkedListCreation {
         lc.insertAfter(9, 55);
 
         lc.print();
-
-        lc.delete(6);
-        lc.print();
-
-        lc.delete(18);
-        lc.print();
-
-        lc.delete(9);
-        lc.print();
-
-        lc.delete(10);
-        lc.print();
-
-        lc.delete(5);
-        lc.print();
-
-        lc.delete(55);
-        lc.print();
-
-        lc.delete(55);
+        lc.insertAfter(111, 55);
 
     }
+
     public class Node {
         int data;
         Node next;
@@ -80,7 +62,9 @@ class LinkedListCreation {
         }
         if (current == null) {
             System.out.println("The node does not exist");
+            return;
         }
+
         newNode.next = current.next;
         current.next = newNode;
 
@@ -123,7 +107,6 @@ class LinkedListCreation {
         }
         System.out.println();
     }
-
 }
 
 
