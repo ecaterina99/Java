@@ -4,11 +4,11 @@ public class MyThread implements Runnable {
     public void run() {
         for (int i = 0; i < 10; i++) {
 
-            Thread currentThread = Thread.currentThread();
 
-            System.out.println(currentThread.getId() + ": " + i);
+
+            System.out.print(i + " ");
             try {
-                Thread.sleep(500);
+                Thread.sleep(600);
             } catch (InterruptedException exc) {
                 System.out.println(exc.getMessage());
             }
