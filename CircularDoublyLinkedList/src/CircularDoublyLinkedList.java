@@ -71,7 +71,7 @@ public class CircularDoublyLinkedList {
             temp = temp.next;
         }
 
-        if (temp == head && temp.next == head) { //delete the last node
+        if (temp == head && temp.next == head) { //if there is only one node
             head = null;
         } else if (temp == head) { // delete the head
             head = head.next;
