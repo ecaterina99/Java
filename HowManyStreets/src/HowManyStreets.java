@@ -1,7 +1,16 @@
+/*
+Inputs:
+A list (or array, depending on language) of streets that intersect MAX_STREET.
+(2) A list (or array, depending on language) of drivers. Each driver is represented by a pair of streets.
+The first element of the pair is the street where they enter MAX_STREET; the second is the street they exit.
+The driver crosses all the streets between those two streets.
+Output:
+A list  showing how many streets each driver crosses.
+ */
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class HowManyStreets {
 
@@ -28,31 +37,25 @@ public class HowManyStreets {
         return result;
     }
 
-            public static void main(String[] args) {
-                final String[] streets = {"first", "second", "third", "fourth", "fifth", "sixth", "seven"};
-                final String[][] drivers = {{"first", "second"}, {"second", "seven"}, {"sixth", "fourth"}};
+    public static void main(String[] args) {
+        final String[] streets = {"first", "second", "third", "fourth", "fifth", "sixth", "seven"};
+        final String[][] drivers = {{"first", "second"}, {"second", "seven"}, {"sixth", "fourth"}};
 
 
-                System.out.println(Arrays.toString(countStreets(streets, drivers)));
-            }
+        System.out.println(Arrays.toString(countStreets(streets, drivers)));
+    }
 }
 
 
-
-
-
-  /*     int rows = drivers.length;
-
+  /*    int rows = drivers.length;
         int result = 0;
         int[] resArray = new int[rows];
-
 
         for (int i = 0; i < streets.length; i++) {
             for (int j = 0; j < rows; j++) {
                 String target1 = drivers[j][0];
 
-
-                if (streets[i].equals(target1)) {
+               if (streets[i].equals(target1)) {
                     String target2 = drivers[j][1];
                     for (int k = 0; k < streets.length; k++) {
                         if (streets[k].equals(target2)) {
@@ -65,7 +68,6 @@ public class HowManyStreets {
                         }
                         resArray[j] = result;
                     }
-
                 }
             }
         }
