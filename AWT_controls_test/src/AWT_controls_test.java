@@ -149,7 +149,12 @@ public class AWT_controls_test {
                 TextField textField = (TextField) e.getSource();
                 System.out.println(textField.getText());
             }
-        });
+        }); TextField tf = new TextField();
+        TextArea ta = new TextArea(5,25);
+        tf.setText("This is text field");
+        ta.setText("This is text area");
+        f.add(tf);
+        f.add(ta);
 
          */
 
