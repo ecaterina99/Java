@@ -18,7 +18,7 @@ public class Main extends JFrame {
                 String fn = firstName.getText();
                 String ln = lastName.getText();
 
-                if(fn.length()==0 || ln.length()==0){
+                if (fn.length() == 0 || ln.length() == 0) {
                     JOptionPane.showMessageDialog(mainPanel, "Please, enter your first name and last name!");
                     return;
                 }
