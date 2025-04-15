@@ -11,16 +11,21 @@ import java.util.Timer;
 
 public class MainForm extends JFrame {
 
+    // UI Components
     private JPanel mainPanel, timerOptionsPanel, onTimePanel, countdownPanel, controlButtonsPanel, colorPanel, speedChooserPanel;
     private JRadioButton onTimeRadioButton, countdownRadioButton;
     private JFormattedTextField onTimeField, countdownField;
     private JButton startButton, stopButton, colorChooser;
-    private Color selectedColor = Color.WHITE;
     private JLabel speedLabel;
     private JComboBox<Integer> blinkSpeedComboBox;
+
+    // State
+    private Color selectedColor = Color.WHITE;
     private Timer timer;
     private JFrame blinkingFrame;
     private boolean isBlinking = false;
+
+    // Constants
     private static final String TITLE_APPLICATION = "Timer Application";
     private static final String TITLE_BLINKING_FRAME = "Blinking Window";
     private static final Dimension DEFAULT_SIZE = new Dimension(300, 300);
@@ -37,7 +42,9 @@ public class MainForm extends JFrame {
             }
         });
     }
-
+    /**
+     * Shows initial dialog with "Settings" and "Close" options.
+     */
     private void showOptionDialog() {
         int choice = JOptionPane.showOptionDialog(null, "Choose option", "Option dialog",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, DIALOG_OPTIONS, null);
@@ -46,6 +53,9 @@ public class MainForm extends JFrame {
         }
     }
 
+    /**
+     * Shows initial dialog with "Settings" and "Close" options.
+     */
     private void initializeComponents() {
         showSettingsWindow();
         initializeTimerOptions();
@@ -54,6 +64,9 @@ public class MainForm extends JFrame {
         initializeControlButtons();
     }
 
+    /**
+     * Configures main window settings.
+     */
     public void showSettingsWindow() {
         this.setTitle(TITLE_APPLICATION);
         this.setSize(DEFAULT_SIZE);
@@ -63,7 +76,9 @@ public class MainForm extends JFrame {
         this.setVisible(true);
     }
 
-
+    /**
+     * Initializes timer option radio buttons and input fields.
+     */
     public void initializeTimerOptions() {
 
         ButtonGroup timerOptions = new ButtonGroup();
@@ -86,29 +101,65 @@ public class MainForm extends JFrame {
         onTimeRadioButton.setActionCommand("onTime");
         onTimeRadioButton.addActionListener(osListener);
         onTimeRadioButton.setSelected(true);
-        onTimePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        onTimePanel.add(onTimeRadioButton);
-        onTimePanel.add(onTimeField);
 
         countdownRadioButton.setActionCommand("countdown");
         countdownRadioButton.addActionListener(osListener);
-        countdownPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        countdownPanel.add(countdownRadioButton);
-        countdownPanel.add(countdownField);
 
+        layoutTimerPanels();
         configureTimeFormatters();
 
+    }
+
+    /**
+     * Sets layout for "on time" and "countdown" panels.
+     */
+    private void layoutTimerPanels() {
+        onTimePanel.setLayout(new GridBagLayout());
+        countdownPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        //on-time option
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 15, 5, 15);
+        onTimePanel.add(onTimeRadioButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        onTimePanel.add(onTimeField, gbc);
+
+        // countdown option
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 15, 5, 15);
+        countdownPanel.add(countdownRadioButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        countdownPanel.add(countdownField, gbc);
+
+        timerOptionsPanel.setLayout(new BoxLayout(timerOptionsPanel, BoxLayout.Y_AXIS));
         timerOptionsPanel.add(onTimePanel);
         timerOptionsPanel.add(countdownPanel);
         this.add(timerOptionsPanel);
     }
 
+    /**
+     * Configures input format for on-time and countdown fields.
+     */
     private void configureTimeFormatters() {
         try {
             MaskFormatter timeFormatter = new MaskFormatter(TIME_MASK);
             timeFormatter.setPlaceholderCharacter('_');
             onTimeField.setFormatterFactory(new DefaultFormatterFactory(timeFormatter));
-            onTimeField.setColumns(6);
 
             NumberFormatter countdownFormatter = new NumberFormatter(NumberFormat.getIntegerInstance());
             countdownFormatter.setValueClass(Integer.class);
@@ -116,7 +167,6 @@ public class MainForm extends JFrame {
             countdownFormatter.setMaximum(60);
             countdownFormatter.setAllowsInvalid(false);
             countdownField.setFormatterFactory(new DefaultFormatterFactory(countdownFormatter));
-            countdownField.setColumns(6);
             countdownField.setEnabled(false);
         } catch (ParseException e) {
             handleFormatException(e);
@@ -128,13 +178,16 @@ public class MainForm extends JFrame {
                 "Format Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Initializes color picker button.
+     */
     public void initializeColorChooser() {
         colorPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         colorChooser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color color = JColorChooser.showDialog(null, "Choose background color", selectedColor);
-                if (color != null) {
+                if (color != null && !color.equals(Color.WHITE)) {
                     selectedColor = color;
                     colorPanel.setForeground(color);
                 }
@@ -144,6 +197,9 @@ public class MainForm extends JFrame {
         this.add(colorPanel);
     }
 
+    /**
+     * Initializes blink speed dropdown.
+     */
     public void initializeSpeedChooser() {
         speedChooserPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         speedChooserPanel.add(speedLabel);
@@ -151,24 +207,49 @@ public class MainForm extends JFrame {
         this.add(speedChooserPanel);
     }
 
+    /**
+     * Initializes Start and Stop buttons.
+     */
     public void initializeControlButtons() {
-        controlButtonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
+        layoutControlButtons();
         startButton.addActionListener(e -> {
             disableControls();
             startTimer();
         });
+
         stopButton.addActionListener(e -> {
             stopTimer();
             if (blinkingFrame != null) blinkingFrame.dispose();
             enableControls();
         });
         stopButton.setEnabled(false);
-        controlButtonsPanel.add(startButton);
-        controlButtonsPanel.add(stopButton);
+    }
+
+    private void layoutControlButtons() {
+        controlButtonsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        //Start Button
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 15, 5, 15);
+        controlButtonsPanel.add(startButton, gbc);
+
+        // Stop button
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        controlButtonsPanel.add(stopButton, gbc);
+
         this.add(controlButtonsPanel);
     }
 
+    /**
+     * Disables input controls after timer starts.
+     */
     private void disableControls() {
         onTimeRadioButton.setEnabled(false);
         countdownRadioButton.setEnabled(false);
@@ -180,6 +261,9 @@ public class MainForm extends JFrame {
         stopButton.setEnabled(true);
     }
 
+    /**
+     * Enables controls after timer or blinking stops.
+     */
     private void enableControls() {
         onTimeRadioButton.setEnabled(true);
         countdownRadioButton.setEnabled(true);
@@ -191,6 +275,9 @@ public class MainForm extends JFrame {
         stopButton.setEnabled(false);
     }
 
+    /**
+     * Starts the countdown or on-time timer.
+     */
     private void startTimer() {
         if (timer != null) timer.cancel();
         timer = new Timer();
@@ -242,6 +329,9 @@ public class MainForm extends JFrame {
         isBlinking = false;
     }
 
+    /**
+     * Starts blinking frame and handles color toggling.
+     */
     private void startBlinkingWindow() {
         blinkingFrame = new JFrame(TITLE_BLINKING_FRAME);
         blinkingFrame.setSize(DEFAULT_SIZE);
@@ -283,7 +373,8 @@ public class MainForm extends JFrame {
     }
 
     public static void main(String[] args) {
-        MainForm frame = new MainForm();
+         new MainForm();
     }
 }
+
 
