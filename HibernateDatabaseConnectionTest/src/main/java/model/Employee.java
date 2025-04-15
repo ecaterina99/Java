@@ -3,9 +3,15 @@ package model;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "employees")
+@NoArgsConstructor
+@Getter
 public class Employee {
 
     public Employee(String firstName, String lastName, Integer idJob) {
@@ -13,29 +19,15 @@ public class Employee {
         this.lastName = lastName;
         this.idJob = idJob;
     }
-    public Employee() {
-    }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    public int getId() {
-        return id;
-    }
-
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-
-    public String getLastName() {
-        return lastName;
-    }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -52,6 +44,9 @@ public class Employee {
 
     @Column(name = "job_id", nullable = false)
     private int idJob;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
 
     public int getIdJob() {
         return idJob;

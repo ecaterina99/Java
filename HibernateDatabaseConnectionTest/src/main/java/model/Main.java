@@ -35,6 +35,8 @@ public class Main {
         Transaction tr = session.beginTransaction();
         session.save(employee);
         tr.commit();
+        System.out.println("Employee added: " + employee);
+//        System.out.println("Job: " + jo);
     }
 
     static Job getJob(int id) {
