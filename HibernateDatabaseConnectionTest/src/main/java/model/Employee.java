@@ -10,8 +10,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "employees")
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
+
 public class Employee {
 
     public Employee(String firstName, String lastName, Integer idJob) {
@@ -33,8 +34,6 @@ public class Employee {
         this.lastName = lastName;
     }
 
-
-
     @Column(name = "firstName", nullable = false)
     private String firstName;
 
@@ -54,7 +53,6 @@ public class Employee {
     public void setIdJob(int idJob) {
         this.idJob = idJob;
     }
-
 
 
     @Override
