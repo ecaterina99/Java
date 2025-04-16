@@ -1,10 +1,15 @@
 package model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Query;
+import lombok.ToString;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class Main {
@@ -45,10 +50,34 @@ public class Main {
         conditions.put("firstName\n", "        LIKE '%i'");
         customEmployeesSelect(conditions);
 
+        if (containsField("firstName", Employee.class)) {
+            System.out.println("Employee contine firstName");
+        } else {
+            System.out.println("Employee NU contine firstName");
+        }
+
+        if (containsField("streetName", Employee.class)) {
+            System.out.println("Employee contine streetName");
+        } else {
+            System.out.println("Employee NU contine streetName");
+        }
+
+        if (containsSetterMethod(Employee.class, "setFirstName", String.class)) {
+            System.out.println("Employee contine setFirstName cu parametru String");
+        } else {
+            System.out.println("Employee NU contine setFirstName cu parametru String");
+        }
+
+        // TODO: contains annotations?
+        if (containsAnnotation(Employee.class, Entity.class)) {
+            System.out.println("Employee contine adnotarea @Entity");
+        } else {
+            System.out.println("Employee NU contine adnotarea @Entity");
+        }
 
         //getDeliveryPersons();
-
     }
+
 
     //TODO query custom
     static void getDeliveryPersons() {
@@ -70,7 +99,6 @@ public class Main {
         }
     }
 
-
     // TODO: select multiple
     static void customEmployeesSelect(Map<String, String> whereConditions) {
         Set<String> whereKeys = whereConditions.keySet();
@@ -78,7 +106,7 @@ public class Main {
         for (String whereKey : whereKeys) {
             System.out.println("Am gasit cheia {" + whereKey + "}");
             String whereValue = whereConditions.get(whereKey);
-            sb.append(" and ").append(whereKey).append(" ").append( whereValue);
+            sb.append(" and ").append(whereKey).append(" ").append(whereValue);
         }
         String hqlQuery = sb.toString().replaceAll("\\s+", " ");
         System.out.println("Query-ul construit: " + hqlQuery);
@@ -93,6 +121,32 @@ public class Main {
             System.out.println("Angajat: " + employee);
         }
 
+    }
+
+    static boolean containsField(String fieldName, Class clazz) {
+        System.out.println("Voi cauta campul " + fieldName + " in clasa " + clazz.getName());
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
+    static boolean containsSetterMethod(Class clazz, String methodName, Class parameterClass) {
+        System.out.println("Voi cauta metoda " + methodName + " in clasa " + clazz.getName());
+        try {
+            Method method = clazz.getDeclaredMethod(methodName, parameterClass);
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
+    static boolean containsAnnotation(Class clazz, Class annotationClass) {
+        System.out.println("Voi cauta adnotarea " + annotationClass.getName() + " in clasa " + clazz.getName());
+        Annotation annotation = clazz.getAnnotation(annotationClass);
+        return annotation != null;
     }
 
 
@@ -121,6 +175,4 @@ public class Main {
         //Select * FROM employees WHERE id = 6
         return session.get(Employee.class, id);
     }
-
-
 }
