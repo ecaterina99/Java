@@ -1,5 +1,3 @@
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,28 +26,32 @@ public class DataAccessFirstLesson {
          */
 
 
-       // Person person = new Person("Maria D.", 25);
+        // Person person = new Person("Maria D.", 25);
+        //Person person = new Person("James Bond", 45,1);
+
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123123");
         ) {
             System.out.println("Connected to database ");
 
-            // Use interface statement
             /*
+            // Use interface statement
             Statement st = conn.createStatement();
             String query = "insert into persons values(null,'" + person.getName() + "', " + person.getAge() + ")";
             st.execute(query);
-             */
 
             // Use interface prepared statement
-          /*  String query =  "insert into persons (name, age) values(?, ?)";
+            String query =  "insert into persons (name, age) values(?, ?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, person.getName());
             ps.setInt(2, person.getAge());
             ps.execute();
-
            */
 
+
+
             // insertPerson(conn, person);
+            // updatePerson(conn, person);
+            deletePerson(conn, 5);
             readPersons(conn);
 
 
@@ -85,6 +87,29 @@ public class DataAccessFirstLesson {
         for (Person p : personList) {
             System.out.println(p);
         }
+    }
+
+    public static void updatePerson(Connection conn, Person person) throws SQLException {
+       /*
+        String query = "update persons set name='Jennifer Douglass' where id=3";
+        Statement st = conn.createStatement();
+        st.execute(query);
+        */
+
+        String query = "update persons set name=?, age=? where id=?";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, person.getName());
+        ps.setInt(2, person.getAge());
+        ps.setInt(3, person.getId(4));
+        ps.execute();
+    }
+
+    public static void deletePerson(Connection conn, int id) throws SQLException {
+        String query = "delete from persons where id=?";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, id);
+        //ps.execute();
+        System.out.println(ps.executeUpdate());
     }
 
 }

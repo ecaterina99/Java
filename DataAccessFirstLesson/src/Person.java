@@ -3,6 +3,19 @@ public class Person {
     private String name;
     private int age;
 
+
+    private int id;
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId(int i) {
+        return id;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -23,6 +36,13 @@ public class Person {
         this.name = name;
         this.age = age;
     }
+
+    public Person(String name, int age, int id) {
+        this.name = name;
+        this.age = age;
+        this.id = id;
+    }
+
 
     public Person() {
     }
