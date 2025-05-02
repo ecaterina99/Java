@@ -1,0 +1,83 @@
+import javax.swing.plaf.PanelUI;
+
+public class Artist {
+    private int id;
+    private String name;
+    private String type;
+    private int launchYear;
+    private Integer splitYear;
+    private String website;
+
+    public Artist(String name, String type, int launchYear, Integer splitYear, String website) {
+        this.name = name;
+        this.type = type;
+        this.launchYear = launchYear;
+        this.splitYear = splitYear;
+        this.website = website;
+    }
+    public Artist(int id,String name, String type, int launchYear, Integer splitYear, String website) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.launchYear = launchYear;
+        this.splitYear = splitYear;
+        this.website = website;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getLaunchYear() {
+        return launchYear;
+    }
+
+    public Integer getSplitYear() {
+        return splitYear;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setLaunchYear(int launchYear) {
+        this.launchYear = launchYear;
+    }
+
+    public void setSplitYear(int splitYear) {
+        this.splitYear = splitYear;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: "+ getName() + ", type: " + getType() + ", launch year: " + getLaunchYear() + ", split year: " + getSplitYear() + ",website: " + getWebsite();
+    }
+
+
+
+}
