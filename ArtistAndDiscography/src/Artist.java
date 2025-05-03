@@ -1,5 +1,3 @@
-import javax.swing.plaf.PanelUI;
-
 public class Artist {
     private int id;
     private String name;

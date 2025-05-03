@@ -12,14 +12,19 @@ public class Main {
             System.out.println("Connected to database ");
             // insertArtist(conn, artist);
             //updateArtist(conn, 7);
-            deleteArtist(conn, 7);
+            //deleteArtist(conn, 7);
             readArtists(conn);
+            readAlbum(conn);
+
 
 
         } catch (SQLException e) {
             System.out.println("Error in database connection " + e.getMessage());
         }
+
     }
+
+
 
     public static void insertArtist(Connection conn, Artist artist) throws SQLException {
         String query = "insert into artists (name,type,launch_year,split_year,website) values(?,?,?,?,?)";
@@ -48,6 +53,23 @@ public class Main {
             System.out.println(a.toString());
         }
     }
+
+    public static void readAlbum(Connection conn) throws SQLException {
+        List<Album> albumList = new ArrayList<>();
+        Statement st = conn.createStatement();
+        st.executeQuery("select * from albums");
+
+        ResultSet rs = st.getResultSet();
+        while (rs.next()) {
+            Album al = new Album(rs.getInt("id"),rs.getInt("artist_id"), rs.getString("title"), rs.getInt("release_year"), rs.getString("record_label"));
+            albumList.add(al);
+        }
+
+        for (Album al : albumList) {
+            System.out.println(al.toString());
+        }
+    }
+
 
     public static void updateArtist(Connection conn, Artist artist) throws SQLException {
         String query = "update artists set name=?, where id=?";
