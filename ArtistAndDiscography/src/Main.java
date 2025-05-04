@@ -10,15 +10,14 @@ public class Main {
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/artists_catalog", "root", "123123");
         ) {
-            System.out.println("Connected to database ");
+            System.out.println("Connected to database successfully!");
             //insertArtist(conn, artist);
             //updateArtist(conn, updatedArtist);
             //deleteArtist(conn, 13);
-          //  readArtists(conn);
-          //  readAlbum(conn);
-            showSoloArtists(conn);
-            System.out.println();
-            showArtistsNewGeneration(conn);
+             readArtists(conn);
+             readAlbum(conn);
+            //showSoloArtists(conn);
+            //  showArtistsNewGeneration(conn);
 
 
         } catch (SQLException e) {

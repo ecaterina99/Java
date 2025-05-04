@@ -1,6 +1,6 @@
 public class Album {
     private int id;
-    private int artist_id;
+    private int artistId;
     private String title;
     private int releaseYear;
     private String recordLabel;
@@ -8,14 +8,14 @@ public class Album {
 
     public Album(int id, int artistId, String title, int releaseYear, String recordLabel) {
         this.id = id;
-        this.artist_id = artistId;
+        this.artistId = artistId;
         this.title = title;
         this.releaseYear = releaseYear;
         this.recordLabel = recordLabel;
     }
 
     public Album(int artistId, String title, int releaseYear, String recordLabel) {
-        this.artist_id = artistId;
+        this.artistId = artistId;
         this.title = title;
         this.releaseYear = releaseYear;
         this.recordLabel = recordLabel;
@@ -25,8 +25,8 @@ public class Album {
         return id;
     }
 
-    public int getArtist_id() {
-        return artist_id;
+    public int getArtistId() {
+        return artistId;
     }
 
     public String getTitle() {
@@ -46,8 +46,8 @@ public class Album {
         this.id = id;
     }
 
-    public void setArtist_id(int artist_id) {
-        this.artist_id = artist_id;
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
     }
 
     public void setTitle(String title) {

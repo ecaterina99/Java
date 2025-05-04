@@ -13,7 +13,8 @@ public class Artist {
         this.splitYear = splitYear;
         this.website = website;
     }
-    public Artist(String name, String type, int launchYear, Integer splitYear, String website,int id) {
+
+    public Artist(String name, String type, int launchYear, Integer splitYear, String website, int id) {
         this.name = name;
         this.type = type;
         this.launchYear = launchYear;
@@ -73,9 +74,26 @@ public class Artist {
 
     @Override
     public String toString() {
-        return "Name: "+ getName() + ", type: " + getType() + ", launch year: " + getLaunchYear() + ", split year: " + getSplitYear() + ",website: " + getWebsite();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Artist ID: ").append(id)
+                .append(", Name: ").append(name)
+                .append(", Type: ").append(type)
+                .append(", Launch Year: ").append(launchYear);
+
+        if (splitYear != null) {
+            sb.append(", Split Year: ").append(splitYear);
+        } else {
+            sb.append(", Status: Active");
+        }
+
+        if (website != null && !website.isEmpty()) {
+            sb.append(", Website: ").append(website);
+        } else {
+            sb.append(", No website");
+        }
+
+        return sb.toString();
+
     }
-
-
 
 }
