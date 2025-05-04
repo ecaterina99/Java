@@ -13,13 +13,13 @@ public class Artist {
         this.splitYear = splitYear;
         this.website = website;
     }
-    public Artist(int id,String name, String type, int launchYear, Integer splitYear, String website) {
-        this.id = id;
+    public Artist(String name, String type, int launchYear, Integer splitYear, String website,int id) {
         this.name = name;
         this.type = type;
         this.launchYear = launchYear;
         this.splitYear = splitYear;
         this.website = website;
+        this.id = id;
     }
 
     public int getId() {
