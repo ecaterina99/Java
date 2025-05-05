@@ -14,13 +14,14 @@ public class Artist {
         this.website = website;
     }
 
-    public Artist(String name, String type, int launchYear, Integer splitYear, String website, int id) {
+    public Artist(int id,String name, String type, int launchYear, Integer splitYear, String website) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.launchYear = launchYear;
         this.splitYear = splitYear;
         this.website = website;
-        this.id = id;
+
     }
 
     public int getId() {
@@ -80,7 +81,7 @@ public class Artist {
                 .append(", Type: ").append(type)
                 .append(", Launch Year: ").append(launchYear);
 
-        if (splitYear != null) {
+        if (splitYear != 0 ) {
             sb.append(", Split Year: ").append(splitYear);
         } else {
             sb.append(", Status: Active");

@@ -1,21 +1,17 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final String DB_URL= "jdbc:mysql://localhost:3306/artists_catalog";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/artists_catalog";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "123123";
 
     public static void main(String[] args) {
 
-
-        //Artist artist = new Artist("Rammstein", "band", 1994, 2025, "www.rammstein.de");
-        Artist updatedArtist = new Artist("Rammstein", "band", 1994, 2025, "www.rammstein.de", 8);
-
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD))
-        {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             System.out.println("Connected to database successfully!");
             demonstrateAllFunctionality(conn);
 
@@ -43,36 +39,35 @@ public class Main {
         while (!exit) {
             printMenu();
             System.out.print("Enter an option: ");
-            int option = scanner.nextInt();
+            String option = scanner.nextLine();
             switch (option) {
-                case 1:
+                case "1":
                     demonstrateCRUD(conn);
-                break;
-                    case 2:
-                        showSoloArtists(conn);
-                        break;
-                        case 3:
-                            showArtistsNewGeneration(conn);
-                            break;
-                case 0:
+                    break;
+                case "2":
+                    showSoloArtists(conn);
+                    break;
+                case "3":
+                    showArtistsNewGeneration(conn);
+                    break;
+                case "0":
                     exit = true;
                     break;
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
             }
         }
     }
 
 
-
-    private static void demonstrateCRUDOptions() throws SQLException {
-        System.out.println("\n--- CRUD OPERATIONS DEMO ---");
+    private static void printCRUDMenu() throws SQLException {
+        System.out.println("\n--- CRUD OPERATIONS ---");
         System.out.println("1. insert new artist");
         System.out.println("2. read all artist");
         System.out.println("3. update artist");
         System.out.println("4. delete artist");
-        System.out.println("0. Exit");
+        System.out.println("0. exit");
 
     }
 
@@ -81,97 +76,146 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Boolean exit = false;
         while (!exit) {
-            demonstrateCRUDOptions();
-            System.out.print("Enter an option: ");
-            int option = scanner.nextInt();
+            printCRUDMenu();
+            System.out.print("Please choose the option: ");
+            String option = scanner.nextLine();
 
             switch (option) {
-                case 1:
+                case "1":
                     System.out.print("Enter artist name: ");
                     String name = scanner.nextLine();
-                    System.out.print("Enter artist type: ");
+                    name= name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+                    if (name.isEmpty()) {
+                        System.out.println("Artist name cannot be empty. Please try again.");
+                        break;
+                    }
+
+                    System.out.print("Enter artist type(solo/band): ");
                     String type = scanner.nextLine();
+                    if (!type.equalsIgnoreCase("solo") && !type.equalsIgnoreCase("band")) {
+                        System.out.println("Invalid type. Please enter 'solo' or 'band'");
+                        break;
+                    }
+
+                    LocalDate currentDate = LocalDate.now();
                     System.out.print("Launch year: ");
                     int launchYear = scanner.nextInt();
                     scanner.nextLine();
-                    System.out.print("Split Year: (leave empty if still active): ");
+                    if (launchYear > currentDate.getYear() || launchYear < 0) {
+                        System.out.println("Invalid launch year. Year must be positive and not in the future. Please try again.");
+                        break;
+                    }
+
+                    System.out.print("Split Year: (leave empty if still active) ");
                     String splitYearStr = scanner.nextLine();
-                    Integer splitYear = splitYearStr.isEmpty() ? null : Integer.parseInt(splitYearStr);
+                    Integer splitYear = null;
+                    if(!splitYearStr.isEmpty()) {
+                        try {
+                            splitYear = Integer.parseInt(splitYearStr);
+                            if (splitYear > currentDate.getYear() || splitYear < launchYear) {
+                                System.out.println("Invalid split year. Year must be after launch year and not in the future.");
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid split year. Please try again.");
+                            break;
+                        }
+                    }
+
+                    System.out.print("Website: (leave empty if doesn't exist) ");
                     String website = scanner.nextLine();
-                    if (website.isEmpty()) website = null;
+                    if (website.isEmpty()) {
+                        website = null;
+                    }
+                    else if(!website.startsWith("http://") && !website.startsWith("https://") && !website.startsWith("www."))
+                    {
+                        System.out.println("Invalid website. Please try again.");
+                        break;
+                }
 
                     Artist newArtist = new Artist(name, type, launchYear, splitYear, website);
                     int newId = insertArtist(conn, newArtist);
                     System.out.println("Artist added with ID: " + newId);
                     break;
 
-                    case 2:
-                        readArtists(conn);
+                case "2":
+                    readArtists(conn);
+                    break;
+
+                case "3":
+                    System.out.print("Enter artist ID to update: ");
+                    int updateArtistById = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Artist currentArtist = getArtistById(conn, updateArtistById);
+
+                    if (currentArtist == null) {
+                        System.out.println("Artist not found!");
                         break;
-                        case 3:
-                            System.out.print("Enter artist ID to update: ");
-                            int updateArtistById = scanner.nextInt();
-                            scanner.nextLine();
+                    }
 
-                            Artist currentArtist=getArtistById(conn, updateArtistById);
+                    System.out.println("Current details: " + currentArtist);
 
-                            if (currentArtist == null) {
-                                System.out.println("Artist not found!");
-                                break;
-                            }
+                    System.out.print("New name (leave empty to keep current): ");
+                    String newName = scanner.nextLine();
+                    if (!newName.isEmpty()) {
+                        currentArtist.setName(newName);
+                    }
 
-                            System.out.println("Current details: " + currentArtist);
+                    System.out.print("New type (leave empty to keep current): ");
+                    String newType = scanner.nextLine();
+                    if (!newType.isEmpty()) {
+                        currentArtist.setType(newType);
+                    }
 
-                            System.out.print("New name (leave empty to keep current): ");
-                            String newName = scanner.nextLine();
-                            if (!newName.isEmpty()) {
-                                currentArtist.setName(newName);
-                            }
+                    System.out.print("New launch year (leave empty to keep current): ");
+                    String newLaunchYear = scanner.nextLine();
+                    if (!newLaunchYear.isEmpty()) {
+                        currentArtist.setLaunchYear(Integer.parseInt(newLaunchYear));
+                    }
 
-                            System.out.print("New type (leave empty to keep current): ");
-                            String newType = scanner.nextLine();
-                            if (!newType.isEmpty()) {
-                                currentArtist.setType(newType);
-                            }
+                    System.out.print("New split year (leave empty to keep current): ");
+                    String newSplitYearStr = scanner.nextLine();
+                    if (!newSplitYearStr.isEmpty()) {
+                        if (newSplitYearStr.equalsIgnoreCase("null")) {
+                            currentArtist.setSplitYear(0);
+                        } else {
+                            currentArtist.setSplitYear(Integer.parseInt(newSplitYearStr));
+                        }
+                    }
 
-                            System.out.print("New launch year (leave empty to keep current): ");
-                            String newLaunchYear = scanner.nextLine();
-                            if(!newLaunchYear.isEmpty()) {
-                                currentArtist.setLaunchYear(Integer.parseInt(newLaunchYear));
-                            }
+                    System.out.print("New website (leave empty to keep current): ");
+                    String newWebsite = scanner.nextLine();
+                    if (!newWebsite.isEmpty()) {
+                        currentArtist.setWebsite(newWebsite);
+                    }
 
-                            System.out.print("New split year (leave empty to keep current): ");
-                            String newSplitYearStr = scanner.nextLine();
-                            if (!newSplitYearStr.isEmpty()) {
-                                if (newSplitYearStr.equalsIgnoreCase("null")) {
-                                    currentArtist.setSplitYear(0);
-                                } else {
-                                    currentArtist.setSplitYear(Integer.parseInt(newSplitYearStr));
-                                }
-                            }
+                    updateArtist(conn, currentArtist);
+                    System.out.println("Artist updated successfully!");
+                    break;
 
-                            System.out.print("New website (leave empty to keep current): ");
-                            String newWebsite = scanner.nextLine();
-                            if (!newWebsite.isEmpty()) {
-                                currentArtist.setWebsite(newWebsite);
-                            }
+                case "4":
+                    System.out.print("Enter artist ID to delete: ");
+                    int deleteId = scanner.nextInt();
+                    scanner.nextLine();
 
-                            updateArtist(conn, currentArtist);
-                            System.out.println("Artist updated successfully!");
-                            break;
-                            case 4:
-                                System.out.print("Enter artist ID to delete: ");
-                                int deleteId = scanner.nextInt();
-                                scanner.nextLine();
-                                deleteArtist(conn, deleteId);
-                                System.out.println("Artist with ID " + deleteId + " deleted successfully!");
-                                break;
-                                case 0:
-                                    exit = true;
-                                    break;
-                                    default:
-                                        System.out.println("Invalid choice. Please try again.");
-                                        break;
+                    Artist artistToDelete = getArtistById(conn, deleteId);
+                    if (artistToDelete == null) {
+                        System.out.println("Artist with ID " + deleteId + " does not exist!");
+                        break;
+                    }
+                    else {
+                        deleteArtist(conn, deleteId);
+                        System.out.println("Artist with ID " + deleteId + " deleted successfully!");
+                        break;
+                    }
+
+                case "0":
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
             }
         }
     }
@@ -236,7 +280,7 @@ public class Main {
 
         ResultSet rs = st.getResultSet();
         while (rs.next()) {
-            Artist a = new Artist(rs.getString("name"), rs.getString("type"), rs.getInt("launch_year"), rs.getInt("split_year"), rs.getString("website"));
+            Artist a = new Artist(rs.getInt("id"),rs.getString("name"), rs.getString("type"), rs.getInt("launch_year"), rs.getInt("split_year"), rs.getString("website"));
             artistsList.add(a);
         }
 
