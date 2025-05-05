@@ -1,24 +1,23 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+    private static final String DB_URL= "jdbc:mysql://localhost:3306/artists_catalog";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "123123";
+
     public static void main(String[] args) {
+
 
         //Artist artist = new Artist("Rammstein", "band", 1994, 2025, "www.rammstein.de");
         Artist updatedArtist = new Artist("Rammstein", "band", 1994, 2025, "www.rammstein.de", 8);
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/artists_catalog", "root", "123123");
-        ) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD))
+        {
             System.out.println("Connected to database successfully!");
-            //insertArtist(conn, artist);
-            //updateArtist(conn, updatedArtist);
-            //deleteArtist(conn, 13);
-             readArtists(conn);
-             readAlbum(conn);
-            //showSoloArtists(conn);
-            //  showArtistsNewGeneration(conn);
-
+            demonstrateAllFunctionality(conn);
 
         } catch (SQLException e) {
             System.out.println("Error in database connection " + e.getMessage());
@@ -26,16 +25,208 @@ public class Main {
 
     }
 
+    private static void printMenu() {
+        System.out.println("\n=== ARTIST MANAGEMENT SYSTEM ===");
+        System.out.println("1. Demonstrate CRUD operations");
+        System.out.println("2. Show solo artists");
+        System.out.println("3. Show artists after a specific year");
+        System.out.println("4. Show artist discography");
+        System.out.println("5. Show albums by record label");
+        System.out.println("0. Exit");
+    }
 
-    public static void insertArtist(Connection conn, Artist artist) throws SQLException {
-        String query = "insert into artists (name,type,launch_year,split_year,website) values(?,?,?,?,?)";
+
+    private static void demonstrateAllFunctionality(Connection conn) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        Boolean exit = false;
+
+        while (!exit) {
+            printMenu();
+            System.out.print("Enter an option: ");
+            int option = scanner.nextInt();
+            switch (option) {
+                case 1:
+                    demonstrateCRUD(conn);
+                break;
+                    case 2:
+                        showSoloArtists(conn);
+                        break;
+                        case 3:
+                            showArtistsNewGeneration(conn);
+                            break;
+                case 0:
+                    exit = true;
+                    break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+            }
+        }
+    }
+
+
+
+    private static void demonstrateCRUDOptions() throws SQLException {
+        System.out.println("\n--- CRUD OPERATIONS DEMO ---");
+        System.out.println("1. insert new artist");
+        System.out.println("2. read all artist");
+        System.out.println("3. update artist");
+        System.out.println("4. delete artist");
+        System.out.println("0. Exit");
+
+    }
+
+    private static void demonstrateCRUD(Connection conn) throws SQLException {
+
+        Scanner scanner = new Scanner(System.in);
+        Boolean exit = false;
+        while (!exit) {
+            demonstrateCRUDOptions();
+            System.out.print("Enter an option: ");
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Enter artist name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter artist type: ");
+                    String type = scanner.nextLine();
+                    System.out.print("Launch year: ");
+                    int launchYear = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.print("Split Year: (leave empty if still active): ");
+                    String splitYearStr = scanner.nextLine();
+                    Integer splitYear = splitYearStr.isEmpty() ? null : Integer.parseInt(splitYearStr);
+                    String website = scanner.nextLine();
+                    if (website.isEmpty()) website = null;
+
+                    Artist newArtist = new Artist(name, type, launchYear, splitYear, website);
+                    int newId = insertArtist(conn, newArtist);
+                    System.out.println("Artist added with ID: " + newId);
+                    break;
+
+                    case 2:
+                        readArtists(conn);
+                        break;
+                        case 3:
+                            System.out.print("Enter artist ID to update: ");
+                            int updateArtistById = scanner.nextInt();
+                            scanner.nextLine();
+
+                            Artist currentArtist=getArtistById(conn, updateArtistById);
+
+                            if (currentArtist == null) {
+                                System.out.println("Artist not found!");
+                                break;
+                            }
+
+                            System.out.println("Current details: " + currentArtist);
+
+                            System.out.print("New name (leave empty to keep current): ");
+                            String newName = scanner.nextLine();
+                            if (!newName.isEmpty()) {
+                                currentArtist.setName(newName);
+                            }
+
+                            System.out.print("New type (leave empty to keep current): ");
+                            String newType = scanner.nextLine();
+                            if (!newType.isEmpty()) {
+                                currentArtist.setType(newType);
+                            }
+
+                            System.out.print("New launch year (leave empty to keep current): ");
+                            String newLaunchYear = scanner.nextLine();
+                            if(!newLaunchYear.isEmpty()) {
+                                currentArtist.setLaunchYear(Integer.parseInt(newLaunchYear));
+                            }
+
+                            System.out.print("New split year (leave empty to keep current): ");
+                            String newSplitYearStr = scanner.nextLine();
+                            if (!newSplitYearStr.isEmpty()) {
+                                if (newSplitYearStr.equalsIgnoreCase("null")) {
+                                    currentArtist.setSplitYear(0);
+                                } else {
+                                    currentArtist.setSplitYear(Integer.parseInt(newSplitYearStr));
+                                }
+                            }
+
+                            System.out.print("New website (leave empty to keep current): ");
+                            String newWebsite = scanner.nextLine();
+                            if (!newWebsite.isEmpty()) {
+                                currentArtist.setWebsite(newWebsite);
+                            }
+
+                            updateArtist(conn, currentArtist);
+                            System.out.println("Artist updated successfully!");
+                            break;
+                            case 4:
+                                System.out.print("Enter artist ID to delete: ");
+                                int deleteId = scanner.nextInt();
+                                scanner.nextLine();
+                                deleteArtist(conn, deleteId);
+                                System.out.println("Artist with ID " + deleteId + " deleted successfully!");
+                                break;
+                                case 0:
+                                    exit = true;
+                                    break;
+                                    default:
+                                        System.out.println("Invalid choice. Please try again.");
+                                        break;
+            }
+        }
+    }
+
+    public static Artist getArtistById(Connection conn, int id) throws SQLException {
+        String query = "SELECT * FROM artists WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Artist artist = new Artist(
+                    rs.getString("name"),
+                    rs.getString("type"),
+                    rs.getInt("launch_year"),
+                    rs.getObject("split_year") != null ? rs.getInt("split_year") : null,
+                    rs.getString("website")
+            );
+            artist.setId(rs.getInt("id"));
+            return artist;
+        }
+
+        return null;
+    }
+
+
+    public static int insertArtist(Connection conn, Artist artist) throws SQLException {
+        String query = "insert into artists (name,type,launch_year,split_year,website) values(?,?,?,?,?)";
+        PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, artist.getName());
         ps.setString(2, artist.getType());
         ps.setInt(3, artist.getLaunchYear());
-        ps.setInt(4, artist.getSplitYear());
-        ps.setString(5, artist.getWebsite());
-        ps.execute();
+
+        if (artist.getSplitYear() != null) {
+            ps.setInt(4, artist.getSplitYear());
+        } else {
+            ps.setNull(4, Types.INTEGER);
+        }
+
+
+        if (artist.getWebsite() != null && !artist.getWebsite().isEmpty()) {
+            ps.setString(5, artist.getWebsite());
+        } else {
+            ps.setNull(5, Types.VARCHAR);
+        }
+        ps.executeUpdate();
+
+
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else {
+                throw new SQLException("Creating artist failed, no ID obtained.");
+            }
+        }
     }
 
     public static void readArtists(Connection conn) throws SQLException {
@@ -108,8 +299,19 @@ public class Main {
         ps.setString(1, artist.getName());
         ps.setString(2, artist.getType());
         ps.setInt(3, artist.getLaunchYear());
-        ps.setInt(4, artist.getSplitYear());
-        ps.setString(5, artist.getWebsite());
+
+        if (artist.getSplitYear() != null) {
+            ps.setInt(4, artist.getSplitYear());
+        } else {
+            ps.setNull(4, Types.INTEGER);
+        }
+
+        if (artist.getWebsite() != null && !artist.getWebsite().isEmpty()) {
+            ps.setString(5, artist.getWebsite());
+        } else {
+            ps.setNull(5, Types.VARCHAR);
+        }
+
         ps.setInt(6, artist.getId());
         ps.execute();
 
