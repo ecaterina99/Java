@@ -48,7 +48,6 @@ public class Artist {
         return website;
     }
 
-
     public void setId(int id) {
         this.id = id;
     }

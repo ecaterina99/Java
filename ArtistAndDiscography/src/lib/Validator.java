@@ -19,11 +19,31 @@ public class Validator {
         return ValidationResult.ok();
     }
 
+
+    public static ValidationResult validateNewArtistType(String type) {
+        if (type == null || type.trim().isEmpty()) {
+            return ValidationResult.ok();
+        }
+        return validateArtistType(type);
+    }
+
     public static ValidationResult validateLaunchYear(String launchYear) {
         LocalDate currentDate = LocalDate.now();
         if (launchYear == null || launchYear.trim().isEmpty()) {
             return ValidationResult.fail("Launch year cannot be empty.");
         }
+        return getValidationResult(launchYear, currentDate);
+    }
+
+    public static ValidationResult validateNewLaunchYear(String launchYear) {
+        LocalDate currentDate = LocalDate.now();
+        if (launchYear == null || launchYear.trim().isEmpty()) {
+            return ValidationResult.ok();
+        }
+        return getValidationResult(launchYear, currentDate);
+    }
+
+    private static ValidationResult getValidationResult(String launchYear, LocalDate currentDate) {
         try {
             int year = Integer.parseInt(launchYear);
             if (year < 1900 || year > currentDate.getYear()) {
@@ -55,11 +75,19 @@ public class Validator {
 
     public static ValidationResult validateWebsite(String website) {
         if (website.isEmpty()) {
-            return ValidationResult.fail("Website cannot be empty.");
+            return ValidationResult.ok();
         } else if (!website.startsWith("http://") && !website.startsWith("https://") && !website.startsWith("www.")) {
             return ValidationResult.fail("Invalid website. Please try again.");
         }
         return ValidationResult.ok();
+    }
+
+
+    public static ValidationResult validateId(String id) {
+        if(id.matches("\\d+")){
+            return ValidationResult.ok();
+        }
+        return ValidationResult.fail("Invalid ID. Please try again.");
     }
 
 }
