@@ -27,6 +27,7 @@ public class Validator {
         return validateArtistType(type);
     }
 
+
     public static ValidationResult validateLaunchYear(String launchYear) {
         LocalDate currentDate = LocalDate.now();
         if (launchYear == null || launchYear.trim().isEmpty()) {
@@ -35,6 +36,7 @@ public class Validator {
         return getValidationResult(launchYear, currentDate);
     }
 
+
     public static ValidationResult validateNewLaunchYear(String launchYear) {
         LocalDate currentDate = LocalDate.now();
         if (launchYear == null || launchYear.trim().isEmpty()) {
@@ -42,6 +44,7 @@ public class Validator {
         }
         return getValidationResult(launchYear, currentDate);
     }
+
 
     private static ValidationResult getValidationResult(String launchYear, LocalDate currentDate) {
         try {
@@ -83,11 +86,11 @@ public class Validator {
     }
 
 
-    public static ValidationResult validateId(String id) {
+    public static ValidationResult validateNumberFormat(String id) {
         if(id.matches("\\d+")){
             return ValidationResult.ok();
         }
-        return ValidationResult.fail("Invalid ID. Please try again.");
+        return ValidationResult.fail("Invalid input format. Please try again.");
     }
 
 }

@@ -45,9 +45,9 @@ public class Main {
                 case "2":
                     displaySoloArtists(connection);
                     break;
-//                case "3":
-//                    showArtistsAfterYear(connection,scanner);
-//                    break;
+                case "3":
+                    displayArtistsAfterYear(connection, scanner);
+                    break;
 //                case "4":
 //                    displayArtistDiscography(connection, scanner);
 //                    break;
@@ -323,7 +323,7 @@ public class Main {
         System.out.print("Enter artist ID to delete: ");
         String deleteIdInput = scanner.nextLine();
 
-        ValidationResult result = Validator.validateId(deleteIdInput);
+        ValidationResult result = Validator.validateNumberFormat(deleteIdInput);
         if (!result.isValid()) {
             System.out.println(result.getMessage());
             return;
@@ -433,30 +433,51 @@ public class Main {
         }
     }
 
+    public static void displayArtistsAfterYear(Connection connection, Scanner scanner) throws SQLException {
+        System.out.print("Enter the year to filter artists after: ");
+        String yearInput = scanner.nextLine();
 
-  /*  public static void displayArtistsAfterYear(Connection conn,Scanner scanner) throws SQLException {
-
-        List<Artist> artistsList = new ArrayList<>();
-        Statement st = conn.createStatement();
-        st.executeQuery("select * from artists where launch_year>2000 ");
-        ResultSet rs = st.getResultSet();
-        while (rs.next()) {
-            Artist a = new Artist(rs.getString("name"), rs.getString("type"), rs.getInt("launch_year"), rs.getInt("split_year"), rs.getString("website"));
-            artistsList.add(a);
+        ValidationResult result = Validator.validateNumberFormat(yearInput);
+        if (!result.isValid()) {
+            System.out.println("Invalid year format. Please enter a valid number.");
+            return;
         }
-        for (Artist a : artistsList) {
-            System.out.println(a.toString());
+
+        int year = Integer.parseInt(yearInput);
+        List<Artist> artistsFilteredByYear = new ArrayList<>();
+        String query = "SELECT * FROM artists WHERE launch_year > ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, year);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Artist artist = new Artist(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("type"),
+                            resultSet.getInt("launch_year"),
+                            resultSet.getInt("split_year"),
+                            resultSet.getString("website")
+                    );
+                    artistsFilteredByYear.add(artist);
+                }
+            }
+        }
+        if (artistsFilteredByYear.isEmpty()) {
+            System.out.println("No artists found that launched after year " + year + ".");
+        } else {
+            System.out.println("\n=== Artists Launched After " + year + " ===");
+            for (Artist artist : artistsFilteredByYear) {
+                System.out.println(artist.toString());
+            }
         }
     }
-    
-   */
-
-
 }
 
+
+
   /*
-
-
 
     public static void readAlbum(Connection conn) throws SQLException {
         List<Album> albumList = new ArrayList<>();
