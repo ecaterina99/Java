@@ -1,47 +1,52 @@
+//TODO add try-catch block
+//TODO rename methods & variables
+
 import lib.ValidationResult;
 import lib.Validator;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/artists_catalog";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "123123";
+    public static void main(String[] args) throws IOException {
+        setConnection();
+    }
 
-    public static void main(String[] args) {
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            System.out.println("Connected to database successfully!");
-            displayAllFunctionality(conn);
-        } catch (SQLException e) {
-            System.out.println("Error in database connection " + e.getMessage());
+
+    private static void setConnection() throws IOException {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream("src/database.properties")) {
+            props.load(fis);
+
+            String url = props.getProperty("url");
+            String user = props.getProperty("user");
+            String password = props.getProperty("password");
+
+            try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                System.out.println("Connected to database successfully!");
+                selectOption(conn);
+            } catch (SQLException e) {
+                System.out.println("Error in database connection " + e.getMessage());
+            }
         }
     }
 
-    private static void displayMainMenu() {
-        System.out.println("\n=== ARTIST MANAGEMENT SYSTEM ===");
-        System.out.println("1. Demonstrate CRUD operations");
-        System.out.println("2. Show solo artists");
-        System.out.println("3. Show artists after a specific year");
-        System.out.println("4. Show artist discography");
-        System.out.println("5. Show albums by record label");
-        System.out.println("0. Exit");
-        System.out.print("Enter an option: ");
-    }
-
-    private static void displayAllFunctionality(Connection connection) throws SQLException {
+    private static void selectOption(Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
-            displayMainMenu();
+            displayMainOptions();
 
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    displayCrudMenu(connection);
+                    selectCRUDOption(connection);
                     break;
                 case "2":
                     displaySoloArtists(connection);
@@ -67,22 +72,23 @@ public class Main {
         }
     }
 
-    private static void printCRUDMenu() throws SQLException {
-        System.out.println("\n--- CRUD OPERATIONS ---");
-        System.out.println("1. insert new artist");
-        System.out.println("2. read all artist");
-        System.out.println("3. update artist");
-        System.out.println("4. delete artist");
-        System.out.println("0. exit");
-        System.out.print("Please choose the option: ");
+    private static void displayMainOptions() {
+        System.out.println("\n=== ARTIST MANAGEMENT SYSTEM ===");
+        System.out.println("1. Demonstrate CRUD operations");
+        System.out.println("2. Show solo artists");
+        System.out.println("3. Show artists after a specific year");
+        System.out.println("4. Show artist discography");
+        System.out.println("5. Show albums by record label");
+        System.out.println("0. Exit");
+        System.out.print("Enter an option: ");
     }
 
-    private static void displayCrudMenu(Connection connection) throws SQLException {
+    private static void selectCRUDOption(Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
-            printCRUDMenu();
+            displayCRUDOptions();
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
@@ -105,6 +111,16 @@ public class Main {
                     break;
             }
         }
+    }
+
+    private static void displayCRUDOptions() throws SQLException {
+        System.out.println("\n--- CRUD OPERATIONS ---");
+        System.out.println("1. insert new artist");
+        System.out.println("2. read all artist");
+        System.out.println("3. update artist");
+        System.out.println("4. delete artist");
+        System.out.println("0. exit");
+        System.out.print("Please choose the option: ");
     }
 
     private static void createArtist(Connection conn, Scanner scanner) throws SQLException {

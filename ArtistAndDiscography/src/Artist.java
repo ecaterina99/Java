@@ -93,7 +93,7 @@ public class Artist {
             sb.append(", Website: ").append(website);
         } else {
             sb.append(", No website");
-        }
+        } 
         return sb.toString();
     }
 
