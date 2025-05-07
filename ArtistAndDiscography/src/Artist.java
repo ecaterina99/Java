@@ -94,9 +94,7 @@ public class Artist {
         } else {
             sb.append(", No website");
         }
-
         return sb.toString();
-
     }
 
 }

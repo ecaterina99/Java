@@ -3,7 +3,6 @@ import lib.Validator;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -548,36 +547,54 @@ public class Main {
     public static void displayAlbumsByLabel(Connection connection, Scanner scanner) throws SQLException {
         System.out.println("All labels from discography:");
         showAllLabels(connection);
+        List<String> allLabels = getAllLabels(connection);
 
         while (true) {
             System.out.println("Please, choose the label:");
             String labelInput = scanner.nextLine();
             ValidationResult result = Validator.validateLabel(labelInput);
-            if (result.isValid()) {
-                HashSet<Album> albumsByLabel = getAlbumsByLabel(connection, labelInput);
+
+            if (!allLabels.contains(labelInput)) {
+                System.out.println("Label not found. Please enter a valid label from the list.");
+            } else if (!result.isValid()) {
+                System.out.println(result.getMessage());
+            } else {
+                List<Album> albumsByLabel = getAlbumsByLabel(connection, labelInput);
                 for (Album album : albumsByLabel) {
-                    System.out.println(album.toString());
+                    System.out.println(album.albumsAndArtists());
                 }
                 break;
-            } else {
-                System.out.println(result.getMessage());
             }
         }
     }
 
-    private static HashSet<Album> getAlbumsByLabel(Connection connection, String recordLabel) throws SQLException {
-        HashSet<Album> albumsByLabel = new HashSet<>();
-        String query = "SELECT artist_id, title, release_year, record_label FROM albums WHERE record_label = ?";
+    private static List<Album> getAlbumsByLabel(Connection connection, String recordLabel) throws SQLException {
+        List<Album> albumsByLabel = new ArrayList<>();
+
+        String query = "SELECT a.id, a.artist_id, a.title, a.release_year, a.record_label, " +
+                "art.id, art.name, art.type, art.launch_year, art.split_year, art.website " +
+                "FROM albums a JOIN artists art ON a.artist_id = art.id WHERE a.record_label = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, recordLabel);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
+                    Artist artist = new Artist(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("type"),
+                            resultSet.getInt("launch_year"),
+                            resultSet.getInt("split_year"),
+                            resultSet.getString("website")
+                    );
+
                     Album album = new Album(
+                            resultSet.getInt("id"),
                             resultSet.getInt("artist_id"),
                             resultSet.getString("title"),
                             resultSet.getInt("release_year"),
-                            resultSet.getString("record_label")
+                            resultSet.getString("record_label"),
+                            artist
                     );
                     albumsByLabel.add(album);
                 }
@@ -586,14 +603,20 @@ public class Main {
         return albumsByLabel;
     }
 
-    public static void showAllLabels(Connection conn) throws SQLException {
-        HashSet<String> labelsList = new HashSet<>();
-        Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery("SELECT record_label FROM albums");
-        while (rs.next()) {
-            labelsList.add(rs.getString("record_label"));
+    private static List<String> getAllLabels(Connection conn) throws SQLException {
+        List<String> labels = new ArrayList<>();
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT DISTINCT record_label FROM albums")) {
+            while (rs.next()) {
+                labels.add(rs.getString("record_label"));
+            }
         }
-        for (String label : labelsList) {
+        return labels;
+    }
+
+    private static void showAllLabels(Connection conn) throws SQLException {
+        List<String> labels = getAllLabels(conn);
+        for (String label : labels) {
             System.out.println(label);
         }
     }

@@ -4,19 +4,22 @@ public class Album {
     private String title;
     private int releaseYear;
     private String recordLabel;
+    private Artist artist;
 
 
     public Album(String recordLabel) {
-       this.recordLabel = recordLabel;
+        this.recordLabel = recordLabel;
     }
 
-    public Album(int id, int artistId, String title, int releaseYear, String recordLabel) {
+    public Album(int id, int artistId, String title, int releaseYear, String recordLabel, Artist artist) {
         this.id = id;
         this.artistId = artistId;
         this.title = title;
         this.releaseYear = releaseYear;
         this.recordLabel = recordLabel;
+        this.artist = artist;
     }
+
 
     public Album(int artistId, String title, int releaseYear, String recordLabel) {
         this.artistId = artistId;
@@ -69,6 +72,10 @@ public class Album {
     @Override
     public String toString() {
         return "Album title: " + this.title + ", release year: " + this.releaseYear + ", record label: " + this.recordLabel;
+    }
+
+    public String albumsAndArtists() {
+        return "Record label: " + this.recordLabel + ", album title: " + this.title + ", release year: " + this.releaseYear + ", artist: " + artist.toString();
     }
 
     public String allLabels() {
