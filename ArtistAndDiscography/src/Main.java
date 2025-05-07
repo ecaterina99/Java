@@ -239,9 +239,7 @@ public class Main {
             System.out.println("Artist with Id: " + artistId + " not found");
             return;
         }
-
         System.out.println("Artist details: " + currentArtist);
-
 
         // Update name if provided
         System.out.print("Enter new name (leave empty to keep the current one): ");
@@ -267,9 +265,7 @@ public class Main {
             }
         }
 
-
         // Update launch year if provided
-
         while (true) {
             System.out.print("Enter new launch year (leave empty to keep current): ");
             String launchYearInput = scanner.nextLine();
@@ -346,13 +342,19 @@ public class Main {
             return;
         } else {
             // Confirm deletion
-            System.out.print("Are you sure you want to delete this artist? (y/n): ");
-            String confirmation = scanner.nextLine();
+            String confirmation = "";
+            while (!confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("n")) {
+                System.out.print("Are you sure you want to delete this artist? (select: y/n): ");
+                confirmation = scanner.nextLine();
+            }
 
             if (confirmation.equalsIgnoreCase("y")) {
-                deleteArtistFromDatabase(conn, artistId);
-                //TODO Catch this err, show message only on success
-                System.out.println("Artist with ID " + deleteIdInput + " has been deleted successfully!");
+
+                try {
+                    deleteArtistFromDatabase(conn, artistId);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -383,7 +385,7 @@ public class Main {
 
         //Returns: a ResultSet object containing the auto-generated key(s) generated
         // by the execution of this Statement object
-        
+
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 return generatedKeys.getInt(1);
@@ -425,7 +427,9 @@ public class Main {
         String query = "delete from artists where id=?";
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, id);
-        ps.execute();
+        if (ps.executeUpdate() > 0) {
+            System.out.println("Artist deleted successfully.");
+        }
     }
 
     public static void displaySoloArtists(Connection conn) throws SQLException {
