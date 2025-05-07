@@ -1,6 +1,7 @@
 package lib;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Validator {
 
@@ -17,14 +18,6 @@ public class Validator {
             return ValidationResult.fail("Invalid type. Please enter 'solo' or 'band'");
         }
         return ValidationResult.ok();
-    }
-
-
-    public static ValidationResult validateNewArtistType(String type) {
-        if (type == null || type.trim().isEmpty()) {
-            return ValidationResult.ok();
-        }
-        return validateArtistType(type);
     }
 
 
@@ -61,9 +54,6 @@ public class Validator {
 
     public static ValidationResult validateSplitYear(String splitYear, int launchYear) {
         LocalDate currentDate = LocalDate.now();
-        if (splitYear == null || splitYear.trim().isEmpty()) {
-            return ValidationResult.ok();
-        }
         try {
             int year = Integer.parseInt(splitYear.trim());
             if (year < launchYear || year > currentDate.getYear()) {
@@ -77,9 +67,8 @@ public class Validator {
 
 
     public static ValidationResult validateWebsite(String website) {
-        if (website.isEmpty()) {
-            return ValidationResult.ok();
-        } else if (!website.startsWith("http://") && !website.startsWith("https://") && !website.startsWith("www.")) {
+
+        if (!website.startsWith("http://") && !website.startsWith("https://") && !website.startsWith("www.")) {
             return ValidationResult.fail("Invalid website. Please try again.");
         }
         return ValidationResult.ok();
@@ -92,5 +81,13 @@ public class Validator {
         }
         return ValidationResult.fail("Invalid input format. Please try again.");
     }
+
+    public static ValidationResult validateLabel(String label) {
+        if (label == null || label.trim().isEmpty()) {
+            return ValidationResult.fail("Label cannot be empty.");
+        }
+        return ValidationResult.ok();
+    }
+
 
 }

@@ -6,6 +6,10 @@ public class Album {
     private String recordLabel;
 
 
+    public Album(String recordLabel) {
+       this.recordLabel = recordLabel;
+    }
+
     public Album(int id, int artistId, String title, int releaseYear, String recordLabel) {
         this.id = id;
         this.artistId = artistId;
@@ -65,5 +69,9 @@ public class Album {
     @Override
     public String toString() {
         return "Album title: " + this.title + ", release year: " + this.releaseYear + ", record label: " + this.recordLabel;
+    }
+
+    public String allLabels() {
+        return this.recordLabel;
     }
 }

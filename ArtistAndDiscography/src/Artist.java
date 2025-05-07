@@ -1,4 +1,5 @@
 public class Artist {
+
     private int id;
     private String name;
     private String type;
@@ -6,6 +7,7 @@ public class Artist {
     private Integer splitYear;
     private String website;
 
+    public Artist() {}
     public Artist(String name, String type, int launchYear, Integer splitYear, String website) {
         this.name = name;
         this.type = type;
@@ -13,6 +15,7 @@ public class Artist {
         this.splitYear = splitYear;
         this.website = website;
     }
+
 
     public Artist(int id,String name, String type, int launchYear, Integer splitYear, String website) {
         this.id = id;
