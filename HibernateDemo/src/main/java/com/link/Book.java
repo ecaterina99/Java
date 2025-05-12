@@ -1,21 +1,37 @@
 package com.link;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(name="books")
+@Table(name = "books")
 public class Book {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-   @Column(name="title")
-    private String title;
-    @Column(name="pageNo")
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "pageNo")
     private int pageNo;
 
+    @ManyToOne
+    @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    @Cascade(CascadeType.ALL)
+
+    private Publisher publisher;
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
 
     public int getId() {
         return id;

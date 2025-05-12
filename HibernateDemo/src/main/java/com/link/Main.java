@@ -9,8 +9,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Book book = null;
-        List<Book> booksList = null;
+      //  Book book = null;
+      //  List<Book> booksList = null;
+
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction(); // start transaction
@@ -34,11 +35,18 @@ public class Main {
             book = session.get(Book.class, 2);
             session.remove(book);
              */
-            
-            //read all books
+
+            /*read all books
             Query<Book> query = session.createQuery("from Book", Book.class);
             booksList = query.list();
 
+             */
+
+            Publisher publisher = new Publisher();
+            publisher.setName("Apress");
+            Book book = new Book("Black house",254);
+            book.setPublisher(publisher);
+            session.persist(book);
 
             tx.commit(); //end transaction
         } catch (HibernateException e) {
@@ -56,19 +64,19 @@ public class Main {
         }
          */
 
-
         /* read a book if isn't empty
         if (book != null) {
             System.out.println(book);
         }
          */
 
-        //read all books
+        /*read all books
         if (booksList != null) {
             for (Book b : booksList) {
                 System.out.println(b);
             }
         }
+         */
 
     }
 }
