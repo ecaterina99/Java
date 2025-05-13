@@ -2,6 +2,8 @@ package main;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "artists")
 public class Artist {
@@ -19,6 +21,9 @@ public class Artist {
     private Integer splitYear;
     @Column(name = "website")
     private String website;
+
+    @OneToMany(mappedBy = "artist")
+    private Set<Album> albums;
 
     public Artist() {
     }

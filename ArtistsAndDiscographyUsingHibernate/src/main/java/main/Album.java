@@ -2,6 +2,8 @@ package main;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 
 @Entity
 @Table(name = "albums")
@@ -10,8 +12,6 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "artist_id")
-    private int artistId;
     @Column(name = "title")
     private String title;
     @Column(name = "release_year")
@@ -21,20 +21,22 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "artist_id", referencedColumnName = "id")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(CascadeType.ALL)
     private Artist artist;
 
-    public Album(int id, int artistId, String title, int releaseYear, String recordLabel, Artist artist) {
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public Album(int id, String title, int releaseYear, String recordLabel, Artist artist) {
         this.id = id;
-        this.artistId = artistId;
         this.title = title;
         this.releaseYear = releaseYear;
         this.recordLabel = recordLabel;
         this.artist = artist;
     }
 
-    public Album(int artistId, String title, int releaseYear, String recordLabel) {
-        this.artistId = artistId;
+    public Album( String title, int releaseYear, String recordLabel) {
         this.title = title;
         this.releaseYear = releaseYear;
         this.recordLabel = recordLabel;
@@ -43,10 +45,6 @@ public class Album {
 
     public int getId() {
         return id;
-    }
-
-    public int getArtistId() {
-        return artistId;
     }
 
     public String getTitle() {
@@ -64,10 +62,6 @@ public class Album {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setArtistId(int artistId) {
-        this.artistId = artistId;
     }
 
     public void setTitle(String title) {
