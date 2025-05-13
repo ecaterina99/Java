@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -103,7 +104,6 @@ public class Main {
                     "from Book as books join  Publisher as publisher"+
                     "inner join books.publisher_id as publisher.id";
 
-             */
 
             String hql = "select books.title as title, publisher.name as publisher " +
                     "from Book as books " +
@@ -127,6 +127,17 @@ public class Main {
                     System.out.println(b2);
                 }
             }
+
+             */
+
+
+            //Lazy loading
+            Publisher publisher = (Publisher) session.get(Publisher.class, 1);
+            Set<Book> books = publisher.getBooks();
+            for (Book book : books) {
+                System.out.println(book.getTitle());
+            }
+
 
             tx.commit(); //end transaction
         } catch (HibernateException e) {
