@@ -21,7 +21,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="main.Artist"/>
-        <!--<mapping class="com.link.Publisher"/>-->
+        <mapping class="main.Album"/>
 
     </session-factory>
 </hibernate-configuration>

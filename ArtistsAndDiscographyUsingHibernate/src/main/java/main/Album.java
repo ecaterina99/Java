@@ -1,11 +1,27 @@
 package main;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+
+@Entity
+@Table(name = "albums")
 public class Album {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+    @Column(name = "artist_id")
     private int artistId;
+    @Column(name = "title")
     private String title;
+    @Column(name = "release_year")
     private int releaseYear;
+    @Column(name = "record_label")
     private String recordLabel;
+
+    @ManyToOne
+    @JoinColumn(name = "artist_id", referencedColumnName = "id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Artist artist;
 
     public Album(int id, int artistId, String title, int releaseYear, String recordLabel, Artist artist) {
@@ -23,6 +39,7 @@ public class Album {
         this.releaseYear = releaseYear;
         this.recordLabel = recordLabel;
     }
+    public Album() {    }
 
     public int getId() {
         return id;
