@@ -17,9 +17,9 @@ public class Artist {
     private String type;
     @Column(name = "launch_year")
     private int launchYear;
-    @Column(name = "split_year")
+    @Column(name = "split_year",nullable = true)
     private Integer splitYear;
-    @Column(name = "website")
+    @Column(name = "website",nullable = true)
     private String website;
 
     @OneToMany(mappedBy = "artist")
@@ -102,7 +102,7 @@ public class Artist {
                 .append(", Type: ").append(type)
                 .append(", Launch Year: ").append(launchYear);
 
-        if (splitYear != 0) {
+        if (splitYear != null) {
             sb.append(", Split Year: ").append(splitYear);
         } else {
             sb.append(", Status: Active");
