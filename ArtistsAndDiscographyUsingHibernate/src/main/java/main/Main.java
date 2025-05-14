@@ -7,10 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import java.awt.print.Book;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,12 +20,11 @@ public class Main {
     private static void setConnection() throws SQLException {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction(); // start transaction
+            tx = session.beginTransaction();
 
-            //main logic
             selectOption(session);
 
-            tx.commit(); //end transaction
+            tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -38,9 +34,7 @@ public class Main {
             HibernateUtil.close();
         }
 
-
         //verification
-
     }
 
     private static void selectOption(Session session) throws SQLException {
@@ -61,17 +55,16 @@ public class Main {
                 case "3":
                     displayArtistsAfterYear(session, scanner);
                     break;
-              /* case "4":
-                    displayArtistDiscography(connection, scanner);
+                case "4":
+                    displayArtistDiscography(session, scanner);
                     break;
                 case "5":
-                    displayAlbumsByLabel(connection, scanner);
+                    displayAlbumsByLabel(session, scanner);
                     break;
                 case "6":
-                    displayAllLabels(connection);
+                    displayAllLabels(session);
 
 
-              */
                 case "0":
                     exit = true;
                     break;
@@ -141,7 +134,6 @@ public class Main {
         return query.uniqueResult();
     }
 
-    //create
     private static void createArtist(Session session, Scanner scanner) throws SQLException {
         Artist artist = new Artist();
         // Read and validate artist name
@@ -224,7 +216,6 @@ public class Main {
         session.persist(artist);
     }
 
-    //read
     public static void displayAllArtists(Session session) {
         String hql = "from Artist";
         Query query = session.createQuery(hql);
@@ -234,7 +225,6 @@ public class Main {
         }
     }
 
-    //update
     private static void setUpdates(Session session, Scanner scanner) {
         System.out.print("Enter artist Id to update: ");
         int artistId = Integer.parseInt(scanner.nextLine());
@@ -330,7 +320,6 @@ public class Main {
         session.merge(artist);
     }
 
-    //delete
     private static void deleteArtistById(Session session, Scanner scanner) {
         System.out.print("Enter artist Id to delete: ");
         String deleteIdInput = scanner.nextLine();
@@ -411,8 +400,85 @@ public class Main {
         }
     }
 
+    private static void displayArtistDiscography(Session session, Scanner scanner) throws SQLException {
+        System.out.println("Please, enter artist's id:");
+        String artistId = scanner.nextLine();
 
+        ValidationResult result = Validator.validateNumberFormat(artistId);
+        if (!result.isValid()) {
+            System.out.println(result.getMessage());
+            return;
+        }
 
+        int id = Integer.parseInt(artistId);
+        Artist artist = findArtistById(session, id);
+
+        if (artist == null) {
+            System.out.println("Artist with ID " + artistId + " does not exist!");
+            return;
+        }
+
+        List<Album> artistAlbums = findAlbumsByArtistId(session, id);
+        Discography discography = new Discography(artist, artistAlbums);
+        System.out.println(discography);
+
+    }
+
+    private static List<Album> findAlbumsByArtistId(Session session, int artistId) throws SQLException {
+        String hql = "from Album where artist.id= :artistId";
+        Query<Album> query = session.createQuery(hql, Album.class);
+        query.setParameter("artistId", artistId);
+        List <Album> albums = query.list();
+        return albums;
+    }
+
+    public static void displayAlbumsByLabel(Session session, Scanner scanner) throws SQLException {
+        System.out.println("All labels from discography:");
+        displayAllLabels(session);
+        List<String> allLabels = getAllLabels(session);
+
+        while (true) {
+            System.out.println("Please, choose the label:");
+            String labelInput = scanner.nextLine();
+            ValidationResult result = Validator.validateLabel(labelInput);
+
+            if (!allLabels.contains(labelInput)) {
+                System.out.println("Label not found. Please enter a valid label from the list.");
+            } else if (!result.isValid()) {
+                System.out.println(result.getMessage());
+            } else {
+                List<Album> albumsByLabel = getAlbumsByLabel(session, labelInput);
+                for (Album album : albumsByLabel) {
+                    System.out.println(album.albumsAndArtists());
+                }
+                break;
+            }
+        }
+    }
+
+    private static List<Album> getAlbumsByLabel(Session session, String recordLabel) throws SQLException {
+
+        String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
+        Query<Album> query = session.createQuery(hql, Album.class);
+        query.setParameter("label", recordLabel);
+        List<Album> albumsByLabel = query.list();
+        return albumsByLabel;
+    }
+
+    private static List<String> getAllLabels(Session session) throws SQLException {
+        String hql = "select DISTINCT a.recordLabel from Album a";
+        Query<String> query = session.createQuery(hql, String.class);
+        List<String> recordLabels = query.getResultList();
+        return recordLabels;
+
+    }
+
+    private static void displayAllLabels(Session session) throws SQLException {
+        List<String> labels = getAllLabels(session);
+        for (String label : labels) {
+            System.out.println(label);
+        }
+    }
 
 }
 

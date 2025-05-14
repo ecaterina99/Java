@@ -17,33 +17,15 @@ public class Artist {
     private String type;
     @Column(name = "launch_year")
     private int launchYear;
-    @Column(name = "split_year",nullable = true)
+    @Column(name = "split_year", nullable = true)
     private Integer splitYear;
-    @Column(name = "website",nullable = true)
+    @Column(name = "website", nullable = true)
     private String website;
 
     @OneToMany(mappedBy = "artist")
     private Set<Album> albums;
 
     public Artist() {
-    }
-
-    public Artist(String name, String type, int launchYear, Integer splitYear, String website) {
-        this.name = name;
-        this.type = type;
-        this.launchYear = launchYear;
-        this.splitYear = splitYear;
-        this.website = website;
-    }
-
-    public Artist(int id, String name, String type, int launchYear, Integer splitYear, String website) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.launchYear = launchYear;
-        this.splitYear = splitYear;
-        this.website = website;
-
     }
 
     public int getId() {

@@ -42,7 +42,6 @@ public class Discography {
                         .append("\n");
             }
         }
-
         return sb.toString();
     }
 }

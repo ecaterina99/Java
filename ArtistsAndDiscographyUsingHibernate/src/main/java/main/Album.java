@@ -28,20 +28,8 @@ public class Album {
         return artist;
     }
 
-    public Album(int id, String title, int releaseYear, String recordLabel, Artist artist) {
-        this.id = id;
-        this.title = title;
-        this.releaseYear = releaseYear;
-        this.recordLabel = recordLabel;
-        this.artist = artist;
+    public Album() {
     }
-
-    public Album( String title, int releaseYear, String recordLabel) {
-        this.title = title;
-        this.releaseYear = releaseYear;
-        this.recordLabel = recordLabel;
-    }
-    public Album() {    }
 
     public int getId() {
         return id;
@@ -58,7 +46,6 @@ public class Album {
     public String getRecordLabel() {
         return recordLabel;
     }
-
 
     public void setId(int id) {
         this.id = id;
