@@ -55,13 +55,13 @@ public class Main {
                 case "1":
                     selectCRUDOption(session);
                     break;
-             /*   case "2":
-                    displaySoloArtists(connection);
+               case "2":
+                    displaySoloArtists(session);
                     break;
                 case "3":
                     displayArtistsAfterYear(connection, scanner);
                     break;
-                case "4":
+              /* case "4":
                     displayArtistDiscography(connection, scanner);
                     break;
                 case "5":
@@ -123,7 +123,6 @@ public class Main {
             }
         }
     }
-
 
     private static void displayCRUDOptions() {
         System.out.println("\n--- CRUD OPERATIONS ---");
@@ -366,5 +365,23 @@ public class Main {
         System.out.println("Artist deleted successfully.");
     }
 
+    //displaySoloArtists
+    public static void displaySoloArtists(Session session) {
+        String hql = "from Artist where type = 'Solo'";
+        Query query = session.createQuery(hql);
+        List<Artist> soloArtists = query.list();
 
-}
+            if (soloArtists.isEmpty()) {
+                System.out.println("No solo artists found in the database.");
+            } else {
+                System.out.println("\n=== Solo Artists ===");
+                for (Artist artist : soloArtists) {
+                    System.out.println(artist.toString());
+                }
+            }
+        }
+
+    }
+
+
+
