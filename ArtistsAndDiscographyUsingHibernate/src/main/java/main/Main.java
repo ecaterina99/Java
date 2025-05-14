@@ -55,11 +55,11 @@ public class Main {
                 case "1":
                     selectCRUDOption(session);
                     break;
-               case "2":
+                case "2":
                     displaySoloArtists(session);
                     break;
                 case "3":
-                    displayArtistsAfterYear(connection, scanner);
+                    displayArtistsAfterYear(session, scanner);
                     break;
               /* case "4":
                     displayArtistDiscography(connection, scanner);
@@ -133,6 +133,7 @@ public class Main {
         System.out.println("0. exit");
         System.out.print("Please choose the option: ");
     }
+
     public static Artist findArtistById(Session session, int id) {
         String hql = "from Artist where id = :id";
         Query<Artist> query = session.createQuery(hql, Artist.class);
@@ -140,7 +141,7 @@ public class Main {
         return query.uniqueResult();
     }
 
-   //create
+    //create
     private static void createArtist(Session session, Scanner scanner) throws SQLException {
         Artist artist = new Artist();
         // Read and validate artist name
@@ -371,17 +372,47 @@ public class Main {
         Query query = session.createQuery(hql);
         List<Artist> soloArtists = query.list();
 
-            if (soloArtists.isEmpty()) {
-                System.out.println("No solo artists found in the database.");
-            } else {
-                System.out.println("\n=== Solo Artists ===");
-                for (Artist artist : soloArtists) {
-                    System.out.println(artist.toString());
-                }
+        if (soloArtists.isEmpty()) {
+            System.out.println("No solo artists found in the database.");
+        } else {
+            System.out.println("\n=== Solo Artists ===");
+            for (Artist artist : soloArtists) {
+                System.out.println(artist.toString());
             }
         }
+    }
 
+    //displayArtistsAfterYear
+    public static void displayArtistsAfterYear(Session session, Scanner scanner) throws SQLException {
+        System.out.print("Enter the year to filter artists after: ");
+        String yearInput = scanner.nextLine();
+
+        ValidationResult result = Validator.validateNumberFormat(yearInput);
+        if (!result.isValid()) {
+            System.out.println(result.getMessage());
+            return;
+        }
+
+        int year = Integer.parseInt(yearInput);
+
+        String hql = "from Artist WHERE launchYear > :year";
+        Query<Artist> query = session.createQuery(hql, Artist.class);
+        query.setParameter("year", year);
+
+        List<Artist> artistsFilteredByYear = query.list();
+
+        if (artistsFilteredByYear.isEmpty()) {
+            System.out.println("No artists found that launched after year " + year + ".");
+        } else {
+            System.out.println("\n=== Artists Launched After " + year + " ===");
+            for (Artist art : artistsFilteredByYear) {
+                System.out.println(art.toString());
+            }
+        }
     }
 
 
+
+
+}
 
