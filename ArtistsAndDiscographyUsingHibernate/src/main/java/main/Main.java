@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import java.sql.*;
 import java.util.List;
 import java.util.Scanner;
@@ -33,8 +34,6 @@ public class Main {
         } finally {
             HibernateUtil.close();
         }
-
-        //verification
     }
 
     private static void selectOption(Session session) throws SQLException {
@@ -63,8 +62,7 @@ public class Main {
                     break;
                 case "6":
                     displayAllLabels(session);
-
-
+                    break;
                 case "0":
                     exit = true;
                     break;
@@ -86,7 +84,7 @@ public class Main {
         System.out.print("Enter an option: ");
     }
 
-    private static void selectCRUDOption(Session session) throws SQLException {
+    private static void selectCRUDOption(Session session) {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -106,7 +104,6 @@ public class Main {
                 case "4":
                     deleteArtistById(session, scanner);
                     break;
-
                 case "0":
                     exit = true;
                     break;
@@ -128,13 +125,18 @@ public class Main {
     }
 
     public static Artist findArtistById(Session session, int id) {
-        String hql = "from Artist where id = :id";
-        Query<Artist> query = session.createQuery(hql, Artist.class);
-        query.setParameter("id", id);
-        return query.uniqueResult();
+        try {
+            String hql = "from Artist where id = :id";
+            Query<Artist> query = session.createQuery(hql, Artist.class);
+            query.setParameter("id", id);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
-    private static void createArtist(Session session, Scanner scanner) throws SQLException {
+    private static void createArtist(Session session, Scanner scanner) {
         Artist artist = new Artist();
         // Read and validate artist name
         while (true) {
@@ -208,26 +210,46 @@ public class Main {
                 break;
             }
         }
-        //TODO add block try/catch
         insertArtistIntoDatabase(session, artist);
     }
 
-    public static void insertArtistIntoDatabase(Session session, Artist artist) throws SQLException {
-        session.persist(artist);
+    public static void insertArtistIntoDatabase(Session session, Artist artist) {
+        try {
+            session.persist(artist);
+            System.out.println("Artist successfully added with ID: " + artist.getId());
+        } catch (HibernateException e) {
+            System.err.println("Error inserting artist: " + e.getMessage());
+            throw e;
+        }
     }
 
     public static void displayAllArtists(Session session) {
-        String hql = "from Artist";
-        Query query = session.createQuery(hql);
-        List<Artist> artistsList = query.list();
-        for (Artist artist : artistsList) {
-            System.out.println(artist);
+        try {
+            String hql = "from Artist";
+            Query query = session.createQuery(hql);
+            List<Artist> artistsList = query.list();
+            if (artistsList.isEmpty()) {
+                System.out.println("No artists found in the database");
+            } else {
+                System.out.println("\n=== All Artists ===");
+                for (Artist artist : artistsList) {
+                    System.out.println(artist);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error displaying artists: " + e.getMessage());
         }
     }
 
     private static void setUpdates(Session session, Scanner scanner) {
         System.out.print("Enter artist Id to update: ");
-        int artistId = Integer.parseInt(scanner.nextLine());
+        String updateIdInput = scanner.nextLine();
+        ValidationResult res = Validator.validateNumberFormat(updateIdInput);
+        if (!res.isValid()) {
+            System.out.println(res.getMessage());
+            return;
+        }
+        int artistId = Integer.parseInt(updateIdInput);
 
         //show artist details
         Artist artist = findArtistById(session, artistId);
@@ -317,7 +339,13 @@ public class Main {
     }
 
     private static void updateArtistInDatabase(Session session, Artist artist) {
-        session.merge(artist);
+        try {
+            session.merge(artist);
+            System.out.println("Artist successfully updated");
+        } catch (HibernateException e) {
+            System.err.println("Error inserting artist: " + e.getMessage());
+            throw e;
+        }
     }
 
     private static void deleteArtistById(Session session, Scanner scanner) {
@@ -350,29 +378,40 @@ public class Main {
     }
 
     private static void deleteArtistFromDatabase(Session session, int artistId, Artist artist) {
-        artist = session.get(Artist.class, artistId);
-        session.remove(artist);
-        System.out.println("Artist deleted successfully.");
-    }
-
-    //displaySoloArtists
-    public static void displaySoloArtists(Session session) {
-        String hql = "from Artist where type = 'Solo'";
-        Query query = session.createQuery(hql);
-        List<Artist> soloArtists = query.list();
-
-        if (soloArtists.isEmpty()) {
-            System.out.println("No solo artists found in the database.");
-        } else {
-            System.out.println("\n=== Solo Artists ===");
-            for (Artist artist : soloArtists) {
-                System.out.println(artist.toString());
+        try {
+            artist = session.get(Artist.class, artistId);
+            if (artist != null) {
+                session.remove(artist);
+                System.out.println("Artist deleted successfully.");
+            } else {
+                System.out.println("Artist with ID " + artistId + " does not exist.");
             }
+        } catch (HibernateException e) {
+            System.err.println("Error deleting  artist: " + e.getMessage());
+            throw e;
         }
     }
 
-    //displayArtistsAfterYear
-    public static void displayArtistsAfterYear(Session session, Scanner scanner) throws SQLException {
+    public static void displaySoloArtists(Session session) {
+        try {
+            String hql = "from Artist where type = 'Solo'";
+            Query query = session.createQuery(hql);
+            List<Artist> soloArtists = query.list();
+
+            if (soloArtists.isEmpty()) {
+                System.out.println("No solo artists found in the database.");
+            } else {
+                System.out.println("\n=== Solo Artists ===");
+                for (Artist artist : soloArtists) {
+                    System.out.println(artist.toString());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error displaying solo artists: " + e.getMessage());
+        }
+    }
+
+    public static void displayArtistsAfterYear(Session session, Scanner scanner) {
         System.out.print("Enter the year to filter artists after: ");
         String yearInput = scanner.nextLine();
 
@@ -388,19 +427,23 @@ public class Main {
         Query<Artist> query = session.createQuery(hql, Artist.class);
         query.setParameter("year", year);
 
-        List<Artist> artistsFilteredByYear = query.list();
+        try {
+            List<Artist> artistsFilteredByYear = query.list();
 
-        if (artistsFilteredByYear.isEmpty()) {
-            System.out.println("No artists found that launched after year " + year + ".");
-        } else {
-            System.out.println("\n=== Artists Launched After " + year + " ===");
-            for (Artist art : artistsFilteredByYear) {
-                System.out.println(art.toString());
+            if (artistsFilteredByYear.isEmpty()) {
+                System.out.println("No artists found that launched after year " + year + ".");
+            } else {
+                System.out.println("\n=== Artists Launched After " + year + " ===");
+                for (Artist art : artistsFilteredByYear) {
+                    System.out.println(art.toString());
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Error displaying artists after year: " + e.getMessage());
         }
     }
 
-    private static void displayArtistDiscography(Session session, Scanner scanner) throws SQLException {
+    private static void displayArtistDiscography(Session session, Scanner scanner) {
         System.out.println("Please, enter artist's id:");
         String artistId = scanner.nextLine();
 
@@ -424,17 +467,23 @@ public class Main {
 
     }
 
-    private static List<Album> findAlbumsByArtistId(Session session, int artistId) throws SQLException {
-        String hql = "from Album where artist.id= :artistId";
-        Query<Album> query = session.createQuery(hql, Album.class);
-        query.setParameter("artistId", artistId);
-        List <Album> albums = query.list();
-        return albums;
+    private static List<Album> findAlbumsByArtistId(Session session, int artistId) {
+        try {
+            String hql = "from Album where artist.id= :artistId";
+            Query<Album> query = session.createQuery(hql, Album.class);
+            query.setParameter("artistId", artistId);
+            List<Album> albums = query.list();
+            return albums;
+        } catch (Exception e) {
+            System.err.println("Error finding albums by artist id: " + e.getMessage());
+            return null;
+        }
     }
 
     public static void displayAlbumsByLabel(Session session, Scanner scanner) throws SQLException {
         System.out.println("All labels from discography:");
         displayAllLabels(session);
+
         List<String> allLabels = getAllLabels(session);
 
         while (true) {
@@ -456,29 +505,36 @@ public class Main {
         }
     }
 
-    private static List<Album> getAlbumsByLabel(Session session, String recordLabel) throws SQLException {
-
-        String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
-        Query<Album> query = session.createQuery(hql, Album.class);
-        query.setParameter("label", recordLabel);
-        List<Album> albumsByLabel = query.list();
-        return albumsByLabel;
+    private static List<Album> getAlbumsByLabel(Session session, String recordLabel) {
+        try {
+            String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
+            Query<Album> query = session.createQuery(hql, Album.class);
+            query.setParameter("label", recordLabel);
+            List<Album> albumsByLabel = query.list();
+            return albumsByLabel;
+        } catch (Exception e) {
+            System.err.println("Error getting albums by label: " + e.getMessage());
+            return null;
+        }
     }
 
-    private static List<String> getAllLabels(Session session) throws SQLException {
-        String hql = "select DISTINCT a.recordLabel from Album a";
-        Query<String> query = session.createQuery(hql, String.class);
-        List<String> recordLabels = query.getResultList();
-        return recordLabels;
-
+    private static List<String> getAllLabels(Session session) {
+        try {
+            String hql = "select DISTINCT a.recordLabel from Album a";
+            Query<String> query = session.createQuery(hql, String.class);
+            List<String> recordLabels = query.getResultList();
+            return recordLabels;
+        } catch (Exception e) {
+            System.err.println("Error getting all labels: " + e.getMessage());
+            return null;
+        }
     }
 
-    private static void displayAllLabels(Session session) throws SQLException {
+    private static void displayAllLabels(Session session) {
         List<String> labels = getAllLabels(session);
         for (String label : labels) {
             System.out.println(label);
         }
     }
-
 }
 

@@ -11,18 +11,23 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "name")
+
+    @Column(name = "name",nullable = false)
     private String name;
-    @Column(name = "type")
+
+    @Column(name = "type",nullable = false)
     private String type;
-    @Column(name = "launch_year")
+
+    @Column(name = "launch_year",nullable = false)
     private int launchYear;
+
     @Column(name = "split_year", nullable = true)
     private Integer splitYear;
+
     @Column(name = "website", nullable = true)
     private String website;
 
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Album> albums;
 
     public Artist() {
@@ -97,5 +102,4 @@ public class Artist {
         }
         return sb.toString();
     }
-
 }

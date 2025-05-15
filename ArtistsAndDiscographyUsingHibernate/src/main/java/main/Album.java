@@ -12,15 +12,18 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "title")
+
+    @Column(name = "title",nullable = false)
     private String title;
-    @Column(name = "release_year")
+
+    @Column(name = "release_year",nullable = false)
     private int releaseYear;
-    @Column(name = "record_label")
+
+    @Column(name = "record_label",nullable = false)
     private String recordLabel;
 
-    @ManyToOne
-    @JoinColumn(name = "artist_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "artist_id", referencedColumnName = "id",nullable = false    )
     @Cascade(CascadeType.ALL)
     private Artist artist;
 
