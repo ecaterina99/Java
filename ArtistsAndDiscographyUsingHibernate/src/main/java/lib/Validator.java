@@ -51,7 +51,6 @@ public class Validator {
 
 
     public static ValidationResult validateWebsite(String website) {
-
         if (!website.startsWith("http://") && !website.startsWith("https://") && !website.startsWith("www.")) {
             return ValidationResult.fail("Invalid website. Please try again.");
         }

@@ -12,13 +12,13 @@ public class Artist {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "type",nullable = false)
+    @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "launch_year",nullable = false)
+    @Column(name = "launch_year", nullable = false)
     private int launchYear;
 
     @Column(name = "split_year", nullable = true)
@@ -27,7 +27,7 @@ public class Artist {
     @Column(name = "website", nullable = true)
     private String website;
 
-    @OneToMany(mappedBy = "artist",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Album> albums;
 
     public Artist() {

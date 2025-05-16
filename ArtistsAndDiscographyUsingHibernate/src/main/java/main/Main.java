@@ -7,18 +7,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import java.sql.*;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         setConnection();
     }
 
-    private static void setConnection() throws SQLException {
+    private static void setConnection()  {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
@@ -36,7 +34,7 @@ public class Main {
         }
     }
 
-    private static void selectOption(Session session) throws SQLException {
+    private static void selectOption(Session session) {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -75,7 +73,7 @@ public class Main {
 
     private static void displayMainOptions() {
         System.out.println("\n=== ARTIST MANAGEMENT SYSTEM ===");
-        System.out.println("1. Demonstrate CRUD operations");
+        System.out.println("1. Show CRUD operations");
         System.out.println("2. Show solo artists");
         System.out.println("3. Show artists after a specific year");
         System.out.println("4. Show artist discography");
@@ -480,7 +478,7 @@ public class Main {
         }
     }
 
-    public static void displayAlbumsByLabel(Session session, Scanner scanner) throws SQLException {
+    public static void displayAlbumsByLabel(Session session, Scanner scanner) {
         System.out.println("All labels from discography:");
         displayAllLabels(session);
 

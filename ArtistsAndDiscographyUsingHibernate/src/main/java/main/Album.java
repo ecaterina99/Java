@@ -13,17 +13,17 @@ public class Album {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "title",nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "release_year",nullable = false)
+    @Column(name = "release_year", nullable = false)
     private int releaseYear;
 
-    @Column(name = "record_label",nullable = false)
+    @Column(name = "record_label", nullable = false)
     private String recordLabel;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "artist_id", referencedColumnName = "id",nullable = false    )
+    @JoinColumn(name = "artist_id", referencedColumnName = "id", nullable = false)
     @Cascade(CascadeType.ALL)
     private Artist artist;
 
