@@ -7,7 +7,9 @@ public class Artist {
     private Integer splitYear;
     private String website;
 
-    public Artist() {}
+    public Artist() {
+    }
+
     public Artist(String name, String type, int launchYear, Integer splitYear, String website) {
         this.name = name;
         this.type = type;
@@ -16,8 +18,7 @@ public class Artist {
         this.website = website;
     }
 
-
-    public Artist(int id,String name, String type, int launchYear, Integer splitYear, String website) {
+    public Artist(int id, String name, String type, int launchYear, Integer splitYear, String website) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -83,7 +84,7 @@ public class Artist {
                 .append(", Type: ").append(type)
                 .append(", Launch Year: ").append(launchYear);
 
-        if (splitYear != 0 ) {
+        if (splitYear != null) {
             sb.append(", Split Year: ").append(splitYear);
         } else {
             sb.append(", Status: Active");
@@ -93,7 +94,7 @@ public class Artist {
             sb.append(", Website: ").append(website);
         } else {
             sb.append(", No website");
-        } 
+        }
         return sb.toString();
     }
 

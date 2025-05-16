@@ -6,11 +6,6 @@ public class Album {
     private String recordLabel;
     private Artist artist;
 
-
-    public Album(String recordLabel) {
-        this.recordLabel = recordLabel;
-    }
-
     public Album(int id, int artistId, String title, int releaseYear, String recordLabel, Artist artist) {
         this.id = id;
         this.artistId = artistId;
@@ -19,7 +14,6 @@ public class Album {
         this.recordLabel = recordLabel;
         this.artist = artist;
     }
-
 
     public Album(int artistId, String title, int releaseYear, String recordLabel) {
         this.artistId = artistId;
@@ -76,9 +70,5 @@ public class Album {
 
     public String albumsAndArtists() {
         return "Record label: " + this.recordLabel + ", album title: " + this.title + ", release year: " + this.releaseYear + ", artist: " + artist.toString();
-    }
-
-    public String allLabels() {
-        return this.recordLabel;
     }
 }
