@@ -1,3 +1,6 @@
+import model.Album;
+import model.Artist;
+
 import java.util.List;
 
 public class Discography {
@@ -26,7 +29,7 @@ public class Discography {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Artist: ").append(artist.getName())
+        sb.append("Model.Artist: ").append(artist.getName())
                 .append(" (").append(artist.getType()).append(")\n");
 
         if (albums.isEmpty()) {

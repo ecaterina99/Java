@@ -1,3 +1,5 @@
+package model;
+
 public class Album {
     private int id;
     private int artistId;
@@ -65,7 +67,7 @@ public class Album {
 
     @Override
     public String toString() {
-        return "Album title: " + this.title + ", release year: " + this.releaseYear + ", record label: " + this.recordLabel;
+        return "Model.Album title: " + this.title + ", release year: " + this.releaseYear + ", record label: " + this.recordLabel;
     }
 
     public String albumsAndArtists() {

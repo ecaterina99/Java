@@ -1,4 +1,6 @@
 
+import model.Album;
+import model.Artist;
 import connection.DBConnection;
 import lib.ValidationResult;
 import lib.Validator;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         try {
             initSelectOption();
@@ -147,7 +150,7 @@ public class Main {
 
         // Read and validate artist type
         while (true) {
-            System.out.print("Artist type(solo/band): ");
+            System.out.print("Model.Artist type(solo/band): ");
             String typeInput = scanner.nextLine();
             ValidationResult result = Validator.validateArtistType(typeInput);
             if (result.isValid()) {
@@ -243,7 +246,7 @@ public class Main {
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-                    System.out.println("Artist added successfully with ID: " + id);
+                    System.out.println("Model.Artist added successfully with ID: " + id);
                 } else {
                     throw new SQLException("Inserting artist failed, no ID obtained.");
                 }
@@ -286,10 +289,10 @@ public class Main {
         //show artist details
         Artist artist = findArtistById(artistId);
         if (artist == null) {
-            System.out.println("Artist with Id: " + artistId + " not found");
+            System.out.println("Model.Artist with Id: " + artistId + " not found");
             return;
         }
-        System.out.println("Artist details: " + artist);
+        System.out.println("Model.Artist details: " + artist);
 
         // Update name if provided
         System.out.print("Enter new name (leave empty to keep the current one): ");
@@ -401,7 +404,7 @@ public class Main {
             ps.setInt(6, artist.getId());
 
             if (ps.executeUpdate() > 0) {
-                System.out.println("Artist updated successfully!");
+                System.out.println("Model.Artist updated successfully!");
             } else {
                 System.out.println("No artist was updated.");
             }
@@ -422,7 +425,7 @@ public class Main {
         Artist artistToDelete = findArtistById(artistId);
 
         if (artistToDelete == null) {
-            System.out.println("Artist with ID " + deleteIdInput + " does not exist!");
+            System.out.println("Model.Artist with ID " + deleteIdInput + " does not exist!");
         } else {
             // Confirm deletion
             String confirmation = "";
@@ -448,7 +451,7 @@ public class Main {
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
             if (ps.executeUpdate() > 0) {
-                System.out.println("Artist deleted successfully.");
+                System.out.println("Model.Artist deleted successfully.");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -540,7 +543,7 @@ public class Main {
         Artist artist = findArtistById(id);
 
         if (artist == null) {
-            System.out.println("Artist with ID " + artistId + " does not exist!");
+            System.out.println("Model.Artist with ID " + artistId + " does not exist!");
             return;
         }
 

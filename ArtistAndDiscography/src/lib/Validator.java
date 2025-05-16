@@ -6,7 +6,7 @@ public class Validator {
 
     public static ValidationResult validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            return ValidationResult.fail("Artist name cannot be empty.");
+            return ValidationResult.fail("Model.Artist name cannot be empty.");
         }
         return ValidationResult.ok();
     }

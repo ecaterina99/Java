@@ -1,3 +1,5 @@
+package model;
+
 public class Artist {
 
     private int id;
@@ -79,7 +81,7 @@ public class Artist {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Artist ID: ").append(id)
+        sb.append("Model.Artist ID: ").append(id)
                 .append(", Name: ").append(name)
                 .append(", Type: ").append(type)
                 .append(", Launch Year: ").append(launchYear);

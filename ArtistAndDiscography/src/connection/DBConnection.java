@@ -28,7 +28,7 @@ public class DBConnection {
 
     private static void loadProperties() throws IOException {
         Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/database.properties")) {
+        try (FileInputStream fis = new FileInputStream("src/connection/database.properties")) {
             props.load(fis);
 
             url = props.getProperty("url");
