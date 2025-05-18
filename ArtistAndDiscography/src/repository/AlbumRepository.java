@@ -3,7 +3,6 @@ package repository;
 import connection.DBConnection;
 import model.Album;
 import model.Artist;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

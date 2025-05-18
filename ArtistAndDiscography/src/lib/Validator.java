@@ -11,7 +11,6 @@ public class Validator {
         return ValidationResult.ok();
     }
 
-
     public static ValidationResult validateArtistType(String type) {
         if (!type.equalsIgnoreCase("solo") && !type.equalsIgnoreCase("band")) {
             return ValidationResult.fail("Invalid type. Please enter 'solo' or 'band'");
@@ -35,7 +34,6 @@ public class Validator {
         return ValidationResult.ok();
     }
 
-
     public static ValidationResult validateSplitYear(String splitYear, int launchYear) {
         LocalDate currentDate = LocalDate.now();
         try {
@@ -49,9 +47,7 @@ public class Validator {
         return ValidationResult.ok();
     }
 
-
     public static ValidationResult validateWebsite(String website) {
-
         if (!website.startsWith("http://") && !website.startsWith("https://") && !website.startsWith("www.")) {
             return ValidationResult.fail("Invalid website. Please try again.");
         }

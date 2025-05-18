@@ -1,18 +1,13 @@
 package repository;
 
 import connection.DBConnection;
-import lib.ValidationResult;
-import lib.Validator;
 import model.Artist;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ArtistRepository {
     private Connection connection;
-
 
     public ArtistRepository() {
         try {

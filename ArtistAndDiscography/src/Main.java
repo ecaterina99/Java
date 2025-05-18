@@ -1,25 +1,24 @@
-
 import controller.AlbumController;
 import controller.ArtistController;
 import connection.DBConnection;
+import lib.DependencyContainer;
 import repository.AlbumRepository;
 import repository.ArtistRepository;
 import service.AlbumService;
 import service.ArtistService;
+
 import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
+    // Configures and stores all application dependencies for dependency injection
+    static DependencyContainer container = configureDependencies();
 
     public static void main(String[] args) {
+
+        // Application entry point. Initializes the application.
         try {
-            ArtistRepository artistRepository = new ArtistRepository();
-            ArtistService artistService = new ArtistService(artistRepository);
-            ArtistController artistController = new ArtistController(artistService);
-            AlbumRepository albumRepository = new AlbumRepository();
-            AlbumService albumService = new AlbumService(albumRepository);
-            AlbumController albumController = new AlbumController(albumService);
-            initSelectOption(artistController,albumController);
+            run();
             DBConnection.closeConnection();
 
         } catch (Exception e) {
@@ -28,17 +27,24 @@ public class Main {
         }
     }
 
-    private static void initSelectOption(ArtistController artistController,AlbumController albumController) throws SQLException {
+
+    /**
+     * Main application execution loop.
+     * Handles the primary program flow including menu display and user option processing.
+     */
+    public static void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
-
+        // Resolve controller dependencies from the container
+        var artistController = container.resolve(ArtistController.class);
+        var albumController = container.resolve(AlbumController.class);
         while (!exit) {
             displayMainMenu();
 
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    initSelectCRUDOption(artistController);
+                    initSelectCRUDOption();
                     break;
                 case "2":
                     artistController.displaySoloArtists();
@@ -46,7 +52,7 @@ public class Main {
                 case "3":
                     artistController.displayArtistsAfterYear();
                     break;
-             case "4":
+                case "4":
                     albumController.displayArtistDiscography();
                     break;
                 case "5":
@@ -73,8 +79,13 @@ public class Main {
         System.out.print("Enter an option: ");
     }
 
-    private static void initSelectCRUDOption(ArtistController controller) {
+    /**
+     * Handles the CRUD operations' submenu.
+     * Provides a separate menu for Create, Read, Update, and Delete operations on artists.
+     */
+    private static void initSelectCRUDOption() {
         Scanner scanner = new Scanner(System.in);
+        var artistController = container.resolve(ArtistController.class);
         boolean exit = false;
 
         while (!exit) {
@@ -82,16 +93,16 @@ public class Main {
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    controller.createArtist();
+                    artistController.createArtist();
                     break;
                 case "2":
-                    controller.displayAllArtists();
-                break;
+                    artistController.displayAllArtists();
+                    break;
                 case "3":
-                    controller.updateArtist();
+                    artistController.updateArtist();
                     break;
                 case "4":
-                    controller.deleteArtist();
+                    artistController.deleteArtist();
                     break;
                 case "0":
                     exit = true;
@@ -113,6 +124,35 @@ public class Main {
         System.out.print("Please choose the option: ");
     }
 
+    /**
+     * Configures all application dependencies using the Dependency Injection pattern.
+     * Creates and wires together repositories, services, and controllers.
+     */
+
+    private static DependencyContainer configureDependencies() {
+        DependencyContainer container = new DependencyContainer();
+
+        container.register(ArtistRepository.class, new ArtistRepository());
+        container.register(AlbumRepository.class, new AlbumRepository());
+
+        container.register(ArtistService.class, new ArtistService(
+                container.resolve(ArtistRepository.class)
+        ));
+
+        container.register(AlbumService.class, new AlbumService(
+                container.resolve(AlbumRepository.class),
+                container.resolve(ArtistRepository.class)
+        ));
+
+        container.register(ArtistController.class, new ArtistController(
+                container.resolve(ArtistService.class)
+        ));
+        container.register(AlbumController.class, new AlbumController(
+                container.resolve(AlbumService.class)
+        ));
+
+        return container;
+    }
 }
 
 

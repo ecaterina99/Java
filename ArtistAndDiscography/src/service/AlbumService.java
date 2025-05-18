@@ -1,19 +1,19 @@
 package service;
-
 import model.Album;
 import model.Artist;
 import repository.AlbumRepository;
 import repository.ArtistRepository;
-
 import java.sql.SQLException;
 import java.util.List;
 
 public class AlbumService {
 
     private final AlbumRepository albumRepository;
+    private final ArtistRepository artistRepository;
 
-    public AlbumService(AlbumRepository repository) {
+    public AlbumService(AlbumRepository repository, ArtistRepository artistRepository) {
         this.albumRepository = repository;
+        this.artistRepository = artistRepository;
     }
 
     public List<String> readAllLabels() {
@@ -29,7 +29,6 @@ public class AlbumService {
     }
 
     public Artist findArtist(int artistId) {
-        ArtistRepository artistRepository = new ArtistRepository();
         return artistRepository.findArtistById(artistId);
     }
 }

@@ -5,7 +5,6 @@ import lib.Validator;
 import model.Album;
 import model.Artist;
 import model.Discography;
-import repository.ArtistRepository;
 import service.AlbumService;
 
 import java.sql.SQLException;

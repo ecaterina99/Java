@@ -4,6 +4,7 @@ import lib.ValidationResult;
 import lib.Validator;
 import model.Artist;
 import service.ArtistService;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -17,9 +18,12 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
+    /**
+     * Reads and validates user input to create a new Artist.
+     * After validation, it sends the Artist object to the service layer for persistence.
+     */
     public void createArtist() {
         Artist artist = new Artist();
-        // Read and validate artist name
         while (true) {
             System.out.print("Name: ");
             String input = scanner.nextLine();
@@ -32,7 +36,6 @@ public class ArtistController {
             }
         }
 
-        // Read and validate artist type
         while (true) {
             System.out.print("Model.Artist type(solo/band): ");
             String typeInput = scanner.nextLine();
@@ -45,7 +48,6 @@ public class ArtistController {
             }
         }
 
-        // Read and validate launch year
         while (true) {
             System.out.print("Launch year: ");
             String launchYearInput = scanner.nextLine();
@@ -58,7 +60,6 @@ public class ArtistController {
             }
         }
 
-        // Read and validate split year
         while (true) {
             System.out.print("Split Year: (leave empty if still active) ");
             String splitYearInput = scanner.nextLine();
@@ -75,7 +76,6 @@ public class ArtistController {
             }
         }
 
-        // Read and validate website name
         while (true) {
             System.out.print("Website: (leave empty if doesn't exist) ");
             String websiteInput = scanner.nextLine();
@@ -99,6 +99,12 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Updates an existing artist’s information.
+     * Prompts the user to enter the artist ID, displays current details,
+     * then asks for updated fields (optional).
+     * After validation, it sends the updated Artist object to the service layer for persistence.
+     */
     public void updateArtist() {
         System.out.print("Enter artist Id to update: ");
         String updateIdInput = scanner.nextLine();
@@ -109,7 +115,6 @@ public class ArtistController {
         }
         int artistId = Integer.parseInt(updateIdInput);
 
-        //show artist details
         Artist artist = artistService.findArtist(artistId);
         if (artist == null) {
             System.out.println("Model.Artist with Id: " + artistId + " not found");
@@ -117,14 +122,12 @@ public class ArtistController {
         }
         System.out.println("Model.Artist details: " + artist);
 
-        // Update name if provided
         System.out.print("Enter new name (leave empty to keep the current one): ");
         String newName = scanner.nextLine();
         if (!newName.isEmpty()) {
             artist.setName(newName);
         }
 
-        // Update type if provided
         while (true) {
             System.out.print("Enter new type (solo/band) (leave empty to keep the current one): ");
             String typeInput = scanner.nextLine();
@@ -141,7 +144,6 @@ public class ArtistController {
             }
         }
 
-        // Update launch year if provided
         while (true) {
             System.out.print("Enter new launch year (leave empty to keep current one): ");
             String launchYearInput = scanner.nextLine();
@@ -159,7 +161,6 @@ public class ArtistController {
             }
         }
 
-        // Update split year if provided
         while (true) {
             System.out.print("Enter new split year (leave empty to keep current one): ");
             String splitYearInput = scanner.nextLine();
@@ -177,7 +178,6 @@ public class ArtistController {
             }
         }
 
-        // Update website if provided
         while (true) {
             System.out.print("Enter new website (leave empty to keep current one): ");
             String websiteInput = scanner.nextLine();
@@ -194,7 +194,6 @@ public class ArtistController {
             }
         }
 
-        // Update artist in the database
         try {
             artistService.updateArtist(artist);
         } catch (SQLException e) {
@@ -202,6 +201,7 @@ public class ArtistController {
         }
     }
 
+    // Deletes an artist by ID after confirmation.
     public void deleteArtist() {
         System.out.print("Enter artist Id to delete: ");
         String deleteIdInput = scanner.nextLine();
@@ -235,6 +235,7 @@ public class ArtistController {
         }
     }
 
+    //Displays all artists stored in the database.
     public void displayAllArtists() {
         List<Artist> artistsList = artistService.readArtist();
         for (Artist artist : artistsList) {
@@ -242,6 +243,7 @@ public class ArtistController {
         }
     }
 
+    // Displays only artists of type 'solo'.
     public void displaySoloArtists() {
         List<Artist> soloArtists = artistService.readSoloArtists();
         System.out.println("\n=== Solo Artists ===");
@@ -250,6 +252,7 @@ public class ArtistController {
         }
     }
 
+    //Asks for a year and displays all artists launched after that year.
     public void displayArtistsAfterYear() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the year to filter artists after: ");
@@ -260,7 +263,6 @@ public class ArtistController {
             System.out.println(result.getMessage());
             return;
         }
-
         int year = Integer.parseInt(yearInput);
         try {
             List<Artist> artistsFilteredByYear = artistService.readArtistsAfterYear(year);
