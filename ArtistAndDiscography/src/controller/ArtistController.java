@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controller class for handling user interactions related to Artist entities.
+ * Manages input, validation, and delegates business logic to the service layer.
+ */
 public class ArtistController {
 
     private final ArtistService artistService;
@@ -201,7 +205,7 @@ public class ArtistController {
         }
     }
 
-    // Deletes an artist by ID after confirmation.
+    //Deletes an artist by ID after confirmation.
     public void deleteArtist() {
         System.out.print("Enter artist Id to delete: ");
         String deleteIdInput = scanner.nextLine();

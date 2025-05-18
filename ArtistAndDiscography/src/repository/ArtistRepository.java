@@ -6,6 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository class responsible for managing Artist data in the database.
+ */
 public class ArtistRepository {
     private Connection connection;
 
@@ -54,6 +57,7 @@ public class ArtistRepository {
             }
         }
     }
+
 
     public Artist findArtistById(int id) {
         String query = "SELECT * FROM artists WHERE id = ?";

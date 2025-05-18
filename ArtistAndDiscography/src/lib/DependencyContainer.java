@@ -3,6 +3,10 @@ package lib;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A simple dependency injection container that allows
+ * registering and resolving class instances by type.
+ */
 public class DependencyContainer {
         private Map<Class<?>, Object> instances = new HashMap<>();
 

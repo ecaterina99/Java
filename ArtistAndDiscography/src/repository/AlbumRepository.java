@@ -7,6 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository class responsible for managing Album data in the database.
+ */
 public class AlbumRepository {
 
     private Connection connection;
@@ -19,6 +22,7 @@ public class AlbumRepository {
         }
     }
 
+    // Retrieves a list of albums along with associated artist data based on a given record label.
     public List<Album> getAlbumsByLabel(String recordLabel) {
         List<Album> albumsByLabel = new ArrayList<>();
 
@@ -57,6 +61,7 @@ public class AlbumRepository {
         return albumsByLabel;
     }
 
+    //Retrieves all distinct record labels from the albums table.
     public List<String> getAllLabels() {
         List<String> labels = new ArrayList<>();
         try (
@@ -71,6 +76,7 @@ public class AlbumRepository {
         return labels;
     }
 
+    // Retrieves all albums associated with a specific artist ID.
     public List<Album> getAlbumsByArtistId(int artistId) throws SQLException {
         List<Album> albums = new ArrayList<>();
         String query = "SELECT artist_id, title, release_year, record_label FROM albums WHERE artist_id = ?";

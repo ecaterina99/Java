@@ -6,6 +6,10 @@ import repository.ArtistRepository;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Service layer for album-related operations.
+ * This class acts as a bridge between the controller and the repository layer.
+ */
 public class AlbumService {
 
     private final AlbumRepository albumRepository;

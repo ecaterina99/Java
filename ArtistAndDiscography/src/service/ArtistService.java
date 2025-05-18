@@ -5,6 +5,10 @@ import repository.ArtistRepository;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Service layer for artist-related operations.
+ * This class acts as a bridge between the controller and the repository layer.
+ */
 public class ArtistService {
     private final ArtistRepository artistRepository;
 
