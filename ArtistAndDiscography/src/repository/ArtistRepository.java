@@ -11,15 +11,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ArtistRepository {
-    Connection conn = DBConnection.getConnection();
+    private Connection connection;
 
-    public ArtistRepository() throws SQLException {
+
+    public ArtistRepository() {
+        try {
+            this.connection = DBConnection.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-    public void insertArtistIntoDatabase(Artist artist) throws SQLException {
+
+    public void insertArtist(Artist artist) throws SQLException {
         String query = "INSERT INTO artists (name, type, launch_year, split_year, website) VALUES (?, ?, ?, ?, ?)";
 
         try (
-                PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement ps = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, artist.getName());
             ps.setString(2, artist.getType());
@@ -53,10 +60,10 @@ public class ArtistRepository {
         }
     }
 
-    public static Artist findArtistById(int id) {
+    public Artist findArtistById(int id) {
         String query = "SELECT * FROM artists WHERE id = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try (
+             PreparedStatement ps = this.connection.prepareStatement(query)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next()) {
@@ -77,11 +84,11 @@ public class ArtistRepository {
         return null;
     }
 
-    public void update(Artist artist) throws SQLException {
+    public void updateArtist(Artist artist) throws SQLException {
         String query = "update artists set name=?, type=?, launch_year=?, split_year=?, website=? where id=?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)
+        try (
+             PreparedStatement ps = this.connection.prepareStatement(query)
         ) {
             ps.setString(1, artist.getName());
             ps.setString(2, artist.getType());
@@ -109,11 +116,11 @@ public class ArtistRepository {
         }
     }
 
-    public void deleteArtistFromDatabase(Artist artist,int id)  {
+    public void deleteArtist(Artist artist, int id)  {
         String query = "delete from artists where id=?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+        try (
+             PreparedStatement ps = this.connection.prepareStatement(query)) {
             ps.setInt(1, id);
             if (ps.executeUpdate() > 0) {
                 System.out.println("Model.Artist deleted successfully.");
@@ -125,9 +132,9 @@ public class ArtistRepository {
 
     public List<Artist> getAllArtists() {
         List<Artist> artistsList = new ArrayList<>();
-        try (Connection connection = DBConnection.getConnection();
-             Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery("select * from artists")) {
+        try (
+                Statement st = this.connection.createStatement();
+                ResultSet rs = st.executeQuery("select * from artists")) {
             while (rs.next()) {
                 Artist a = new Artist(rs.getInt("id"),
                         rs.getString("name"),
@@ -143,11 +150,11 @@ public class ArtistRepository {
         }
     }
 
-    public static List<Artist> getSoloArtists(){
+    public List<Artist> getSoloArtists(){
         List<Artist> soloArtists = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("select * from artists where type='Solo' ")) {
+        try (
+                Statement st = this.connection.createStatement();
+                ResultSet rs = st.executeQuery("select * from artists where type='Solo' ")) {
             while (rs.next()) {
                 Artist artist = new Artist(
                         rs.getInt("id"),
@@ -170,24 +177,14 @@ public class ArtistRepository {
         }
     }
 
-    public  List<Artist> getArtistsAfterYear() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the year to filter artists after: ");
-        String yearInput = scanner.nextLine();
+    public  List<Artist> getArtistsAfterYear(int year) {
 
-        ValidationResult result = Validator.validateNumberFormat(yearInput);
-        if (!result.isValid()) {
-            System.out.println(result.getMessage());
-            return null;
-        }
-
-        int year = Integer.parseInt(yearInput);
         List<Artist> artistsFilteredByYear = new ArrayList<>();
         String query = "SELECT * FROM artists WHERE launch_year > ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (
+                PreparedStatement statement = this.connection.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery()) {
                 statement.setInt(1, year);
 
                 while (resultSet.next()) {
@@ -202,8 +199,8 @@ public class ArtistRepository {
                     artistsFilteredByYear.add(artist);
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            System.out.println(e.getMessage());
+        }
         if (artistsFilteredByYear.isEmpty()) {
             System.out.println("No artists found that launched after year " + year + ".");
             return null;

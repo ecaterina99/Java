@@ -3,22 +3,21 @@ package controller;
 import lib.ValidationResult;
 import lib.Validator;
 import model.Artist;
-import repository.ArtistRepository;
 import service.ArtistService;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class ArtistController {
+
     private final ArtistService artistService;
-    private final Scanner scanner=new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
-
-    public ArtistController(ArtistService artistService ) {
+    public ArtistController(ArtistService artistService) {
         this.artistService = artistService;
     }
-    public void createArtist() throws SQLException {
+
+    public void createArtist() {
         Artist artist = new Artist();
         // Read and validate artist name
         while (true) {
@@ -100,7 +99,7 @@ public class ArtistController {
         }
     }
 
-    public void setUpdates() {
+    public void updateArtist() {
         System.out.print("Enter artist Id to update: ");
         String updateIdInput = scanner.nextLine();
         ValidationResult res = Validator.validateNumberFormat(updateIdInput);
@@ -111,7 +110,7 @@ public class ArtistController {
         int artistId = Integer.parseInt(updateIdInput);
 
         //show artist details
-        Artist artist = ArtistRepository.findArtistById(artistId);
+        Artist artist = artistService.findArtist(artistId);
         if (artist == null) {
             System.out.println("Model.Artist with Id: " + artistId + " not found");
             return;
@@ -203,7 +202,7 @@ public class ArtistController {
         }
     }
 
-    public void deleteArtistById() {
+    public void deleteArtist() {
         System.out.print("Enter artist Id to delete: ");
         String deleteIdInput = scanner.nextLine();
 
@@ -214,7 +213,7 @@ public class ArtistController {
         }
 
         int artistId = Integer.parseInt(deleteIdInput);
-        Artist artistToDelete = ArtistRepository.findArtistById(artistId);
+        Artist artistToDelete = artistService.findArtist(artistId);
 
         if (artistToDelete == null) {
             System.out.println("Model.Artist with ID " + deleteIdInput + " does not exist!");
@@ -228,7 +227,7 @@ public class ArtistController {
 
             if (confirmation.equalsIgnoreCase("y")) {
                 try {
-                    artistService.deleteArtist(artistToDelete,artistId);
+                    artistService.deleteArtist(artistToDelete, artistId);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -252,11 +251,26 @@ public class ArtistController {
     }
 
     public void displayArtistsAfterYear() {
-        List<Artist> artistsFilteredByYear = artistService.readArtistsAfterYear();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the year to filter artists after: ");
+        String yearInput = scanner.nextLine();
 
-        System.out.println("\n=== Artists List ===");
-        for (Artist artist : artistsFilteredByYear) {
-            System.out.println(artist.toString());
+        ValidationResult result = Validator.validateNumberFormat(yearInput);
+        if (!result.isValid()) {
+            System.out.println(result.getMessage());
+            return;
+        }
+
+        int year = Integer.parseInt(yearInput);
+        try {
+            List<Artist> artistsFilteredByYear = artistService.readArtistsAfterYear(year);
+            System.out.println("\n=== Artists List ===");
+            for (Artist artist : artistsFilteredByYear) {
+                System.out.println(artist.toString());
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
     }
+
 }

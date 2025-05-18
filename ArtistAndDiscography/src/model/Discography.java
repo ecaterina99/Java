@@ -1,5 +1,4 @@
-import model.Album;
-import model.Artist;
+package model;
 
 import java.util.List;
 

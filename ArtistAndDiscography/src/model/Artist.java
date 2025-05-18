@@ -27,7 +27,6 @@ public class Artist {
         this.launchYear = launchYear;
         this.splitYear = splitYear;
         this.website = website;
-
     }
 
     public int getId() {

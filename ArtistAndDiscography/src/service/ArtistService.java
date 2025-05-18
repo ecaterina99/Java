@@ -2,41 +2,41 @@ package service;
 
 import model.Artist;
 import repository.ArtistRepository;
-
 import java.sql.SQLException;
 import java.util.List;
 
 public class ArtistService {
-    private final ArtistRepository repository;
+    private final ArtistRepository artistRepository;
 
     public ArtistService(ArtistRepository repository) {
-        this.repository = repository;
+        this.artistRepository = repository;
+    }
+
+    public Artist findArtist(int id){
+        return artistRepository.findArtistById(id);
     }
 
     public void createArtist(Artist artist) throws SQLException {
-        repository.insertArtistIntoDatabase(artist);
+        artistRepository.insertArtist(artist);
     }
 
     public void updateArtist(Artist artist) throws SQLException {
-        repository.update(artist);
+        artistRepository.updateArtist(artist);
     }
 
     public void deleteArtist(Artist artist, int artistId) throws SQLException {
-        repository.deleteArtistFromDatabase(artist, artistId);
+        artistRepository.deleteArtist(artist, artistId);
     }
 
     public List<Artist> readArtist(){
-        return repository.getAllArtists();
+        return artistRepository.getAllArtists();
     }
 
     public List<Artist> readSoloArtists(){
-        return repository.getSoloArtists();
+        return artistRepository.getSoloArtists();
     }
 
-    public List<Artist> readArtistsAfterYear(){
-        return repository.getArtistsAfterYear();
+    public List<Artist> readArtistsAfterYear(int year){
+        return artistRepository.getArtistsAfterYear(year);
     }
-
-
-
 }

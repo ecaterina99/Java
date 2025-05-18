@@ -73,5 +73,4 @@ public class Validator {
         return ValidationResult.ok();
     }
 
-
 }
