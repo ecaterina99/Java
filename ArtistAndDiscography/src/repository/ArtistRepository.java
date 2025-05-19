@@ -2,6 +2,7 @@ package repository;
 
 import connection.DBConnection;
 import model.Artist;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class ArtistRepository {
     public Artist findArtistById(int id) {
         String query = "SELECT * FROM artists WHERE id = ?";
         try (
-             PreparedStatement ps = this.connection.prepareStatement(query)) {
+                PreparedStatement ps = this.connection.prepareStatement(query)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next()) {
@@ -87,7 +88,7 @@ public class ArtistRepository {
         String query = "update artists set name=?, type=?, launch_year=?, split_year=?, website=? where id=?";
 
         try (
-             PreparedStatement ps = this.connection.prepareStatement(query)
+                PreparedStatement ps = this.connection.prepareStatement(query)
         ) {
             ps.setString(1, artist.getName());
             ps.setString(2, artist.getType());
@@ -115,11 +116,11 @@ public class ArtistRepository {
         }
     }
 
-    public void deleteArtist(Artist artist, int id)  {
+    public void deleteArtist(Artist artist, int id) {
         String query = "delete from artists where id=?";
 
         try (
-             PreparedStatement ps = this.connection.prepareStatement(query)) {
+                PreparedStatement ps = this.connection.prepareStatement(query)) {
             ps.setInt(1, id);
             if (ps.executeUpdate() > 0) {
                 System.out.println("Model.Artist deleted successfully.");
@@ -149,7 +150,7 @@ public class ArtistRepository {
         }
     }
 
-    public List<Artist> getSoloArtists(){
+    public List<Artist> getSoloArtists() {
         List<Artist> soloArtists = new ArrayList<>();
         try (
                 Statement st = this.connection.createStatement();
@@ -176,28 +177,27 @@ public class ArtistRepository {
         }
     }
 
-    public  List<Artist> getArtistsAfterYear(int year) {
-
+    public List<Artist> getArtistsAfterYear(int year) {
         List<Artist> artistsFilteredByYear = new ArrayList<>();
         String query = "SELECT * FROM artists WHERE launch_year > ?";
 
         try (
                 PreparedStatement statement = this.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
-                statement.setInt(1, year);
+            statement.setInt(1, year);
 
-                while (resultSet.next()) {
-                    Artist artist = new Artist(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("type"),
-                            resultSet.getInt("launch_year"),
-                            resultSet.getInt("split_year"),
-                            resultSet.getString("website")
-                    );
-                    artistsFilteredByYear.add(artist);
-                }
-            } catch (SQLException e) {
+            while (resultSet.next()) {
+                Artist artist = new Artist(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("type"),
+                        resultSet.getInt("launch_year"),
+                        resultSet.getInt("split_year"),
+                        resultSet.getString("website")
+                );
+                artistsFilteredByYear.add(artist);
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         if (artistsFilteredByYear.isEmpty()) {

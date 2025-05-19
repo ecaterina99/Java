@@ -14,6 +14,7 @@ public class Discography {
     public Artist getArtist() {
         return artist;
     }
+
     public List<Album> getAlbums() {
         return albums;
     }
@@ -21,6 +22,7 @@ public class Discography {
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
+
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
     }
@@ -42,7 +44,6 @@ public class Discography {
                         .append("\n");
             }
         }
-
         return sb.toString();
     }
 }

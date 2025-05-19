@@ -7,6 +7,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Manages database connectivity using JDBC.
+ * Loads configuration from a properties file and handles connection lifecycle (open/close).
+ */
 public class DBConnection {
 
     private static String url;

@@ -2,6 +2,7 @@ package service;
 
 import model.Artist;
 import repository.ArtistRepository;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class ArtistService {
         this.artistRepository = repository;
     }
 
-    public Artist findArtist(int id){
+    public Artist findArtist(int id) {
         return artistRepository.findArtistById(id);
     }
 
@@ -32,15 +33,15 @@ public class ArtistService {
         artistRepository.deleteArtist(artist, artistId);
     }
 
-    public List<Artist> readArtist(){
+    public List<Artist> readArtist() {
         return artistRepository.getAllArtists();
     }
 
-    public List<Artist> readSoloArtists(){
+    public List<Artist> readSoloArtists() {
         return artistRepository.getSoloArtists();
     }
 
-    public List<Artist> readArtistsAfterYear(int year){
+    public List<Artist> readArtistsAfterYear(int year) {
         return artistRepository.getArtistsAfterYear(year);
     }
 }

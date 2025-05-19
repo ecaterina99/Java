@@ -109,6 +109,7 @@ public class ArtistController {
      * then asks for updated fields (optional).
      * After validation, it sends the updated Artist object to the service layer for persistence.
      */
+
     public void updateArtist() {
         System.out.print("Enter artist Id to update: ");
         String updateIdInput = scanner.nextLine();

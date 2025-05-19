@@ -11,12 +11,12 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
-    // Configures and stores all application dependencies for dependency injection
+    // Initializes and stores application-wide dependencies using a custom dependency injection container.
     static DependencyContainer container = configureDependencies();
 
     public static void main(String[] args) {
 
-        // Application entry point. Initializes the application.
+        //  Entry point of the application. Starts the main execution flow.
         try {
             run();
             DBConnection.closeConnection();
@@ -27,7 +27,6 @@ public class Main {
         }
     }
 
-
     /**
      * Main application execution loop.
      * Handles the primary program flow including menu display and user option processing.
@@ -35,7 +34,7 @@ public class Main {
     public static void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
-        // Resolve controller dependencies from the container
+
         var artistController = container.resolve(ArtistController.class);
         var albumController = container.resolve(AlbumController.class);
         while (!exit) {
@@ -80,8 +79,8 @@ public class Main {
     }
 
     /**
-     * Handles the CRUD operations' submenu.
-     * Provides a separate menu for Create, Read, Update, and Delete operations on artists.
+     * Manages the CRUD operations submenu for artist entities.
+     * Delegates actions to the ArtistController based on user input.
      */
     private static void initSelectCRUDOption() {
         Scanner scanner = new Scanner(System.in);
@@ -124,10 +123,7 @@ public class Main {
         System.out.print("Please choose the option: ");
     }
 
-    /**
-     * Configures all application dependencies using the Dependency Injection pattern.
-     * Creates and wires together repositories, services, and controllers.
-     */
+    //Registers all necessary components (repositories, services, controllers) with the dependency container.
 
     private static DependencyContainer configureDependencies() {
         DependencyContainer container = new DependencyContainer();

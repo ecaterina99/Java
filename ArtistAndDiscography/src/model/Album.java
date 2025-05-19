@@ -44,7 +44,6 @@ public class Album {
         return recordLabel;
     }
 
-
     public void setId(int id) {
         this.id = id;
     }
