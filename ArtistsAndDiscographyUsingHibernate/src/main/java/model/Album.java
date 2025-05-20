@@ -1,4 +1,4 @@
-package main;
+package model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;

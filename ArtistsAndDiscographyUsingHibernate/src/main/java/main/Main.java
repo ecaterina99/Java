@@ -1,16 +1,29 @@
 package main;
 
 import connection.HibernateConnection;
+import controller.AlbumController;
+import controller.ArtistController;
+import lib.DependencyContainer;
 import lib.ValidationResult;
 import lib.Validator;
+import model.Album;
+import model.Artist;
+import model.Discography;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import repository.AlbumRepository;
+import repository.ArtistRepository;
+import service.AlbumService;
+import service.ArtistService;
+
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Main {
+    static DependencyContainer container = configureDependencies();
+
     public static void main(String[] args) {
         try {
             // Use the improved connection management method
@@ -47,29 +60,31 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
+        var artistController = container.resolve(ArtistController.class);
+        var albumController = container.resolve(AlbumController.class);
+
         while (!exit) {
             displayMainOptions();
 
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    selectCRUDOption(session);
+                    selectCRUDOption();
                     break;
-                case "2":
-                    displaySoloArtists(session);
+               case "2":
+                    artistController.displaySoloArtists();
                     break;
                 case "3":
-                    displayArtistsAfterYear(session, scanner);
+                    artistController.displayArtistsAfterYear();
                     break;
-                case "4":
-                    displayArtistDiscography(session, scanner);
+             /*    case "4":
+                    albumController.displayArtistDiscography();
                     break;
                 case "5":
-                    displayAlbumsByLabel(session, scanner);
+                    albumController.displayAlbumsByLabel();
                     break;
-                case "6":
-                    displayAllLabels(session);
-                    break;
+
+             */
                 case "0":
                     exit = true;
                     break;
@@ -91,8 +106,9 @@ public class Main {
         System.out.print("Enter an option: ");
     }
 
-    private static void selectCRUDOption(Session session) {
+    private static void selectCRUDOption() {
         Scanner scanner = new Scanner(System.in);
+        var artistController = container.resolve(ArtistController.class);
         boolean exit = false;
 
         while (!exit) {
@@ -100,16 +116,16 @@ public class Main {
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    createArtist(session, scanner);
+                    artistController.createArtist();
                     break;
                 case "2":
-                    displayAllArtists(session);
+                    artistController.displayAllArtists();
                     break;
-                case "3":
-                    setUpdates(session, scanner);
+               case "3":
+                    artistController.setUpdates();
                     break;
                 case "4":
-                    deleteArtistById(session, scanner);
+                    artistController.deleteArtistById();
                     break;
                 case "0":
                     exit = true;
@@ -131,326 +147,36 @@ public class Main {
         System.out.print("Please choose the option: ");
     }
 
-    public static Artist findArtistById(Session session, int id) {
-        try {
-            String hql = "from Artist where id = :id";
-            Query<Artist> query = session.createQuery(hql, Artist.class);
-            query.setParameter("id", id);
-            return query.uniqueResult();
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
+    private static DependencyContainer configureDependencies() {
+        DependencyContainer container = new DependencyContainer();
+
+        container.register(ArtistRepository.class, new ArtistRepository());
+        container.register(AlbumRepository.class, new AlbumRepository());
+
+        container.register(ArtistService.class, new ArtistService(
+                container.resolve(ArtistRepository.class)
+        ));
+
+        container.register(AlbumService.class, new AlbumService(
+                container.resolve(AlbumRepository.class),
+                container.resolve(ArtistRepository.class)
+        ));
+
+        container.register(ArtistController.class, new ArtistController(
+                container.resolve(ArtistService.class)
+        ));
+        container.register(AlbumController.class, new AlbumController(
+                container.resolve(AlbumService.class)
+        ));
+
+        return container;
     }
 
-    private static void createArtist(Session session, Scanner scanner) {
-        Artist artist = new Artist();
-        // Read and validate artist name
-        while (true) {
-            System.out.print("Name: ");
-            String input = scanner.nextLine();
-            ValidationResult result = Validator.validateName(input);
-            if (result.isValid()) {
-                artist.setName(input);
-                break;
-            } else {
-                System.out.println(result.getMessage());
-            }
-        }
 
-        // Read and validate artist type
-        while (true) {
-            System.out.print("Artist type(solo/band): ");
-            String typeInput = scanner.nextLine();
-            ValidationResult result = Validator.validateArtistType(typeInput);
-            if (result.isValid()) {
-                artist.setType(typeInput);
-                break;
-            } else {
-                System.out.println(result.getMessage());
-            }
-        }
+/*
 
-        // Read and validate launch year
-        while (true) {
-            System.out.print("Launch year: ");
-            String launchYearInput = scanner.nextLine();
-            ValidationResult result = Validator.validateLaunchYear(launchYearInput);
-            if (result.isValid()) {
-                artist.setLaunchYear(Integer.parseInt(launchYearInput));
-                break;
-            } else {
-                System.out.println(result.getMessage());
-            }
-        }
 
-        // Read and validate split year
-        while (true) {
-            System.out.print("Split Year: (leave empty if still active) ");
-            String splitYearInput = scanner.nextLine();
-            if (!splitYearInput.trim().isEmpty()) {
-                ValidationResult result = Validator.validateSplitYear(splitYearInput, artist.getLaunchYear());
-                if (result.isValid()) {
-                    artist.setSplitYear(Integer.parseInt(splitYearInput));
-                    break;
-                } else {
-                    System.out.println(result.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
-
-        // Read and validate website name
-        while (true) {
-            System.out.print("Website: (leave empty if doesn't exist) ");
-            String websiteInput = scanner.nextLine();
-            if (!websiteInput.trim().isEmpty()) {
-                ValidationResult result = Validator.validateWebsite(websiteInput);
-                if (result.isValid()) {
-                    artist.setWebsite(websiteInput);
-                    break;
-                } else {
-                    System.out.println(result.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
-        insertArtistIntoDatabase(session, artist);
-    }
-
-    public static void insertArtistIntoDatabase(Session session, Artist artist) {
-        try {
-            session.persist(artist);
-            System.out.println("Artist successfully added with ID: " + artist.getId());
-        } catch (HibernateException e) {
-            System.err.println("Error inserting artist: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    public static void displayAllArtists(Session session) {
-        try {
-            String hql = "from Artist";
-            Query query = session.createQuery(hql);
-            List<Artist> artistsList = query.list();
-            if (artistsList.isEmpty()) {
-                System.out.println("No artists found in the database");
-            } else {
-                System.out.println("\n=== All Artists ===");
-                for (Artist artist : artistsList) {
-                    System.out.println(artist);
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error displaying artists: " + e.getMessage());
-        }
-    }
-
-    private static void setUpdates(Session session, Scanner scanner) {
-        System.out.print("Enter artist Id to update: ");
-        String updateIdInput = scanner.nextLine();
-        ValidationResult res = Validator.validateNumberFormat(updateIdInput);
-        if (!res.isValid()) {
-            System.out.println(res.getMessage());
-            return;
-        }
-        int artistId = Integer.parseInt(updateIdInput);
-
-        //show artist details
-        Artist artist = findArtistById(session, artistId);
-        if (artist == null) {
-            System.out.println("Artist with Id: " + artistId + " not found");
-            return;
-        }
-        System.out.println("Artist details: " + artist);
-
-        // Update name if provided
-        System.out.print("Enter new name (leave empty to keep the current one): ");
-        String newName = scanner.nextLine();
-        if (!newName.isEmpty()) {
-            artist.setName(newName);
-        }
-
-        // Update type if provided
-        while (true) {
-            System.out.print("Enter new type (solo/band) (leave empty to keep the current one): ");
-            String typeInput = scanner.nextLine();
-            if (!typeInput.trim().isEmpty()) {
-                ValidationResult result = Validator.validateArtistType(typeInput);
-                if (result.isValid()) {
-                    artist.setType(typeInput);
-                    break;
-                } else {
-                    System.out.println(result.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
-
-        // Update launch year if provided
-        while (true) {
-            System.out.print("Enter new launch year (leave empty to keep current one): ");
-            String launchYearInput = scanner.nextLine();
-            if (!launchYearInput.trim().isEmpty()) {
-                ValidationResult result = Validator.validateLaunchYear(launchYearInput);
-                if (result.isValid()) {
-                    int newLaunchYear = Integer.parseInt(launchYearInput);
-                    artist.setLaunchYear(newLaunchYear);
-                    break;
-                } else {
-                    System.out.println(result.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
-
-        // Update split year if provided
-        while (true) {
-            System.out.print("Enter new split year (leave empty to keep current one): ");
-            String splitYearInput = scanner.nextLine();
-            if (!splitYearInput.trim().isEmpty()) {
-                ValidationResult result = Validator.validateSplitYear(splitYearInput, artist.getLaunchYear());
-                if (result.isValid()) {
-                    int newSplitYear = Integer.parseInt(splitYearInput.trim());
-                    artist.setSplitYear(newSplitYear);
-                    break;
-                } else {
-                    System.out.println(result.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
-
-        // Update website if provided
-        while (true) {
-            System.out.print("Enter new website (leave empty to keep current one): ");
-            String websiteInput = scanner.nextLine();
-            if (!websiteInput.trim().isEmpty()) {
-                ValidationResult result = Validator.validateWebsite(websiteInput);
-                if (result.isValid()) {
-                    artist.setWebsite(websiteInput);
-                    break;
-                } else {
-                    System.out.println(result.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
-        updateArtistInDatabase(session, artist);
-    }
-
-    private static void updateArtistInDatabase(Session session, Artist artist) {
-        try {
-            session.merge(artist);
-            System.out.println("Artist successfully updated");
-        } catch (HibernateException e) {
-            System.err.println("Error inserting artist: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void deleteArtistById(Session session, Scanner scanner) {
-        System.out.print("Enter artist Id to delete: ");
-        String deleteIdInput = scanner.nextLine();
-
-        ValidationResult result = Validator.validateNumberFormat(deleteIdInput);
-        if (!result.isValid()) {
-            System.out.println(result.getMessage());
-            return;
-        }
-
-        int artistId = Integer.parseInt(deleteIdInput);
-        Artist artistToDelete = findArtistById(session, artistId);
-
-        if (artistToDelete == null) {
-            System.out.println("Artist with ID " + deleteIdInput + " does not exist!");
-        } else {
-            // Confirm deletion
-            String confirmation = "";
-            while (!confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("n")) {
-                System.out.print("Are you sure you want to delete this artist? (select: y/n): ");
-                confirmation = scanner.nextLine();
-            }
-
-            if (confirmation.equalsIgnoreCase("y")) {
-                deleteArtistFromDatabase(session, artistId, artistToDelete);
-            }
-        }
-    }
-
-    private static void deleteArtistFromDatabase(Session session, int artistId, Artist artist) {
-        try {
-            artist = session.get(Artist.class, artistId);
-            if (artist != null) {
-                session.remove(artist);
-                System.out.println("Artist deleted successfully.");
-            } else {
-                System.out.println("Artist with ID " + artistId + " does not exist.");
-            }
-        } catch (HibernateException e) {
-            System.err.println("Error deleting  artist: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    public static void displaySoloArtists(Session session) {
-        try {
-            String hql = "from Artist where type = 'Solo'";
-            Query query = session.createQuery(hql);
-            List<Artist> soloArtists = query.list();
-
-            if (soloArtists.isEmpty()) {
-                System.out.println("No solo artists found in the database.");
-            } else {
-                System.out.println("\n=== Solo Artists ===");
-                for (Artist artist : soloArtists) {
-                    System.out.println(artist.toString());
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error displaying solo artists: " + e.getMessage());
-        }
-    }
-
-    public static void displayArtistsAfterYear(Session session, Scanner scanner) {
-        System.out.print("Enter the year to filter artists after: ");
-        String yearInput = scanner.nextLine();
-
-        ValidationResult result = Validator.validateNumberFormat(yearInput);
-        if (!result.isValid()) {
-            System.out.println(result.getMessage());
-            return;
-        }
-
-        int year = Integer.parseInt(yearInput);
-
-        String hql = "from Artist WHERE launchYear > :year";
-        Query<Artist> query = session.createQuery(hql, Artist.class);
-        query.setParameter("year", year);
-
-        try {
-            List<Artist> artistsFilteredByYear = query.list();
-
-            if (artistsFilteredByYear.isEmpty()) {
-                System.out.println("No artists found that launched after year " + year + ".");
-            } else {
-                System.out.println("\n=== Artists Launched After " + year + " ===");
-                for (Artist art : artistsFilteredByYear) {
-                    System.out.println(art.toString());
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error displaying artists after year: " + e.getMessage());
-        }
-    }
-
-    private static void displayArtistDiscography(Session session, Scanner scanner) {
+    private static void displayArtistDiscography() {
         System.out.println("Please, enter artist's id:");
         String artistId = scanner.nextLine();
 
@@ -474,7 +200,7 @@ public class Main {
 
     }
 
-    private static List<Album> findAlbumsByArtistId(Session session, int artistId) {
+    private static List<Album> findAlbumsByArtistId(int artistId) {
         try {
             String hql = "from Album where artist.id= :artistId";
             Query<Album> query = session.createQuery(hql, Album.class);
@@ -487,7 +213,7 @@ public class Main {
         }
     }
 
-    public static void displayAlbumsByLabel(Session session, Scanner scanner) {
+    public static void displayAlbumsByLabel() {
         System.out.println("All labels from discography:");
         displayAllLabels(session);
 
@@ -512,7 +238,7 @@ public class Main {
         }
     }
 
-    private static List<Album> getAlbumsByLabel(Session session, String recordLabel) {
+    private static List<Album> getAlbumsByLabel(String recordLabel) {
         try {
             String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
             Query<Album> query = session.createQuery(hql, Album.class);
@@ -525,7 +251,7 @@ public class Main {
         }
     }
 
-    private static List<String> getAllLabels(Session session) {
+    private static List<String> getAllLabels() {
         try {
             String hql = "select DISTINCT a.recordLabel from Album a";
             Query<String> query = session.createQuery(hql, String.class);
@@ -537,11 +263,13 @@ public class Main {
         }
     }
 
-    private static void displayAllLabels(Session session) {
+    private static void displayAllLabels() {
         List<String> labels = getAllLabels(session);
         for (String label : labels) {
             System.out.println(label);
         }
     }
+
+ */
 }
 
