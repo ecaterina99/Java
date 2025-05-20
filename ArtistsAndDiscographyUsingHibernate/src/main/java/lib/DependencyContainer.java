@@ -13,7 +13,6 @@ public class DependencyContainer {
         public <T> void register(Class<T> type, T instance) {
             instances.put(type, instance);
         }
-
         @SuppressWarnings("unchecked")
         public <T> T resolve(Class<T> type) {
             return (T) instances.get(type);

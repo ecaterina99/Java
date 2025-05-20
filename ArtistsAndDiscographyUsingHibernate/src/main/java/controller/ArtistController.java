@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class ArtistController {
 
-
     private final ArtistService artistService;
     private final Scanner scanner = new Scanner(System.in);
 
@@ -90,7 +89,6 @@ public class ArtistController {
         artistService.createArtist(artist);
     }
 
-
     public void displayAllArtists() {
         List<Artist> artistsList = artistService.readArtist();
 
@@ -103,8 +101,7 @@ public class ArtistController {
         }
     }
 
-
-    public void setUpdates() {
+    public void updateArtist() {
 
         System.out.print("Enter artist Id to update: ");
         String updateIdInput = scanner.nextLine();
@@ -202,7 +199,7 @@ public class ArtistController {
         artistService.updateArtist(artist);
     }
 
-    public void deleteArtistById() {
+    public void deleteArtist() {
         System.out.print("Enter artist Id to delete: ");
         String deleteIdInput = scanner.nextLine();
 

@@ -2,8 +2,6 @@ package service;
 
 import model.Artist;
 import repository.ArtistRepository;
-
-import java.sql.SQLException;
 import java.util.List;
 
 

@@ -4,22 +4,14 @@ import connection.HibernateConnection;
 import controller.AlbumController;
 import controller.ArtistController;
 import lib.DependencyContainer;
-import lib.ValidationResult;
-import lib.Validator;
-import model.Album;
-import model.Artist;
-import model.Discography;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import repository.AlbumRepository;
 import repository.ArtistRepository;
 import service.AlbumService;
 import service.ArtistService;
 
-import java.util.List;
 import java.util.Scanner;
-
 
 public class Main {
     static DependencyContainer container = configureDependencies();
@@ -44,19 +36,16 @@ public class Main {
 
         try {
             session = connection.beginTransaction();
-
-            selectOption(session);
-
+            run(session);
             connection.commitTransaction(session);
-        }catch (HibernateException e) {
+        } catch (HibernateException e) {
             connection.rollbackTransaction(session);
             System.err.println("Error in database operation: " + e.getMessage());
             throw e;
         }
     }
 
-
-    private static void selectOption(Session session) {
+    private static void run(Session session) {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -64,27 +53,25 @@ public class Main {
         var albumController = container.resolve(AlbumController.class);
 
         while (!exit) {
-            displayMainOptions();
+            displayMainMenu();
 
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    selectCRUDOption();
+                    initSelectCRUDOption();
                     break;
-               case "2":
+                case "2":
                     artistController.displaySoloArtists();
                     break;
                 case "3":
                     artistController.displayArtistsAfterYear();
                     break;
-             /*    case "4":
+                case "4":
                     albumController.displayArtistDiscography();
                     break;
                 case "5":
                     albumController.displayAlbumsByLabel();
                     break;
-
-             */
                 case "0":
                     exit = true;
                     break;
@@ -95,7 +82,7 @@ public class Main {
         }
     }
 
-    private static void displayMainOptions() {
+    private static void displayMainMenu() {
         System.out.println("\n=== ARTIST MANAGEMENT SYSTEM ===");
         System.out.println("1. Show CRUD operations");
         System.out.println("2. Show solo artists");
@@ -106,9 +93,10 @@ public class Main {
         System.out.print("Enter an option: ");
     }
 
-    private static void selectCRUDOption() {
+    private static void initSelectCRUDOption() {
         Scanner scanner = new Scanner(System.in);
         var artistController = container.resolve(ArtistController.class);
+        var albumController = container.resolve(AlbumController.class);
         boolean exit = false;
 
         while (!exit) {
@@ -121,12 +109,14 @@ public class Main {
                 case "2":
                     artistController.displayAllArtists();
                     break;
-               case "3":
-                    artistController.setUpdates();
+                case "3":
+                    artistController.updateArtist();
                     break;
                 case "4":
-                    artistController.deleteArtistById();
+                    artistController.deleteArtist();
                     break;
+                case "5":
+                    albumController.displayAllLabels();
                 case "0":
                     exit = true;
                     break;
@@ -143,6 +133,7 @@ public class Main {
         System.out.println("2. display all artists");
         System.out.println("3. update artist");
         System.out.println("4. delete artist");
+        System.out.println("5. display all albums");
         System.out.println("0. exit");
         System.out.print("Please choose the option: ");
     }
@@ -173,103 +164,5 @@ public class Main {
     }
 
 
-/*
-
-
-    private static void displayArtistDiscography() {
-        System.out.println("Please, enter artist's id:");
-        String artistId = scanner.nextLine();
-
-        ValidationResult result = Validator.validateNumberFormat(artistId);
-        if (!result.isValid()) {
-            System.out.println(result.getMessage());
-            return;
-        }
-
-        int id = Integer.parseInt(artistId);
-        Artist artist = findArtistById(session, id);
-
-        if (artist == null) {
-            System.out.println("Artist with ID " + artistId + " does not exist!");
-            return;
-        }
-
-        List<Album> artistAlbums = findAlbumsByArtistId(session, id);
-        Discography discography = new Discography(artist, artistAlbums);
-        System.out.println(discography);
-
-    }
-
-    private static List<Album> findAlbumsByArtistId(int artistId) {
-        try {
-            String hql = "from Album where artist.id= :artistId";
-            Query<Album> query = session.createQuery(hql, Album.class);
-            query.setParameter("artistId", artistId);
-            List<Album> albums = query.list();
-            return albums;
-        } catch (Exception e) {
-            System.err.println("Error finding albums by artist id: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static void displayAlbumsByLabel() {
-        System.out.println("All labels from discography:");
-        displayAllLabels(session);
-
-        List<String> allLabels = getAllLabels(session);
-
-        while (true) {
-            System.out.println("Please, choose the label:");
-            String labelInput = scanner.nextLine();
-            ValidationResult result = Validator.validateLabel(labelInput);
-
-            if (!allLabels.contains(labelInput)) {
-                System.out.println("Label not found. Please enter a valid label from the list.");
-            } else if (!result.isValid()) {
-                System.out.println(result.getMessage());
-            } else {
-                List<Album> albumsByLabel = getAlbumsByLabel(session, labelInput);
-                for (Album album : albumsByLabel) {
-                    System.out.println(album.albumsAndArtists());
-                }
-                break;
-            }
-        }
-    }
-
-    private static List<Album> getAlbumsByLabel(String recordLabel) {
-        try {
-            String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
-            Query<Album> query = session.createQuery(hql, Album.class);
-            query.setParameter("label", recordLabel);
-            List<Album> albumsByLabel = query.list();
-            return albumsByLabel;
-        } catch (Exception e) {
-            System.err.println("Error getting albums by label: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private static List<String> getAllLabels() {
-        try {
-            String hql = "select DISTINCT a.recordLabel from Album a";
-            Query<String> query = session.createQuery(hql, String.class);
-            List<String> recordLabels = query.getResultList();
-            return recordLabels;
-        } catch (Exception e) {
-            System.err.println("Error getting all labels: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private static void displayAllLabels() {
-        List<String> labels = getAllLabels(session);
-        for (String label : labels) {
-            System.out.println(label);
-        }
-    }
-
- */
 }
 

@@ -1,13 +1,11 @@
 package repository;
 
 import connection.HibernateConnection;
-import connection.HibernateUtil;
 import model.Artist;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +30,6 @@ public class ArtistRepository {
         }
     }
 
-
     public Artist findArtistById(int id) {
         try {
             session = connection.beginTransaction();
@@ -51,7 +48,6 @@ public class ArtistRepository {
         }
     }
 
-
     public List<Artist> getAllArtists() {
         try {
             session = connection.beginTransaction();
@@ -67,7 +63,6 @@ public class ArtistRepository {
         }
     }
 
-
     public void updateArtist(Artist artist) {
         try {
             session = connection.beginTransaction();
@@ -79,7 +74,6 @@ public class ArtistRepository {
             throw new RuntimeException("Error updating artist", e);
         }
     }
-
 
     public void deleteArtist(int id) {
         try {
@@ -120,13 +114,11 @@ public class ArtistRepository {
     }
 
     public List<Artist> getArtistsAfterYear(int year) {
-
       try{
           session = connection.beginTransaction();
           String hql = "from Artist WHERE launchYear > :year";
           List<Artist> artistsFilteredByYear = session.createQuery(hql, Artist.class).setParameter("year", year).list();
           connection.commitTransaction(session);
-
             if (artistsFilteredByYear.isEmpty()) {
                 return Collections.emptyList();
             } else {
