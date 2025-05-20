@@ -1,4 +1,4 @@
-package lib;
+package connection;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

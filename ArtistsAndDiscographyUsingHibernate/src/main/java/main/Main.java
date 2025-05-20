@@ -1,11 +1,10 @@
 package main;
 
-import lib.HibernateUtil;
+import connection.HibernateConnection;
 import lib.ValidationResult;
 import lib.Validator;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import java.util.List;
 import java.util.Scanner;
@@ -13,26 +12,36 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        setConnection();
+        try {
+            // Use the improved connection management method
+            setConnection();
+
+            System.out.println("Database operations completed successfully");
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            HibernateConnection.getInstance().shutdown();
+        }
     }
 
-    private static void setConnection()  {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
+    private static void setConnection() {
+        HibernateConnection connection = HibernateConnection.getInstance();
+        Session session = null;
+
+        try {
+            session = connection.beginTransaction();
 
             selectOption(session);
 
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            System.out.println(e);
-        } finally {
-            HibernateUtil.close();
+            connection.commitTransaction(session);
+        }catch (HibernateException e) {
+            connection.rollbackTransaction(session);
+            System.err.println("Error in database operation: " + e.getMessage());
+            throw e;
         }
     }
+
 
     private static void selectOption(Session session) {
         Scanner scanner = new Scanner(System.in);
