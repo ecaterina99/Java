@@ -20,8 +20,8 @@ public class AlbumService {
         albumRepository.save(album);
     }
 
-    public void delete(Album album) {
-
+    public void delete(int id ) {
+        albumRepository.delete(id);
     }
 
     public void update(Album album) {
@@ -48,5 +48,8 @@ public class AlbumService {
         return artistRepository.findArtistById(artistId);
     }
 
+    public List<Album> readAlbum() {
+        return albumRepository.getAllAlbums();
+    }
 
 }

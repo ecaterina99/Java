@@ -68,7 +68,7 @@ public class AlbumRepository {
         try {
             session = connection.beginTransaction();
 
-            Album album= session.get(Album.class, id);
+            Album album = session.get(Album.class, id);
 
             connection.commitTransaction(session);
             return album;
@@ -85,17 +85,48 @@ public class AlbumRepository {
             session.merge(album);
             connection.commitTransaction(session);
             System.out.println("Album successfully updated");
-        }
-        catch (HibernateException e) {
+        } catch (HibernateException e) {
             connection.rollbackTransaction(session);
             throw new RuntimeException("Error updating album", e);
         }
     }
 
-    public void delete(Album album) {
+    public void delete(int id) {
         Session session = null;
+        try {
+            session = connection.beginTransaction();
+
+            Album album = session.get(Album.class, id);
+            if (album != null) {
+                session.remove(album);
+
+                connection.commitTransaction(session);
+                System.out.println("Album deleted successfully.");
+            } else {
+                connection.commitTransaction(session);
+                System.out.println("Album with ID " + id + " does not exist.");
+            }
+        } catch (HibernateException e) {
+            connection.rollbackTransaction(session);
+            throw new RuntimeException("Error deleting artist", e);
+        }
     }
 
+    public List<Album> getAllAlbums() {
+        Session session = null;
+        try {
+            session = connection.beginTransaction();
+
+            String hql = "from Album";
+            List<Album> albumsList = session.createQuery(hql, Album.class).list();
+
+            connection.commitTransaction(session);
+            return albumsList;
+        } catch (Exception e) {
+            connection.rollbackTransaction(session);
+            throw new RuntimeException("Error listing artists", e);
+        }
+    }
 
 
     public List<Album> getAlbumsByArtistId(int artistId) {

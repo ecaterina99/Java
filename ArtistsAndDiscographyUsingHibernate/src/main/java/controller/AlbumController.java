@@ -155,6 +155,33 @@ public class AlbumController {
     }
 
     public void deleteAlbum() {
+        System.out.print("Enter album Id to delete: ");
+        String deleteIdInput = scanner.nextLine();
+
+        ValidationResult result = Validator.validateNumberFormat(deleteIdInput);
+        if (!result.isValid()) {
+            System.out.println(result.getMessage());
+            return;
+        }
+
+        int albumId = Integer.parseInt(deleteIdInput);
+
+        Album albumToDelete = albumService.findAlbum(albumId);
+
+        if (albumToDelete == null) {
+            System.out.println("Album with ID " + deleteIdInput + " does not exist!");
+        } else {
+            String confirmation = "";
+            while (!confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("n")) {
+                System.out.print("Are you sure you want to delete this album? (select: y/n): ");
+                confirmation = scanner.nextLine();
+            }
+
+            if (confirmation.equalsIgnoreCase("y")) {
+                albumService.delete(albumId);
+
+            }
+        }
     }
 
     public void displayAlbumsByLabel() {
@@ -207,6 +234,18 @@ public class AlbumController {
         List<Album> artistAlbums = albumService.readArtistDiscography(id);
         Discography discography = new Discography(artist, artistAlbums);
         System.out.println(discography);
+    }
+
+    public void displayAllAlbums() {
+        List<Album> albumsList = albumService.readAlbum();
+
+        if (albumsList.isEmpty()) {
+            System.out.println("There are no album in the database");
+        } else {
+            for (Album album : albumsList) {
+                System.out.println(album.toString());
+            }
+        }
     }
 
 }

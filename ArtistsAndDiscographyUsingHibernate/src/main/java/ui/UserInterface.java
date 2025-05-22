@@ -89,7 +89,7 @@ public class UserInterface {
                     albumController.createAlbum();
                     break;
                 case "6":
-                    albumController.displayAllLabels();
+                    albumController.displayAllAlbums();
                     break;
                 case "7":
                     albumController.updateAlbum();
