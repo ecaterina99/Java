@@ -86,6 +86,9 @@ public class UserInterface {
                     artistController.deleteArtist();
                     break;
                 case "5":
+                    albumController.createAlbum();
+                    break;
+                case "6":
                     albumController.displayAllLabels();
                     break;
                 case "0":
@@ -104,7 +107,8 @@ public class UserInterface {
         System.out.println("2. display all artists");
         System.out.println("3. update artist");
         System.out.println("4. delete artist");
-        System.out.println("5. display all albums");
+        System.out.println("5. insert album");
+        System.out.println("6. display all albums");
         System.out.println("0. exit");
         System.out.print("Please choose the option: ");
     }

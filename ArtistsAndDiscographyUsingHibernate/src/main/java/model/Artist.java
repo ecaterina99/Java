@@ -1,6 +1,7 @@
 package model;
 
 import jakarta.persistence.*;
+import lib.ValidationResult;
 
 import java.util.Set;
 
@@ -55,10 +56,6 @@ public class Artist {
 
     public String getWebsite() {
         return website;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setName(String name) {

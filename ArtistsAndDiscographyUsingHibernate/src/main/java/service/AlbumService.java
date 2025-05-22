@@ -16,6 +16,10 @@ public class AlbumService {
         this.artistRepository = artistRepository;
     }
 
+    public void save(Album album) {
+        albumRepository.save(album);
+    }
+
     public List<Album> readAlbumsByLabel(String label) {
         return albumRepository.getAlbumsByLabel(label);
     }

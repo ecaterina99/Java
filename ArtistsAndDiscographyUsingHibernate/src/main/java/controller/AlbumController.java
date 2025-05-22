@@ -17,6 +17,67 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
+    public void createAlbum() {
+        Album album = new Album();
+
+        while (true) {
+            System.out.print("Artist id: ");
+            String input = scanner.nextLine();
+
+
+            ValidationResult result = Validator.validateArtistId(input);
+            if (result.isValid()) {
+
+                Artist artist = albumService.findArtist(Integer.parseInt(input));
+                if (artist == null) {
+                    System.out.println("Artist with Id: " + input + " not found");
+                    return;
+                }else {
+                    album.setArtist(artist);
+                    break;
+                }
+            } else {
+                System.out.println(result.getMessage());
+            }
+        }
+
+        while (true) {
+            System.out.print("Title: ");
+            String input = scanner.nextLine();
+            ValidationResult result = Validator.validateTitle(input);
+            if (result.isValid()) {
+                album.setTitle(input);
+                break;
+            } else {
+                System.out.println(result.getMessage());
+            }
+        }
+
+        while (true) {
+            System.out.print("Release year: ");
+            String input = scanner.nextLine();
+            ValidationResult result = Validator.validateReleaseYear(input);
+            if (result.isValid()) {
+                album.setReleaseYear(Integer.parseInt(input));
+                break;
+            }
+            System.out.println(result.getMessage());
+        }
+
+        while (true) {
+            System.out.print("Record label: ");
+            String input = scanner.nextLine();
+            ValidationResult result = Validator.validateLabel(input);
+            if (result.isValid()) {
+                album.setRecordLabel(input);
+                break;
+            }
+            System.out.println(result.getMessage());
+        }
+        albumService.save(album);
+
+    }
+
     public void displayAlbumsByLabel() {
         System.out.println("All labels from discography:");
         displayAllLabels();

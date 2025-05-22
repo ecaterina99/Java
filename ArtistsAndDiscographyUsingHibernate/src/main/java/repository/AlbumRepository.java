@@ -2,19 +2,36 @@ package repository;
 
 import connection.HibernateConnection;
 import model.Album;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import java.util.List;
 
 public class AlbumRepository {
     private final HibernateConnection connection;
-    Session session = null;
 
     public AlbumRepository() {
         this.connection = HibernateConnection.getInstance();
     }
 
+    public void save(Album album) {
+        Session session = null;
+        try {
+            session = connection.beginTransaction();
+
+            session.merge(album);
+
+            connection.commitTransaction(session);
+            System.out.println("Album successfully added");
+        } catch (HibernateException e) {
+            connection.rollbackTransaction(session);
+            throw new RuntimeException("Error inserting album", e);
+        }
+    }
+
     public List<Album> getAlbumsByLabel(String recordLabel) {
+        Session session = null;
+
         try {
             session = connection.beginTransaction();
 
@@ -29,6 +46,8 @@ public class AlbumRepository {
     }
 
     public List<String> getAllLabels() {
+        Session session = null;
+
         try {
             session = connection.beginTransaction();
 
@@ -44,14 +63,17 @@ public class AlbumRepository {
     }
 
     public List<Album> getAlbumsByArtistId(int artistId) {
+        Session session = null;
+
         try {
             session = connection.beginTransaction();
+
             String hql = "from Album where artist.id= :artistId";
             List<Album> albums = session.createQuery(hql, Album.class).setParameter("artistId", artistId).list();
+
             return albums;
         } catch (Exception e) {
-            System.err.println("Error finding albums by artist id: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error finding albums by artist id: " + e);
         }
     }
 

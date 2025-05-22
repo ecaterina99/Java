@@ -26,6 +26,9 @@ public class Album {
     @Cascade(CascadeType.ALL)
     private Artist artist;
 
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
     public Artist getArtist() {
         return artist;
     }
