@@ -17,26 +17,29 @@ public class AlbumRepository {
     public List<Album> getAlbumsByLabel(String recordLabel) {
         try {
             session = connection.beginTransaction();
+
             String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
             List<Album> albumsByLabel = session.createQuery(hql, Album.class).setParameter("label", recordLabel).list();
+
             connection.commitTransaction(session);
             return albumsByLabel;
         } catch (Exception e) {
-            System.err.println("Error getting albums by label: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error getting albums by label: " + e);
         }
     }
 
     public List<String> getAllLabels() {
         try {
             session = connection.beginTransaction();
+
             String hql = "select DISTINCT a.recordLabel from Album a";
             List<String> recordLabels = session.createQuery(hql, String.class).getResultList();
+
             connection.commitTransaction(session);
             return recordLabels;
         } catch (Exception e) {
-            System.err.println("Error getting all labels: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error getting all labels: " + e);
+
         }
     }
 
