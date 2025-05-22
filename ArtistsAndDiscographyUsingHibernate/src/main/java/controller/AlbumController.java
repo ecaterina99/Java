@@ -6,6 +6,7 @@ import model.Album;
 import model.Artist;
 import model.Discography;
 import service.AlbumService;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,7 +33,7 @@ public class AlbumController {
                 if (artist == null) {
                     System.out.println("Artist with Id: " + input + " not found");
                     return;
-                }else {
+                } else {
                     album.setArtist(artist);
                     break;
                 }
@@ -78,6 +79,84 @@ public class AlbumController {
 
     }
 
+    public void updateAlbum() {
+        System.out.print("Enter album Id to update: ");
+        String updateIdInput = scanner.nextLine();
+        ValidationResult res = Validator.validateNumberFormat(updateIdInput);
+        if (!res.isValid()) {
+            System.out.println(res.getMessage());
+            return;
+        }
+        int albumId = Integer.parseInt(updateIdInput);
+
+        Album album = albumService.findAlbum(albumId);
+        //show album details
+        if (album == null) {
+            System.out.println("Album with Id: " + albumId + " not found");
+            return;
+        }
+        System.out.println("Album details: " + album);
+
+
+        while (true) {
+            System.out.print("Enter new artist id (leave empty to keep the current one): ");
+            String input = scanner.nextLine();
+            if (!input.isEmpty()) {
+                ValidationResult result = Validator.validateArtistId(input);
+                if (result.isValid()) {
+                    Artist artist = albumService.findArtist(Integer.parseInt(input));
+                    if (artist == null) {
+                        System.out.println("Artist with Id: " + input + " not found");
+                        return;
+                    } else {
+                        album.setArtist(artist);
+                        break;
+                    }
+                } else {
+                    System.out.println(result.getMessage());
+                }
+            } else {
+                break;
+            }
+        }
+
+
+        System.out.print("Enter new title (leave empty to keep the current one): ");
+        String newTitle = scanner.nextLine();
+        if (!newTitle.isEmpty()) {
+            album.setTitle(newTitle);
+        }
+
+        while (true) {
+            System.out.print("Enter new release year (leave empty to keep the current one): ");
+            String releaseYearInput = scanner.nextLine();
+            if (!releaseYearInput.isEmpty()) {
+                ValidationResult result = Validator.validateReleaseYear(releaseYearInput);
+                if (result.isValid()) {
+                    int newReleaseYear = Integer.parseInt(releaseYearInput);
+                    album.setReleaseYear(newReleaseYear);
+                    break;
+                } else {
+                    System.out.println(result.getMessage());
+                }
+            } else {
+                break;
+            }
+        }
+
+
+        System.out.print("Enter new record label (leave empty to keep the current one): ");
+        String newRecordLabel = scanner.nextLine();
+        if (!newRecordLabel.isEmpty()) {
+            album.setRecordLabel(newRecordLabel);
+        }
+        albumService.save(album);
+
+    }
+
+    public void deleteAlbum() {
+    }
+
     public void displayAlbumsByLabel() {
         System.out.println("All labels from discography:");
         displayAllLabels();
@@ -109,7 +188,7 @@ public class AlbumController {
         }
     }
 
-    public void displayArtistDiscography(){
+    public void displayArtistDiscography() {
         System.out.println("Please, enter artist's id:");
         String artistId = scanner.nextLine();
         ValidationResult result = Validator.validateNumberFormat(artistId);

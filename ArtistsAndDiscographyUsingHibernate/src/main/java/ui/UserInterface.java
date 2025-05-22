@@ -91,6 +91,12 @@ public class UserInterface {
                 case "6":
                     albumController.displayAllLabels();
                     break;
+                case "7":
+                    albumController.updateAlbum();
+                    break;
+                case "8":
+                    albumController.deleteAlbum();
+                    break;
                 case "0":
                     exit = true;
                     break;
@@ -109,6 +115,8 @@ public class UserInterface {
         System.out.println("4. delete artist");
         System.out.println("5. insert album");
         System.out.println("6. display all albums");
+        System.out.println("7. update album");
+        System.out.println("8. delete album");
         System.out.println("0. exit");
         System.out.print("Please choose the option: ");
     }

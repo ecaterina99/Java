@@ -65,6 +65,14 @@ public class Validator {
         if (id == null || id.trim().isEmpty()) {
             return ValidationResult.fail("Artist id cannot be empty.");
         }
+        try {
+            Integer.parseInt(id);
+            if (!id.matches("\\d+")) {
+                return ValidationResult.fail("Invalid input format. Please try again.");
+            }
+        } catch (NumberFormatException e) {
+            return ValidationResult.fail("Artist id must be a valid number.");
+        }
         return ValidationResult.ok();
     }
 
@@ -83,10 +91,10 @@ public class Validator {
         try {
             int year = Integer.parseInt(releaseYear);
             if (year < 1900 || year > currentDate.getYear()) {
-                return ValidationResult.fail("Launch year must be between 1900 and " + currentDate.getYear());
+                return ValidationResult.fail("Release year must be between 1900 and " + currentDate.getYear());
             }
         } catch (NumberFormatException e) {
-            return ValidationResult.fail("Launch year must be a valid number.");
+            return ValidationResult.fail("Release year must be a valid number.");
         }
         return ValidationResult.ok();
     }

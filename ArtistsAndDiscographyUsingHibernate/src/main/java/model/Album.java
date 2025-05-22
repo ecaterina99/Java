@@ -29,6 +29,7 @@ public class Album {
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
+
     public Artist getArtist() {
         return artist;
     }
@@ -70,7 +71,7 @@ public class Album {
 
     @Override
     public String toString() {
-        return "Album title: " + this.title + ", release year: " + this.releaseYear + ", record label: " + this.recordLabel;
+        return "Album id" + this.id + "Album title: " + this.title + ", release year: " + this.releaseYear + ", record label: " + this.recordLabel;
     }
 
     public String albumsAndArtists() {

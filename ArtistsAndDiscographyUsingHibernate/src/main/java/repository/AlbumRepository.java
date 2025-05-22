@@ -2,6 +2,7 @@ package repository;
 
 import connection.HibernateConnection;
 import model.Album;
+import model.Artist;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -61,6 +62,41 @@ public class AlbumRepository {
 
         }
     }
+
+    public Album findAlbumById(int id) {
+        Session session = null;
+        try {
+            session = connection.beginTransaction();
+
+            Album album= session.get(Album.class, id);
+
+            connection.commitTransaction(session);
+            return album;
+        } catch (Exception e) {
+            connection.rollbackTransaction(session);
+            throw new RuntimeException("Error listing artists", e);
+        }
+    }
+
+    public void update(Album album) {
+        Session session = null;
+        try {
+            session = connection.beginTransaction();
+            session.merge(album);
+            connection.commitTransaction(session);
+            System.out.println("Album successfully updated");
+        }
+        catch (HibernateException e) {
+            connection.rollbackTransaction(session);
+            throw new RuntimeException("Error updating album", e);
+        }
+    }
+
+    public void delete(Album album) {
+        Session session = null;
+    }
+
+
 
     public List<Album> getAlbumsByArtistId(int artistId) {
         Session session = null;

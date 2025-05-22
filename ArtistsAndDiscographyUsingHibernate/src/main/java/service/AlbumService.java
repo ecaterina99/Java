@@ -20,6 +20,18 @@ public class AlbumService {
         albumRepository.save(album);
     }
 
+    public void delete(Album album) {
+
+    }
+
+    public void update(Album album) {
+        albumRepository.update(album);
+    }
+
+    public Album findAlbum(int id) {
+        return albumRepository.findAlbumById(id);
+    }
+
     public List<Album> readAlbumsByLabel(String label) {
         return albumRepository.getAlbumsByLabel(label);
     }
@@ -35,5 +47,6 @@ public class AlbumService {
     public Artist findArtist(int artistId) {
         return artistRepository.findArtistById(artistId);
     }
+
 
 }
