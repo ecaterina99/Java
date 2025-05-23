@@ -4,7 +4,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 public class HibernateConnection {
-
+    /**
+     * Manages database connectivity using Hibernate.
+     * It ensures a single instance of the connection manager is used throughout
+     * the application, following the Singleton design pattern. This helps maintain
+     * consistent database access logic and promotes resource efficiency.
+     */
     private static final HibernateConnection INSTANCE = new HibernateConnection();
 
     private HibernateConnection() {
@@ -41,10 +46,5 @@ public class HibernateConnection {
             session.close();
         }
     }
-
-    public void shutdown() {
-        HibernateUtil.close();
-    }
-
 }
 

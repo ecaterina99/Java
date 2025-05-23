@@ -8,6 +8,10 @@ import service.ArtistService;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controller class for handling user interactions related to Artist entities.
+ * Manages input, validation, and delegates business logic to the service layer.
+ */
 public class ArtistController {
 
     private final ArtistService artistService;
@@ -17,6 +21,10 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
+    /**
+     * Reads and validates user input to create a new Artist.
+     * After validation, it sends the Artist object to the service layer.
+     */
     public void createArtist() {
         Artist artist = new Artist();
         while (true) {
@@ -86,12 +94,12 @@ public class ArtistController {
                 break;
             }
         }
-        artistService.createArtist(artist);
+        artistService.create(artist);
     }
 
+    //Displays all artists stored in the database.
     public void displayAllArtists() {
-        List<Artist> artistsList = artistService.readArtist();
-
+        List<Artist> artistsList = artistService.read();
         if (artistsList.isEmpty()) {
             System.out.println("There are no artists in the database");
         } else {
@@ -101,6 +109,11 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Updates an existing artist’s information.
+     * Prompts the user to enter the artist ID, displays current details,
+     * then asks for updated fields (optional).
+     */
     public void updateArtist() {
 
         System.out.print("Enter artist Id to update: ");
@@ -196,9 +209,10 @@ public class ArtistController {
                 break;
             }
         }
-        artistService.updateArtist(artist);
+        artistService.update(artist);
     }
 
+    //Deletes an artist by ID after confirmation.
     public void deleteArtist() {
         System.out.print("Enter artist Id to delete: ");
         String deleteIdInput = scanner.nextLine();
@@ -222,12 +236,13 @@ public class ArtistController {
             }
 
             if (confirmation.equalsIgnoreCase("y")) {
-                artistService.deleteArtist(artistId);
+                artistService.delete(artistId);
 
             }
         }
     }
 
+    // Displays only artists of type 'solo'.
     public void displaySoloArtists() {
         List<Artist> soloArtists = artistService.readSoloArtists();
         if (soloArtists.isEmpty()) {
@@ -240,6 +255,7 @@ public class ArtistController {
         }
     }
 
+    //Asks for a year and displays all artists launched after that year.
     public void displayArtistsAfterYear() {
         System.out.print("Enter the year to filter artists after: ");
         String yearInput = scanner.nextLine();

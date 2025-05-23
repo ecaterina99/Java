@@ -1,8 +1,6 @@
 package model;
 
 import jakarta.persistence.*;
-import lib.ValidationResult;
-
 import java.util.Set;
 
 @Entity

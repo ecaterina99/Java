@@ -3,7 +3,6 @@ package ui;
 import controller.AlbumController;
 import controller.ArtistController;
 import lib.DependencyContainer;
-import org.hibernate.Session;
 import repository.AlbumRepository;
 import repository.ArtistRepository;
 import service.AlbumService;
@@ -12,10 +11,14 @@ import service.ArtistService;
 import java.util.Scanner;
 
 public class UserInterface {
-
+    // Initializes and stores application-wide dependencies using a custom dependency injection container.
     static DependencyContainer container = configureDependencies();
 
-    public static void run(Session session) {
+    /**
+     * Main application execution loop.
+     * Handles the primary program flow including menu display and user option processing.
+     */
+    public static void run() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -63,6 +66,10 @@ public class UserInterface {
         System.out.print("Enter an option: ");
     }
 
+    /**
+     * Manages the CRUD operations submenu for artist entities.
+     * Delegates actions to the ArtistController based on user input.
+     */
     private static void initSelectCRUDOption() {
         Scanner scanner = new Scanner(System.in);
         var artistController = container.resolve(ArtistController.class);
@@ -121,7 +128,7 @@ public class UserInterface {
         System.out.print("Please choose the option: ");
     }
 
-
+    //Registers all necessary components (repositories, services, controllers) with the dependency container.
     private static DependencyContainer configureDependencies() {
         DependencyContainer container = new DependencyContainer();
 
@@ -145,5 +152,4 @@ public class UserInterface {
         ));
         return container;
     }
-
 }

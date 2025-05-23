@@ -2,12 +2,14 @@ package repository;
 
 import connection.HibernateConnection;
 import model.Album;
-import model.Artist;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import java.util.List;
 
+/**
+ * Repository class responsible for managing Album data in the database.
+ */
 public class AlbumRepository {
     private final HibernateConnection connection;
 
@@ -19,9 +21,7 @@ public class AlbumRepository {
         Session session = null;
         try {
             session = connection.beginTransaction();
-
             session.merge(album);
-
             connection.commitTransaction(session);
             System.out.println("Album successfully added");
         } catch (HibernateException e) {
@@ -30,51 +30,12 @@ public class AlbumRepository {
         }
     }
 
-    public List<Album> getAlbumsByLabel(String recordLabel) {
-        Session session = null;
-
-        try {
-            session = connection.beginTransaction();
-
-            String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
-            List<Album> albumsByLabel = session.createQuery(hql, Album.class).setParameter("label", recordLabel).list();
-
-            connection.commitTransaction(session);
-            return albumsByLabel;
+    public List<Album> getAllAlbums() {
+        try (Session session = connection.getSession()) {
+            String hql = "from Album";
+            return session.createQuery(hql, Album.class).list();
         } catch (Exception e) {
-            throw new RuntimeException("Error getting albums by label: " + e);
-        }
-    }
-
-    public List<String> getAllLabels() {
-        Session session = null;
-
-        try {
-            session = connection.beginTransaction();
-
-            String hql = "select DISTINCT a.recordLabel from Album a";
-            List<String> recordLabels = session.createQuery(hql, String.class).getResultList();
-
-            connection.commitTransaction(session);
-            return recordLabels;
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting all labels: " + e);
-
-        }
-    }
-
-    public Album findAlbumById(int id) {
-        Session session = null;
-        try {
-            session = connection.beginTransaction();
-
-            Album album = session.get(Album.class, id);
-
-            connection.commitTransaction(session);
-            return album;
-        } catch (Exception e) {
-            connection.rollbackTransaction(session);
-            throw new RuntimeException("Error listing artists", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -99,7 +60,6 @@ public class AlbumRepository {
             Album album = session.get(Album.class, id);
             if (album != null) {
                 session.remove(album);
-
                 connection.commitTransaction(session);
                 System.out.println("Album deleted successfully.");
             } else {
@@ -108,39 +68,42 @@ public class AlbumRepository {
             }
         } catch (HibernateException e) {
             connection.rollbackTransaction(session);
-            throw new RuntimeException("Error deleting artist", e);
+            throw new RuntimeException("Error deleting album", e);
         }
     }
 
-    public List<Album> getAllAlbums() {
-        Session session = null;
-        try {
-            session = connection.beginTransaction();
-
-            String hql = "from Album";
-            List<Album> albumsList = session.createQuery(hql, Album.class).list();
-
-            connection.commitTransaction(session);
-            return albumsList;
+    public Album getAlbumById(int id) {
+        try (Session session = connection.getSession()) {
+            return session.get(Album.class, id);
         } catch (Exception e) {
-            connection.rollbackTransaction(session);
-            throw new RuntimeException("Error listing artists", e);
+            throw new RuntimeException(e);
         }
     }
-
 
     public List<Album> getAlbumsByArtistId(int artistId) {
-        Session session = null;
-
-        try {
-            session = connection.beginTransaction();
-
+        try (Session session = connection.getSession()) {
             String hql = "from Album where artist.id= :artistId";
-            List<Album> albums = session.createQuery(hql, Album.class).setParameter("artistId", artistId).list();
-
-            return albums;
+            return session.createQuery(hql, Album.class).setParameter("artistId", artistId).list();
         } catch (Exception e) {
             throw new RuntimeException("Error finding albums by artist id: " + e);
+        }
+    }
+
+    public List<Album> getAlbumsByLabel(String recordLabel) {
+        try (Session session = connection.getSession()) {
+            String hql = "from Album a join fetch a.artist where a.recordLabel = :label";
+            return session.createQuery(hql, Album.class).setParameter("label", recordLabel).list();
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting albums by label: " + e);
+        }
+    }
+
+    public List<String> getAllLabels() {
+        try (Session session = connection.getSession()) {
+            String hql = "select DISTINCT a.recordLabel from Album a";
+            return session.createQuery(hql, String.class).getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting all labels: " + e);
         }
     }
 

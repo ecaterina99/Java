@@ -1,7 +1,9 @@
 package lib;
 
 import java.time.LocalDate;
-
+/**
+ * Utility class that provides static methods for validating various input fields related to artists and albums.
+ */
 public class Validator {
 
     public static ValidationResult validateName(String name) {

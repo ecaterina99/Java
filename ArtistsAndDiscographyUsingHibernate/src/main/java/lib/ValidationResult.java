@@ -1,5 +1,8 @@
 package lib;
-
+/**
+ * A simple class that represents the result of a validation operation.
+ * It indicates whether the validation passed and provides an optional message.
+ */
 public class ValidationResult {
     private final boolean valid;
     private final String message;

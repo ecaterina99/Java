@@ -4,8 +4,13 @@ import model.Album;
 import model.Artist;
 import repository.AlbumRepository;
 import repository.ArtistRepository;
+
 import java.util.List;
 
+/**
+ * Service layer for album-related operations.
+ * This class acts as a bridge between the controller and the repository layer.
+ */
 public class AlbumService {
 
     private final AlbumRepository albumRepository;
@@ -16,11 +21,15 @@ public class AlbumService {
         this.artistRepository = artistRepository;
     }
 
-    public void save(Album album) {
+    public void create(Album album) {
         albumRepository.save(album);
     }
 
-    public void delete(int id ) {
+    public List<Album> read() {
+        return albumRepository.getAllAlbums();
+    }
+
+    public void delete(int id) {
         albumRepository.delete(id);
     }
 
@@ -29,7 +38,7 @@ public class AlbumService {
     }
 
     public Album findAlbum(int id) {
-        return albumRepository.findAlbumById(id);
+        return albumRepository.getAlbumById(id);
     }
 
     public List<Album> readAlbumsByLabel(String label) {
@@ -46,10 +55,6 @@ public class AlbumService {
 
     public Artist findArtist(int artistId) {
         return artistRepository.findArtistById(artistId);
-    }
-
-    public List<Album> readAlbum() {
-        return albumRepository.getAllAlbums();
     }
 
 }
