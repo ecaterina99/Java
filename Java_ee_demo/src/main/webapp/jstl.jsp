@@ -7,6 +7,11 @@
 <html>
 <body>
 
+${24+12}
+<div>Hello <% out.println("World"); %></div>
+
+
+
 <c:out value="Hello from my JSTL tag"></c:out>
 <c:if test="${2==2}">
     <c:out value="this is true">

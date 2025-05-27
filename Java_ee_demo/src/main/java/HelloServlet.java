@@ -14,7 +14,7 @@ public class HelloServlet extends HttpServlet {
     void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        // String msg = LocalDateTime.now().toString();
+        /* String msg = LocalDateTime.now().toString();
 
         String msg = null;
 
@@ -33,8 +33,30 @@ public class HelloServlet extends HttpServlet {
         out.println(msg);
         out.println("</h2></body></html>");
 
-    }
+         */
 
+        String firstName = request.getParameter("first_name");
+        String lastName = request.getParameter("last_name");
+        Integer age;
+
+        try {
+            age = Integer.parseInt(request.getParameter("age"));
+        } catch (Exception e) {
+            response.sendRedirect("index.html");
+            return;
+        }
+
+        if (age > 17) {
+            out.println("<html><body>");
+            out.println("<h1>You entered</h1>" +
+                    "<p>Your first name: " + firstName + "</p>" +
+                    "<p>Your last name: " + lastName + "</p>" +
+                    "<p>Your age: " + age + "</p>");
+            out.println("</body></html>");
+        } else {
+            out.println("<h1>Sorry, you must be older!</h1>");
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
