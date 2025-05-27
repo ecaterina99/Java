@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+        https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
+        version="3.0">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>newtag_library</short-name>
+    <uri>myUniqueUri</uri>
+
+    <tag>
+        <name>formatTag</name>
+        <tag-class>tags.MyTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>color</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>font_size</name>
+            <required>true</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <name>is_uppercase</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+
+</taglib>
