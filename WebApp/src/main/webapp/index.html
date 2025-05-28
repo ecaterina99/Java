@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+</head>
+<body>
+<form action="Servlet" method="post" enctype="multipart/form-data">
+    <label>Enter your first name:</label>
+    <input type="text" name="first_name">
+    </br>
+    <label>Enter your last name:</label>
+    <input type="text" name="last_name">
+    </br>
+    <label>Select your gender:</label>
+    <input type="radio" value="male" name="gender"/>Male</br>
+    <input type="radio" value="female" name="gender"/>Female</br>
+    </br>
+    <label>Select your date of birth:</label>
+    <input type="date" name="date"/></br>
+    </br>
+    <label>Select plan:</label>
+    <select name="plan">
+        <option value="basic">Basic</option>
+        <option value="standard">Standard</option>
+        <option value="pro">Pro</option>
+    </select>
+    </br>
+    <label>Upload photo:</label>
+    <input type="file" name="photo"></br>
+    </br>
+    <label>Do you agree?</label>
+    <input type="checkbox" name="agree" value="1"></br>
+    </br>
+    <input type="submit" value="Send">
+</form>
+</body>
+</html>
