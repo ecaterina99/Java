@@ -1,5 +1,11 @@
+
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page isELIgnored="false"%>
+<%@page import="javax.servlet.http.Cookie" %>
+
 <html>
-<body>
-<h2>Hello World!</h2>
-</body>
+<%
+    session.setAttribute("color","red");
+%>
+<a href="page.jsp">Go to page! </a>
 </html>
