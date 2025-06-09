@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Controller class for handling user interactions related to Artist entities.
+ * Controller class for handling user interactions related to Album entities.
  * Manages input, validation, and delegates business logic to the service layer.
  */
 public class AlbumController {

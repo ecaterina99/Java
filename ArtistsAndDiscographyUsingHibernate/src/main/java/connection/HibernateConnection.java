@@ -10,41 +10,53 @@ public class HibernateConnection {
      * the application, following the Singleton design pattern. This helps maintain
      * consistent database access logic and promotes resource efficiency.
      */
-    private static final HibernateConnection INSTANCE = new HibernateConnection();
+    private static HibernateConnection instance;
+    private static final Object lock = new Object();
 
     private HibernateConnection() {
     }
 
     public static HibernateConnection getInstance() {
-        return INSTANCE;
-    }
-
-    public Session getSession() throws HibernateException {
-        return HibernateUtil.getSessionFactory().openSession();
-    }
-
-    public Session beginTransaction() throws HibernateException {
-        Session session = getSession();
-        session.beginTransaction();
-        return session;
-    }
-
-    public void commitTransaction(Session session) throws HibernateException {
-        if (session != null) {
-            if (session.getTransaction() != null && session.getTransaction().isActive()) {
-                session.getTransaction().commit();
+        if (instance == null) {
+            synchronized (lock) {
+                if (instance == null) {
+                    instance = new HibernateConnection();
+                }
             }
-            session.close();
+        }
+        return instance;
+    }
+
+    public static Session getSession() throws HibernateException {
+        try {
+            return HibernateUtil.getSessionFactory().openSession();
+        } catch (HibernateException e) {
+            System.err.println("Initial session creation failed." + e);
+            throw new HibernateException("Failed to create session", e);
         }
     }
 
-    public void rollbackTransaction(Session session) {
-        if (session != null) {
-            if (session.getTransaction() != null && session.getTransaction().isActive()) {
+    public static void commitTransaction(Session session) throws HibernateException {
+        if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+            session.getTransaction().commit();
+        }
+    }
+
+    public static void rollbackTransaction(Session session) {
+        if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+            try {
                 session.getTransaction().rollback();
+            } catch (Exception e) {
+                System.err.println("Error during rollback: " + e.getMessage());
             }
+        }
+    }
+
+    public void closeSession(Session session) {
+        if (session != null && session.isOpen()) {
             session.close();
         }
     }
 }
+
 
