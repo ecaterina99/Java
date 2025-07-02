@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book id="01" isbn="12345">
+        <title>Childhood's End</title>
+        <author>Arthur Clarke</author>
+    </book>
+    <book id="02" isbn="67890">
+        <title>The Merchant of Venice</title>
+        <author>William Shakespeare</author>
+    </book>
+</books>
