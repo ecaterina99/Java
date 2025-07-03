@@ -1,5 +1,4 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class QueueTest {
     public static void main(String[] args) {
@@ -28,5 +27,34 @@ public class QueueTest {
         queue.clear();
         System.out.println(queue);
 
+
+        Queue<String> priorityQueue = new PriorityQueue<>();
+        priorityQueue.offer("Vasile");
+        priorityQueue.offer("Ion");
+        priorityQueue.offer("Larisa");
+        priorityQueue.offer("Maria");
+        priorityQueue.offer("Ana");
+
+        System.out.println(priorityQueue);
+
+        Queue<String> riverseOrder = new PriorityQueue<>(Collections.reverseOrder());
+        riverseOrder.offer("Vasile");
+        riverseOrder.offer("Ion");
+        riverseOrder.offer("Larisa");
+        riverseOrder.offer("Maria");
+        riverseOrder.offer("Ana");
+
+        System.out.println(riverseOrder);
+
+        Queue<Integer> priorityNumbersQueue = new PriorityQueue<>();
+        priorityNumbersQueue.offer(1);
+        priorityNumbersQueue.offer(5);
+        priorityNumbersQueue.offer(9);
+        priorityNumbersQueue.offer(3);
+        priorityNumbersQueue.offer(2);
+
+        while (!priorityNumbersQueue.isEmpty()) {
+            System.out.println(priorityNumbersQueue.poll());
+        }
     }
 }

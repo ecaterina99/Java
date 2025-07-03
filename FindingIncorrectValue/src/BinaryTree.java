@@ -89,8 +89,6 @@ public class BinaryTree {
         }
    }
 
-
-
     public int countSum(Node node) {
         if (node == null) {
             return 0;

@@ -5,11 +5,10 @@ import java.util.Map;
 import java.io.*;
 
 public class HTTPTest {
-    //Server
     public static void main(String[] args) {
         while (true) {
             System.out.println("listening...");
-            try (ServerSocket serverSocket = new ServerSocket(1080);
+            try (ServerSocket serverSocket = new ServerSocket(1099);
                  Socket cn = serverSocket.accept();
                  BufferedReader bis = new BufferedReader(new InputStreamReader(cn.getInputStream()));
                  BufferedOutputStream bos = new BufferedOutputStream(cn.getOutputStream())) {
@@ -21,7 +20,7 @@ public class HTTPTest {
                 File f = new File("C:\\Users\\Admin\\Desktop\\Learning\\Java\\HTTPTest\\src",reqPage);
                 if (f.exists()) {
                     bos.write(createHeader(200, fType).getBytes());
-                    FileInputStream fs = new FileInputStream(reqPage);
+                    FileInputStream fs = new FileInputStream("C:\\Users\\Admin\\Desktop\\Learning\\Java\\HTTPTest\\src\\" + reqPage);
                     int readByte;
 
                     while ((readByte = fs.read()) != -1)

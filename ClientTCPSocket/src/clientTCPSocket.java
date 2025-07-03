@@ -8,19 +8,22 @@ import java.net.Socket;
 public class clientTCPSocket {
     public static void main(String[] args) {
         try (
+
                 Socket socket = new Socket("www.google.com", 80);
                 BufferedReader bis = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream())) {
 
+            //cerere HTTP
             bos.write("GET /search?q=java HTTP/1.1\r\n\r\n".getBytes());
+            //inchiderea fluxului
             bos.flush();
 
+            //Citirea
             String line = bis.readLine();
             while (line != null) {
                 System.out.println(line);
                 line = bis.readLine();
             }
-
 
         } catch (
                 IOException exception) {

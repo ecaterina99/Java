@@ -9,6 +9,9 @@ class LinkedListCreation {
         lc.append(18);
         lc.insert(lc.head, 10);
         lc.insertAfter(9, 55);
+        lc.push(100);
+        lc.append(115);
+
 
         lc.print();
         lc.insertAfter(111, 55);
@@ -96,6 +99,7 @@ class LinkedListCreation {
         }
         //Delete the node from the list
         prev.next = temp.next;
+
     }
 
     public void print() {

@@ -10,7 +10,7 @@ public class Fibonacci {
     }
 
     //Memoization effective method
-
+//O(n)
     private static long fibonacciMemoization(int n, long[] mem) {
         if (mem[n] != -1) {
             return mem[n];
@@ -26,6 +26,7 @@ public class Fibonacci {
 
 
 //Simple, not effective method
+//O(2^n)
     /*
     static public int fibonacciNaive(int n) {
         if (n <= 1) {

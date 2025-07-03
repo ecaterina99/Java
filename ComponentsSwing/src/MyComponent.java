@@ -17,6 +17,8 @@ public class MyComponent extends JComponent {
     @Override
     protected void paintComponent (Graphics g){
         System.out.println("PaintComponent");
+        this.setPreferredSize(new Dimension(200, 60));
+
         g.setColor(Color.lightGray);
         g.fillRect(0, 0, 200, 60);
         g.setColor(Color.red);

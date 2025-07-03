@@ -61,10 +61,7 @@ public class Main extends JFrame {
                 sw.execute();
             }
         });
-
-
-
-
+        
         f.setVisible(true);
 
     }

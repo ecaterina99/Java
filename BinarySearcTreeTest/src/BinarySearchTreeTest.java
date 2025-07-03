@@ -14,7 +14,7 @@ public class BinarySearchTreeTest {
         tree.insert(new Node(1));
         tree.insert(new Node(10));
 
-        tree.remove(7);
+        tree.remove(5);
         System.out.println(tree.search(1));
         tree.display();
 

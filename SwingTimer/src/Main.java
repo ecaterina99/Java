@@ -37,6 +37,6 @@ public class Main extends JFrame {
         frame1.add(btn2);
         btn.setAction(myAction);
         btn2.setAction(myAction);
-        
+
     }
 }

@@ -18,7 +18,7 @@ public class filteredListOfIntegers {
         List<Object> result = new ArrayList<>();
         for(Object o : filterList) {
             if(o instanceof Integer) {
-                result.add((Integer)o);
+                result.add(o);
             }
         }
         System.out.println(result);

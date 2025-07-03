@@ -30,7 +30,7 @@ public class UsersDataFile {
 
         /*
         First solution
-        
+
         String userData = """
                 id:01|firstName:Tom|lastName:Williams|uid:1234567890123
                 id:02|firstName:Ben|lastName:Smith|uid:1234567890124
