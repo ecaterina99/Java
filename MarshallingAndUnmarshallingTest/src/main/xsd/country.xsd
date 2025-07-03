@@ -13,8 +13,26 @@
                 <xs:element name="name" type="xs:string" />
                 <xs:element name="capital" type="xs:string" />
                 <xs:element name="description" type="xs:string" />
+                <xs:element name="population" type="xs:string"/>
+                <xs:element  ref="ruler" maxOccurs="1"/>
             </xs:sequence>
-            <xs:attribute name="countryCode" type="xs:string"/>
+            <xs:attribute name="countryCode" type="stringMaxSize2"/>
         </xs:complexType>
     </xs:element>
+
+    <xs:simpleType name="stringMaxSize2">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="ruler">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ruler_name" type="xs:string"/>
+                <xs:element name="date_of_birth" type="xs:date"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 </xs:schema>

@@ -1,1 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><country countryCode="De"><name>Germany</name><capital>Berlin</capital><description>Germany is...</description></country>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<country countryCode="De">
+    <name>Germany</name>
+    <capital>Berlin</capital>
+    <description>Germany is...</description>
+    <population>83020000</population>
+    <ruler>
+        <ruler_name>Angela Merkel</ruler_name>
+        <date_of_birth>1954-08-17+03:00</date_of_birth>
+    </ruler>
+</country>

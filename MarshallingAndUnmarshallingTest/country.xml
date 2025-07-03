@@ -5,10 +5,20 @@
         <name>Serbia</name>
         <capital>Belgrade</capital>
         <description>Serbia is.....</description>
+        <population>1238457</population>
+        <ruler>
+            <ruler_name>Dan T</ruler_name>
+            <date_of_birth>1954-07-17+11:44</date_of_birth>
+        </ruler>
     </country>
     <country countryCode="fr">
         <name>France</name>
         <capital>Paris</capital>
         <description>France is.....</description>
+        <population>5838457</population>
+        <ruler>
+            <ruler_name>Iron G</ruler_name>
+            <date_of_birth>1978-07-17+11:44</date_of_birth>
+        </ruler>
     </country>
 </root>
