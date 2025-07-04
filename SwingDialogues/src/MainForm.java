@@ -17,6 +17,7 @@ public class MainForm extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
 
+
         //JOptionPane.showMessageDialog(null, "Hello from dialogue", "Hello World",JOptionPane.INFORMATION_MESSAGE);
         // JOptionPane.showMessageDialog(null, "Erorrrrrrrrrr", "Error",JOptionPane.ERROR_MESSAGE);
 

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2d597e27-ed25-4724-badc-ece9147aac29" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.1\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1krlcbfBYVJlkJFPBntImL7HsfX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="03.02.mysql.mm" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2d597e27-ed25-4724-badc-ece9147aac29" name="Default Changelist" comment="" />
+      <created>1606466671666</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1606466671666</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="249" y="0" key="#Project_Structure" timestamp="1606467033736">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1606467033736" />
+    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1606575048939">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1606575048939" />
+    <state x="485" y="230" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog" timestamp="1606584696579">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="485" y="230" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog/0.0.1536.824@0.0.1536.824" timestamp="1606584696579" />
+    <state x="473" y="153" key="FileChooserDialogImpl" timestamp="1606467024949">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="473" y="153" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1606467024949" />
+    <state width="1515" height="223" key="GridCell.Tab.0.bottom" timestamp="1606590788269">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="223" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606590788269" />
+    <state width="1515" height="223" key="GridCell.Tab.0.center" timestamp="1606590788269">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="223" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1606590788269" />
+    <state width="1515" height="223" key="GridCell.Tab.0.left" timestamp="1606590788269">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="223" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1606590788269" />
+    <state width="1515" height="223" key="GridCell.Tab.0.right" timestamp="1606590788269">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="223" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1606590788269" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1606481097976">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1606481097976" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/03_04_dodatni_materijal$Main.ic" NAME="Main Coverage Results" MODIFIED="1606590009139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
