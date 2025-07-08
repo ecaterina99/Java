@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="main.Artist" table="artists">
+
+        <meta attribute="class-description">
+            This class contains the artist details
+        </meta>
+
+        <id name="id" type="int" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="name" column="name" type="string"/>
+        <property name="type" column="type" type="string"/>
+        <property name="launchYear" column="launch_year" type="int"/>
+        <property name="splitYear" column="split_year" type="int"/>
+        <property name="website" column="website" type="string"/>
+
+    </class>
+</hibernate-mapping>
