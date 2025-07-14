@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Path("/student")
 public class StudentApi {
 
-    private static ArrayList<Student> students = new ArrayList<Student>() {{
+    private final static ArrayList<Student> students = new ArrayList<Student>() {{
         add(new Student("11/22", "Chad", "Farley"));
         add(new Student("24/22", "Dominic", "Bonilla"));
         add(new Student("15/21", "Mario", "Donovan"));
