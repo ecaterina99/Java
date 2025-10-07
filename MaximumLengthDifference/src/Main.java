@@ -25,7 +25,7 @@ public class Main {
             for (String s : a2) {
                 second.add(s.length());
             }
-            
+
             Collections.sort(first);
             Collections.sort(second);
 
