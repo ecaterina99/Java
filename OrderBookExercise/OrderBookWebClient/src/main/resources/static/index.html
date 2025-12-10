@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Book Client</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="content-wrapper">
+
+        <div class="header">
+            <h1>Order Book Client</h1>
+            <p>Manage your FX orders efficiently</p>
+        </div>
+
+        <!-- Create Order -->
+        <div class="card">
+            <h2>Create New Order</h2>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Investment Currency</label>
+                    <input
+                            type="text"
+                            id="investmentCcy"
+                            class="input"
+                            placeholder="USD"
+                            maxlength="3"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label>Counter Currency</label>
+                    <input
+                            type="text"
+                            id="counterCcy"
+                            class="input"
+                            placeholder="EUR"
+                            maxlength="3"
+                    />
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label>Side</label>
+                    <select id="buy" class="input">
+                        <option value="true">BUY</option>
+                        <option value="false">SELL</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Limit</label>
+                    <input
+                            type="number"
+                            step="0.0001"
+                            id="limit"
+                            class="input"
+                            placeholder="1.2345"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label>Valid Until</label>
+                    <input
+                            type="text"
+                            id="validUntil"
+                            class="input"
+                            placeholder="24.12.2026"
+                    />
+                </div>
+            </div>
+
+            <button id="createOrderBtn" class="btn btn-primary">
+                Create Order
+            </button>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2>All Orders</h2>
+                <button id="refreshBtn" class="btn btn-refresh">
+                    Refresh
+                </button>
+            </div>
+
+            <div id="errorContainer" class="error-box hidden fade-in"></div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Side</th>
+                        <th>Pair</th>
+                        <th>Limit</th>
+                        <th>Valid Until</th>
+                        <th>Distance</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            Loading orders...
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Cancel Order -->
+        <div class="card">
+            <h2>Cancel Order</h2>
+
+            <div id="cancelErrorContainer" class="error-box hidden fade-in"></div>
+
+            <div class="cancel-grid">
+                <div class="cancel-input">
+                    <label>Order ID</label>
+                    <input
+                            type="text"
+                            id="cancelOrderId"
+                            class="input input-cancel"
+                            placeholder="Enter Order ID"
+                    />
+                </div>
+
+                <div class="cancel-button">
+                    <button id="cancelOrderBtn" class="btn btn-danger">
+                        Cancel Order
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

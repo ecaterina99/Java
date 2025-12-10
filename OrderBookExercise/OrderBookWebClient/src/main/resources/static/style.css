@@ -1,0 +1,322 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.container {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #0f172a, #581c87, #0f172a);
+    padding: 2rem 1rem;
+}
+
+.content-wrapper {
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.025em;
+}
+
+.header p {
+    color: #d8b4fe;
+    font-size: 1.125rem;
+    margin: 0;
+}
+
+/* Card */
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 0 1rem 0;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.card-header h2 {
+    margin: 0;
+}
+
+/* Forms */
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .form-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    display: block;
+    color: #e9d5ff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Input */
+.input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.input::placeholder {
+    color: rgba(216, 180, 254, 0.5);
+}
+
+.input:focus {
+    outline: none;
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
+}
+
+.input-cancel:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(to right, #a855f7, #ec4899);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #9333ea, #db2777);
+}
+
+.btn-refresh {
+    background: #a855f7;
+    color: white;
+    font-weight: 600;
+}
+
+.btn-refresh:hover {
+    background: #9333ea;
+}
+
+.btn-refresh:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-danger {
+    width: 100%;
+    background: linear-gradient(to right, #ef4444, #ec4899);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(to right, #dc2626, #db2777);
+}
+
+/* Table */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead tr {
+    border-bottom: 1px solid rgba(192, 132, 252, 0.3);
+}
+
+th {
+    text-align: left;
+    color: #e9d5ff;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+}
+
+tbody tr {
+    border-bottom: 1px solid rgba(192, 132, 252, 0.1);
+    transition: background 0.2s;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+td {
+    padding: 0.75rem 1rem;
+    color: #e9d5ff;
+}
+
+td.text-center {
+    text-align: center;
+    color: #d8b4fe;
+    padding: 2rem 1rem;
+}
+
+.order-id {
+    color: white;
+    font-size: 0.875rem;
+}
+
+.order-side {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.order-side.buy {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+}
+
+.order-side.sell {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.order-pair {
+    color: white;
+    font-weight: 600;
+}
+
+/* Cancel Order Grid */
+.cancel-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .cancel-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.cancel-input label {
+    display: block;
+    color: #e9d5ff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.cancel-button {
+    display: flex;
+    align-items: flex-end;
+}
+
+/* Error Box */
+.error-box {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    color: #fecaca;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+}
